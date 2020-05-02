@@ -5,6 +5,7 @@ namespace Jan\Component\DependencyInjection;
 use Closure;
 use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
 use Jan\Component\DependencyInjection\Exceptions\InstanceException;
+use Jan\Component\DependencyInjection\Exceptions\ResolverDependencyException;
 use ReflectionClass;
 use ReflectionException;
 
@@ -51,6 +52,12 @@ class Container implements \ArrayAccess, ContainerInterface
 
     /** @var array  */
     protected $calls = [];
+
+
+    /**
+     * @var bool
+    */
+    protected $autowire = true;
 
 
     /**
@@ -103,6 +110,19 @@ class Container implements \ArrayAccess, ContainerInterface
         return $this;
     }
 
+
+    /**
+     * Set autowiring status
+     *
+     * @param bool $status
+     * @return $this
+    */
+    public function autowire(bool $status)
+    {
+        $this->autowire = $status;
+
+        return $this;
+    }
 
     /**
      * Set instance
@@ -173,7 +193,7 @@ class Container implements \ArrayAccess, ContainerInterface
      *
      * @param $abstract
      * @param array $parameters
-     * @return bool
+     * @return object
      * @throws ReflectionException
     */
     public function make($abstract, $parameters = [])
@@ -186,7 +206,7 @@ class Container implements \ArrayAccess, ContainerInterface
      * Factory
      *
      * @param $abstract
-     * @return bool
+     * @return object
      * @throws ReflectionException
     */
     public function factory($abstract)
@@ -226,23 +246,44 @@ class Container implements \ArrayAccess, ContainerInterface
      *
      * @param $abstract
      * @param array $arguments
-     * @return bool
-     * @throws ReflectionException
+     * @return object
+     * @throws ReflectionException|InstanceException
+     *
+     * dump($container->get(App\Controllers\HomeController::class, [
+            * 'id' => 1,
+            * 'slug' => 'salut-les-amis',
+             * 3
+     * ]));
     */
     public function get($abstract, $arguments = [])
     {
+           // resolve abstract
            if(! $this->has($abstract))
            {
+               if($this->autowire !== true)
+               {
+                    throw new ResolverDependencyException(
+                        '<strong>Autowire is unabled for resolution</strong>'
+                    );
+               }
                return $this->resolve($abstract, $arguments);
+           }
+
+           // get aliases
+           if(isset($this->aliases[$abstract]))
+           {
+               return $this->aliases[$abstract];
            }
 
            $concrete = $this->getConcrete($abstract);
 
+           // get singleton
            if($this->isSingleton($abstract))
            {
                return $this->getSingleton($abstract, $concrete);
            }
 
+           // get concrete
            return $concrete;
     }
 
@@ -310,7 +351,7 @@ class Container implements \ArrayAccess, ContainerInterface
      * $object->method(FileSystem $fileSystem, User $user)
      *  parameter name [fileSystem, user]
      *  dependency is class name [FileSystem, User] typeHint
-     * @throws ReflectionException
+     * @throws ReflectionException|InstanceException
      */
     public function resolveMethodDependencies(\ReflectionMethod $reflectionMethod, $arguments = [])
     {
@@ -334,14 +375,15 @@ class Container implements \ArrayAccess, ContainerInterface
                     {
                         $dependencies[] = $arguments[$parameter->getName()];
                     }else {
-                        // dd($arguments);
+
                         $dependencies = array_merge($dependencies,
                             array_filter($arguments, function ($key) {
                                 return is_numeric($key);
                         }, ARRAY_FILTER_USE_KEY));
 
-                        // echo 'DoSomething!';
                     }
+
+                    continue;
                 }
 
             } else{
@@ -350,7 +392,6 @@ class Container implements \ArrayAccess, ContainerInterface
             }
         }
 
-        dd($dependencies);
         return $dependencies;
     }
 
