@@ -15,11 +15,6 @@ trait ServiceProviderTrait
     public $container;
 
 
-    public function __construct(ContainerInterface $container = null)
-    {
-         $this->container = $container;
-    }
-
     /**
      * @param ContainerInterface $container
      */
