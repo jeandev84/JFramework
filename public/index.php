@@ -64,4 +64,27 @@ $app = require_once realpath(__DIR__.'/../bootstrap/app.php');
 
 dump($app);
 
+# LOAD ENV
+try {
 
+    $dotenv = (new \Jan\Component\Dotenv\Env(__DIR__ . '/../'))
+        ->load();
+
+} catch (\Jan\Component\Dotenv\Exceptions\InvalidPathException $e) {
+
+    die($e->getMessage());
+}
+
+
+dd($dotenv);
+/*
+$value = getenv('APP_NAME');
+
+echo $value;
+*/
+
+
+/*
+dump($dotenv);
+dump($dotenv['APP_NAME'] ?? '');
+*/
