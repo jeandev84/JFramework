@@ -1,8 +1,9 @@
 <?php
 
+
 /*
 |----------------------------------------------------------------------
-|   Load classes and dependencies of application
+|   Autoloader classes and dependencies of application
 |----------------------------------------------------------------------
 */
 
@@ -10,8 +11,56 @@
 require_once realpath(__DIR__ .'/../vendor/autoload.php');
 
 
-$container = new \Jan\Component\DependencyInjection\Container();
+
+/*
+|-------------------------------------------------------
+|    Require bootstrap of Application
+|-------------------------------------------------------
+*/
+
+$app = require_once realpath(__DIR__.'/../bootstrap/app.php');
 
 
-# Container
-dump($container);
+
+/*
+|-------------------------------------------------------
+|    Check instance of Kernel
+|-------------------------------------------------------
+*/
+//$kernel = $app->get(Jan\Contracts\Http\Kernel::class);
+
+
+
+/*
+|-------------------------------------------------------
+|    Get Response
+|-------------------------------------------------------
+*/
+
+//$response = $kernel->handle(
+//    $request = \Jan\Component\Http\Request::createFromGlobals()
+//);
+
+
+//dump($response);
+
+/*
+|-------------------------------------------------------
+|    Send all headers to navigator
+|-------------------------------------------------------
+*/
+
+// $response->send();
+
+
+/*
+|-------------------------------------------------------
+|    Terminate
+|-------------------------------------------------------
+*/
+
+// $kernel->terminate($request, $response);
+
+
+
+dump($app);
