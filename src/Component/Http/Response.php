@@ -1,7 +1,7 @@
 <?php
 namespace Jan\Component\Http;
 
-use Jan\Component\Http\Message\ResponseInterface;
+use Jan\Component\Http\Contract\ResponseInterface;
 
 
 /**
