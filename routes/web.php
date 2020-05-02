@@ -3,6 +3,15 @@
 use Jan\Component\Routing\Route;
 
 
+Route::get('/', function () {
+
+    echo 'Welcome';
+
+}, 'home');
+
+
+
+
 Route::map('GET|POST', '/contact', function () {
 
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -15,12 +24,3 @@ Route::map('GET|POST', '/contact', function () {
         dump($_POST);
     }
 });
-
-Route::get('/', function () {
-
-    echo 'Welcome';
-
-}, 'home');
-
-
-
