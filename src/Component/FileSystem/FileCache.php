@@ -82,12 +82,13 @@ class FileCache extends FileStorage implements CacheInterface
         return parent::destroy();
     }
 
+
     /**
      * @return mixed
-     */
+    */
     public function all()
     {
-
+        return parent::all();
     }
 
 
