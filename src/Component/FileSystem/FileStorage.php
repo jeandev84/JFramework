@@ -13,8 +13,9 @@ use Jan\Contract\Storage\StorageInterface;
 class FileStorage extends FileSystem implements StorageInterface
 {
 
+
     /** @var string  */
-    protected $storageKey = '__cache';
+    protected $storageKey = '__default';
 
 
     /**
@@ -44,7 +45,7 @@ class FileStorage extends FileSystem implements StorageInterface
     */
     public function set($key, $value)
     {
-        file_put_contents($this->generateStoragePath($key), $value);
+        return file_put_contents($this->generateStoragePath($key), $value);
     }
 
     /**

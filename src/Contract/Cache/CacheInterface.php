@@ -10,12 +10,15 @@ use Jan\Contract\Storage\StorageInterface;
 */
 interface CacheInterface extends StorageInterface
 {
-     /**
-      * Check if the specified cache key exists
-      *
-      * @param string $key
-      * @return bool
-     */
-    public function has($key);
+
+
+    /**
+     * @param $key
+     * @param $data
+     * @param null $duration
+     * @return mixed
+    */
+    public function set($key, $data, $duration = null);
+
 }
 
