@@ -13,7 +13,7 @@ use Jan\Component\DependencyInjection\Container;
  * Application  :  JFramework
  * Author       :  Jean-Claude <jeanyao@mail.com>
  */
-final class Application extends Container
+class Application extends Container
 {
 
     /**
@@ -55,7 +55,7 @@ final class Application extends Container
      * Get the version number of application.
      *
      * @return string
-   */
+    */
     public function version()
     {
         return self::VERSION;
