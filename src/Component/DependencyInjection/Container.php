@@ -2,18 +2,26 @@
 namespace Jan\Component\DependencyInjection;
 
 
+use Closure;
 use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
+use Jan\Component\DependencyInjection\Exceptions\InstanceException;
+use ReflectionClass;
+use ReflectionException;
 
 
 /**
  * Class Container
  * @package Jan\Component\DependencyInjection
 */
-class Container // implements \ArrayAccess, ContainerInterface
+class Container implements \ArrayAccess, ContainerInterface
 {
 
+    /** @var Container */
+    protected static $instance;
+
+
     /** @var array  */
-    protected $binds = [];
+    protected $bindings = [];
 
 
     /** @var array  */
@@ -25,6 +33,14 @@ class Container // implements \ArrayAccess, ContainerInterface
 
 
     /** @var array  */
+    protected $boots = [];
+
+
+    /** @var array  */
+    protected $registers = [];
+
+
+    /** @var array  */
     protected $providers = [];
 
 
@@ -32,8 +48,23 @@ class Container // implements \ArrayAccess, ContainerInterface
     protected $provides  = [];
 
 
+
     /** @var array  */
-    protected $boots = [];
+    protected $calls = [];
+
+
+    /**
+     * @return Container
+    */
+    public static function getInstance()
+    {
+        if(! static::$instance)
+        {
+            $instance = new static();
+        }
+
+        return static::$instance;
+    }
 
 
     /**
@@ -44,31 +75,56 @@ class Container // implements \ArrayAccess, ContainerInterface
     */
     public function bind($abstract, $concrete, $singleton = false)
     {
-         $this->binds[$abstract] = compact('concrete', 'singleton');
+         if(is_null($concrete))
+         {
+             $concrete = $abstract;
+         }
+
+         $this->bindings[$abstract] = compact('concrete', 'singleton');
 
          return $this;
     }
 
 
     /**
-     * Sharing given key as singleton
+     * Bind from configuration
+     *
+     * @param array $configs
+     * @return Container
+    */
+    public function bindings(array $configs)
+    {
+        foreach ($configs as $config)
+        {
+            list($abstract, $concrete, $singleton) = $config;
+            $this->bind($abstract, $concrete, $singleton);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * Set instance
      *
      * @param $abstract
-     * @param $concrete
+     * @param $instance
     */
-    public function share($abstract, $concrete)
+    public function instance($abstract, $instance)
     {
-         $this->instances[$abstract] = function () use ($concrete){
+        $this->instances[$abstract] = $instance;
+    }
 
-              $instance = null;
 
-              if(! $instance)
-              {
-                  $instance = $concrete;
-              }
-
-              return $concrete;
-         };
+    /**
+     * Determine if has instantiated abstract
+     *
+     * @param $abstract
+     * @return bool
+    */
+    public function instantiated($abstract)
+    {
+        return isset($this->instances[$abstract]);
     }
 
 
@@ -85,11 +141,40 @@ class Container // implements \ArrayAccess, ContainerInterface
 
 
     /**
+     * Determine if given abstract is singleton
+     * @param $abstract
+     * @return bool
+    */
+    public function isSingleton($abstract)
+    {
+        return (isset($this->bindings[$abstract]['singleton'])
+            && $this->bindings[$abstract]['singleton'] === true);
+    }
+
+
+    /**
+     * @param $abstract
+     * @param $concrete
+     * @return mixed
+    */
+    protected function getSingleton($abstract, $concrete)
+    {
+        if(! isset($this->instances[$abstract]))
+        {
+            $this->instances[$abstract] = $concrete;
+        }
+
+        return $this->instances[$abstract];
+    }
+
+
+    /**
      * Create new instance of object wit given params
      *
      * @param $abstract
      * @param array $parameters
      * @return bool
+     * @throws ReflectionException
     */
     public function make($abstract, $parameters = [])
     {
@@ -102,11 +187,14 @@ class Container // implements \ArrayAccess, ContainerInterface
      *
      * @param $abstract
      * @return bool
+     * @throws ReflectionException
     */
     public function factory($abstract)
     {
         return $this->make($abstract);
     }
+
+
 
     /**
      * Determine if the given id has binded
@@ -117,7 +205,7 @@ class Container // implements \ArrayAccess, ContainerInterface
     public function has($id)
     {
         // is binded ?
-        if(isset($this->binds[$id]))
+        if(isset($this->bindings[$id]))
         {
             return true;
         }
@@ -128,9 +216,9 @@ class Container // implements \ArrayAccess, ContainerInterface
             return true;
         }
 
-
         return false;
     }
+
 
 
     /**
@@ -139,6 +227,7 @@ class Container // implements \ArrayAccess, ContainerInterface
      * @param $abstract
      * @param array $arguments
      * @return bool
+     * @throws ReflectionException
     */
     public function get($abstract, $arguments = [])
     {
@@ -147,7 +236,31 @@ class Container // implements \ArrayAccess, ContainerInterface
                return $this->resolve($abstract, $arguments);
            }
 
-           dump($abstract, $arguments);
+           $concrete = $this->getConcrete($abstract);
+
+           if($this->isSingleton($abstract))
+           {
+               return $this->getSingleton($abstract, $concrete);
+           }
+
+           return $concrete;
+    }
+
+
+    /**
+     * @param $abstract
+     * @return mixed
+    */
+    public function getConcrete($abstract)
+    {
+        $concrete = $this->bindings[$abstract]['concrete'] ?? null;
+
+        if($concrete instanceof Closure)
+        {
+            return $concrete($this);
+        }
+
+        return $concrete;
     }
 
 
@@ -155,11 +268,138 @@ class Container // implements \ArrayAccess, ContainerInterface
      * Resolve dependency
      *
      * @param $abstract
-     * @param $arguments
-     * @return bool
+     * @param array $arguments
+     * @return object
+     * @throws ReflectionException|InstanceException
     */
-    public function resolve($abstract, $arguments)
+    public function resolve($abstract, array $arguments = [])
     {
-         return true;
+          // return instance if has already instantiated
+          if($this->instantiated($abstract))
+          {
+              return $this->instances[$abstract];
+          }
+
+          $reflectedClass = new ReflectionClass($abstract);
+
+          // for example if constructor has modificator private (not accessible)
+          if(! $reflectedClass->isInstantiable())
+          {
+              throw new InstanceException(
+                  sprintf('Class [%s] is not instantiable dependency.', $abstract)
+              );
+          }
+
+          if(! $constructor = $reflectedClass->getConstructor())
+          {
+                return $this->instances[$abstract] = $reflectedClass->newInstance();
+          }
+
+          $dependencies = $this->resolveMethodDependencies($constructor, $arguments);
+          return $this->instances[$abstract] = $reflectedClass->newInstanceArgs($dependencies);
+    }
+
+
+    /**
+     * Resolve method dependencies
+     *
+     * @param \ReflectionMethod $reflectionMethod
+     * @param array $arguments
+     * @return array
+     *
+     * $object->method(FileSystem $fileSystem, User $user)
+     *  parameter name [fileSystem, user]
+     *  dependency is class name [FileSystem, User] typeHint
+     * @throws ReflectionException
+     */
+    public function resolveMethodDependencies(\ReflectionMethod $reflectionMethod, $arguments = [])
+    {
+        $dependencies = [];
+
+        foreach ($reflectionMethod->getParameters() as $parameter)
+        {
+            $dependency = $parameter->getClass();
+
+            if($parameter->isOptional()) { continue; }
+            if($parameter->isArray()) { continue; }
+
+            if(is_null($dependency))
+            {
+                if($parameter->isDefaultValueAvailable())
+                {
+                    $dependencies[] = $parameter->getDefaultValue();
+                }else{
+
+                    if(array_key_exists($parameter->getName(), $arguments))
+                    {
+                        $dependencies[] = $arguments[$parameter->getName()];
+                    }else {
+                        // dd($arguments);
+                        $dependencies = array_merge($dependencies,
+                            array_filter($arguments, function ($key) {
+                                return is_numeric($key);
+                        }, ARRAY_FILTER_USE_KEY));
+
+                        // echo 'DoSomething!';
+                    }
+                }
+
+            } else{
+
+                $dependencies[] = $this->get($dependency->getName());
+            }
+        }
+
+        dd($dependencies);
+        return $dependencies;
+    }
+
+
+
+
+
+
+
+
+
+    /**
+     * @param mixed $offset
+     * @return bool
+     */
+    public function offsetExists($offset)
+    {
+        return $this->has($offset);
+    }
+
+
+
+    /**
+     * @param mixed $offset
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
+
+
+
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+   */
+    public function offsetSet($offset, $value)
+    {
+        $this->bind($offset, $value);
+    }
+
+
+
+    /**
+     * @param mixed $offset
+    */
+    public function offsetUnset($offset)
+    {
+        unset($this->bindings[$offset]);
     }
 }
