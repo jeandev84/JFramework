@@ -91,7 +91,7 @@ return [
     */
 
     'providers' => [
-      \Jan\Component\FileSystem\FileSystem::class
+      \App\Providers\FileSystemServiceProvider::class
     ]
 
 
