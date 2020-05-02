@@ -1,10 +1,10 @@
 <?php
-namespace Jan\Contract\Storage;
+namespace Jan\Contracts\Storage;
 
 
 /**
  * interface StorageInterface
- * @package Jan\Contract\Storage
+ * @package Jan\Contracts\Storage
 */
 interface StorageInterface
 {

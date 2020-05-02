@@ -1,12 +1,12 @@
 <?php
-namespace Jan\Contract\Cache;
+namespace Jan\Contracts\Cache;
 
 
-use Jan\Contract\Storage\StorageInterface;
+use Jan\Contracts\Storage\StorageInterface;
 
 /**
  * Interface CacheInterface as Cacheable
- * @package Jan\Contract\Cache
+ * @package Jan\Contracts\Cache
 */
 interface CacheInterface extends StorageInterface
 {
