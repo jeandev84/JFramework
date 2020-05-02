@@ -1,14 +1,15 @@
 <?php
-namespace Jan\Component\FileSystem;
+namespace Jan\Component\FileSystem\Support;
 
 
 use Jan\Component\FileSystem\Exception\FileStorageException;
-use Jan\Contract\Storage\StorageInterface;
+use Jan\Component\FileSystem\FileSystem;
+use Jan\Contracts\Storage\StorageInterface;
 
 
 /**
  * Class FileStorage
- * @package Jan\Component\FileSystem
+ * @package Jan\Component\FileSystem\Support
 */
 class FileStorage extends FileSystem implements StorageInterface
 {
