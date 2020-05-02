@@ -21,4 +21,22 @@ class FileSystem extends File
      {
          parent::__construct($resource);
      }
+
+
+     /**
+      * @param $origin
+      * @param $destination
+     */
+     public function copy($origin, $destination)
+     {
+          //
+     }
+
+
+     public function mkdir($source)
+     {
+         //
+     }
+
+
 }
