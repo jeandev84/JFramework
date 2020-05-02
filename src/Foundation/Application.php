@@ -155,12 +155,14 @@ class Application extends Container
      * Register all of the base service providers
      *
      * @return void
+     * @throws \ReflectionException
      */
     protected function registerBaseServiceProviders()
     {
-        // $this->addServiceProvider(new AppServiceProvider());
+        /*
         $this->addServiceProvider(AppServiceProvider::class);
         $this->addServiceProvider(RouteServiceProvider::class);
+        */
     }
 
 
