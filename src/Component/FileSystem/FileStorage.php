@@ -81,7 +81,15 @@ class FileStorage extends FileSystem implements StorageInterface
      */
     public function destroy()
     {
-        // TODO: Implement destroy() method.
+        $dir = opendir($this->getStoragePath());
+
+        while (false !== ($item = readdir($dir)))
+        {
+            if(! in_array($item, ['.', '..']))
+            {
+                 @unlink($this->getStoragePath($item));
+            }
+        }
     }
 
     /**
@@ -89,7 +97,19 @@ class FileStorage extends FileSystem implements StorageInterface
      */
     public function all()
     {
-        // TODO: Implement all() method.
+        $items = [];
+
+        $dir = opendir($this->getStoragePath());
+
+        while (false !== ($item = readdir($dir)))
+        {
+            if(! in_array($item, ['.', '..']))
+            {
+                $items[$item] = file_get_contents($this->getStoragePath($item));
+            }
+        }
+
+        return $items;
     }
 
 
@@ -108,9 +128,9 @@ class FileStorage extends FileSystem implements StorageInterface
      * @param $key
      * @return string
     */
-    public function getStoragePath($key)
+    public function getStoragePath($key = null)
     {
-        return parent::resource(sprintf('%s/%s', $this->storageKey, $key));
+        return parent::resource($this->storageKey.($key ? '/' . $key : ''));
     }
 
     /**
