@@ -18,7 +18,7 @@ class Application extends Container
 
     /**
      * The Jan framework version.
-   */
+     */
     const VERSION = '1.0.0';
 
 
@@ -39,8 +39,7 @@ class Application extends Container
      */
     public function __construct(string $basePath = null)
     {
-        if($basePath)
-        {
+        if ($basePath) {
             $this->setBasePath($basePath);
         }
 
@@ -55,7 +54,7 @@ class Application extends Container
      * Get the version number of application.
      *
      * @return string
-    */
+     */
     public function version()
     {
         return self::VERSION;
@@ -70,8 +69,7 @@ class Application extends Container
      */
     public function setBasePath(string $basePath)
     {
-        if($basePath)
-        {
+        if ($basePath) {
             $this->basePath = rtrim($basePath, '\/');
         }
 
@@ -84,7 +82,7 @@ class Application extends Container
      * Bind all of the application paths in the container
      *
      * @return void
-    */
+     */
     protected function bindPathsInContainer()
     {
         $this->bind('base.path', $this->basePath());
@@ -95,10 +93,10 @@ class Application extends Container
      * Get Base path of application
      * @param string $path
      * @return string
-   */
+     */
     public function basePath($path = '')
     {
-         return $this->basePath.($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return $this->basePath . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 
 
@@ -111,11 +109,10 @@ class Application extends Container
      * @param array $headers
      * @throws // \HttpException
      * @throws // NotFoundHttpException
-    */
+     */
     public function abort($code, $message = '', $headers = [])
     {
-        if($code == 404)
-        {
+        if ($code == 404) {
             // throw new NotFoundHttpException($message);
         }
 
@@ -125,7 +122,7 @@ class Application extends Container
      * Flush the container of all bindings and resolved instances
      *
      * @return void
-    */
+     */
     public function flush()
     {
         //
@@ -134,10 +131,10 @@ class Application extends Container
 
     /**
      * @return void
-    */
+     */
     protected function loadHelpers()
     {
-         require_once __DIR__.'/helpers.php';
+        require_once __DIR__ . '/helpers.php';
     }
 
 
@@ -164,7 +161,6 @@ class Application extends Container
         $this->runServiceProviders([
             new AppServiceProvider()
         ]);
-
         $this->addServiceProvider();
         */
     }
@@ -174,7 +170,7 @@ class Application extends Container
      * Register the core class aliases int the container
      *
      * @return void
-    */
+     */
     protected function registerCoreContainerAliases()
     {
         //

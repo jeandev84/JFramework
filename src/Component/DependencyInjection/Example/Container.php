@@ -1,5 +1,5 @@
 <?php
-namespace Jan\Component\DependencyInjection;
+namespace Jan\Component\DependencyInjection\Example;
 
 
 use Closure;
@@ -14,7 +14,7 @@ use ReflectionException;
 
 /**
  * Class Container
- * @package Jan\Component\DependencyInjection
+ * @package Jan\Component\DependencyInjection\Example
 */
 class Container implements \ArrayAccess, ContainerInterface
 {
