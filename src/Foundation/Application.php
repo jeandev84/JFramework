@@ -3,6 +3,7 @@ namespace Jan\Foundation;
 
 
 use App\Providers\AppServiceProvider;
+use App\Providers\RouteServiceProvider;
 use Jan\Component\DependencyInjection\Container;
 
 
@@ -157,12 +158,9 @@ class Application extends Container
      */
     protected function registerBaseServiceProviders()
     {
-        /*
-        $this->runServiceProviders([
-            new AppServiceProvider()
-        ]);
-        $this->addServiceProvider();
-        */
+        // $this->addServiceProvider(new AppServiceProvider());
+        $this->addServiceProvider(AppServiceProvider::class);
+        $this->addServiceProvider(RouteServiceProvider::class);
     }
 
 
