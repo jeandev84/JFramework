@@ -7,10 +7,10 @@ use Jan\Component\Routing\Contracts\UrlGeneratorInterface;
 
 
 /**
- * Class Url Generator
+ * Class UrlGenerator
  * @package Jan\Component\Routing
 */
-class Url implements UrlGeneratorInterface
+class UrlGenerator implements UrlGeneratorInterface
 {
 
 
