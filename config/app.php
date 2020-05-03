@@ -91,7 +91,7 @@ return [
     */
 
     'providers' => [
-      \App\Providers\FileSystemServiceProvider::class
+      // example: \App\Providers\FileSystemServiceProvider::class
     ]
 
 

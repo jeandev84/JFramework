@@ -1,13 +1,18 @@
 <?php
 
-use Jan\Component\Routing\Route;
-
+/*
+ | -----------------------------------------------------------------
+ |  Registre all web application
+ | -----------------------------------------------------------------
+*/
 
 Route::get('/', function () {
 
     echo 'Welcome';
 
 }, 'home');
+
+
 
 
 

@@ -3,8 +3,10 @@ namespace Jan\Foundation;
 
 
 use App\Providers\AppServiceProvider;
+use App\Providers\FileSystemServiceProvider;
 use App\Providers\RouteServiceProvider;
 use Jan\Component\DependencyInjection\Container;
+use Jan\Component\FileSystem\FileSystem;
 
 
 /**
@@ -110,7 +112,7 @@ class Application extends Container
      * @param array $headers
      * @throws // \HttpException
      * @throws // NotFoundHttpException
-     */
+    */
     public function abort($code, $message = '', $headers = [])
     {
         if ($code == 404) {
@@ -159,10 +161,8 @@ class Application extends Container
      */
     protected function registerBaseServiceProviders()
     {
-        /*
         $this->addServiceProvider(AppServiceProvider::class);
         $this->addServiceProvider(RouteServiceProvider::class);
-        */
     }
 
 

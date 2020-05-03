@@ -152,7 +152,8 @@ class Route
      * @param string $path
      * @param string $controller
      * @return void
-     */
+     * Example (path => 'api/', 'controller' => 'Api\Controllers\PostController')
+    */
     public static function resource(string $path, string $controller)
     {
          Route::group(['prefix' => $path], function () use ($controller, $path) {

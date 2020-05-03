@@ -4,6 +4,11 @@ namespace App\Providers;
 
 use Jan\Component\DependencyInjection\Contracts\BootableServiceProvider;
 use Jan\Component\DependencyInjection\ServiceProvider\AbstractServiceProvider;
+use Jan\Component\Routing\Route;
+use Jan\Component\Routing\Router;
+
+//TODO change and set it in core alias dependency injection
+class_alias('Jan\\Component\\Routing\\Route', 'Route');
 
 /**
  * Class RouteServiceProvider
@@ -14,17 +19,29 @@ class RouteServiceProvider extends AbstractServiceProvider implements BootableSe
 
     /**
      * @return mixed
-    */
-    public function register()
+   */
+    public function boot()
     {
-        echo __METHOD__." run! <br>";
+        $container = $this->getContainer();
+
+        // Load route of application
+        $container->get('fileSystem')->load('/routes/web.php');
+        $container->get('fileSystem')->load('/routes/api.php');
     }
+
 
     /**
      * @return mixed
-     */
-    public function boot()
+    */
+    public function register()
     {
-        echo __METHOD__." Run First! <br>";
+        // router
+        $this->container->singleton('router', function () {
+
+            $router = new Router(Route::collections());
+            $router->addPatterns(Route::patterns());
+            return $router;
+        });
     }
+
 }
