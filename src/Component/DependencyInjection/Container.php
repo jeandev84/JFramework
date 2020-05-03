@@ -148,8 +148,13 @@ class Container implements \ArrayAccess, ContainerInterface
         if($provider instanceof AbstractServiceProvider)
         {
             $this->providers[] = $provider;
-            $this->provides[get_class($provider)] = $provider->getProvides();
-            $this->runServiceProvider($provider);;
+
+            if($provides = $provider->getProvides())
+            {
+                $this->provides[get_class($provider)] = $provides;
+            }
+
+            $this->runServiceProvider($provider);
         }
 
         return $this;
@@ -258,6 +263,44 @@ class Container implements \ArrayAccess, ContainerInterface
     }
 
 
+    /**
+     * Determine if has alias
+     *
+     * @param $alias
+     * @return bool
+    */
+    public function hasAlias($alias)
+    {
+        return \array_key_exists($alias, $this->aliases);
+    }
+
+
+    /**
+     * @param $alias
+     * @return bool|mixed
+    */
+    public function getAlias($alias)
+    {
+        if(! $this->hasAlias($alias))
+        {
+            return false;
+        }
+
+        return $this->aliases[$alias];
+    }
+
+    /**
+     * @param $abstract
+     * @param $alias
+    */
+    public function alias($abstract, $alias)
+    {
+         if(! isset($this->aliases[$alias]))
+         {
+              $this->aliases[$alias] = $abstract;
+         }
+    }
+
 
     /**
      * Singleton
@@ -336,13 +379,13 @@ class Container implements \ArrayAccess, ContainerInterface
     public function has($id)
     {
         // is binded ?
-        if(isset($this->bindings[$id]))
+        if($this->bounded($id))
         {
             return true;
         }
 
         // is alias ?
-        if(isset($this->aliases[$id]))
+        if($this->hasAlias($id))
         {
             return true;
         }
@@ -350,6 +393,16 @@ class Container implements \ArrayAccess, ContainerInterface
         return false;
     }
 
+
+    /**
+     * Determine if id bounded
+     * @param $id
+     * @return bool
+    */
+    public function bounded($id)
+    {
+        return isset($this->bindings[$id]);
+    }
 
 
     /**
@@ -374,17 +427,25 @@ class Container implements \ArrayAccess, ContainerInterface
                if($this->autowire !== true)
                {
                     throw new ResolverDependencyException(
-                        '<strong>Autowire is unabled for resolution</strong>'
+                        'Autowire is unabled for resolution'
                     );
                }
                return $this->resolve($abstract, $arguments);
            }
 
-           // get aliases
-           if(isset($this->aliases[$abstract]))
+           // get instance
+           if($this->instantiated($abstract))
            {
-               return $this->aliases[$abstract];
+               return $this->instances[$abstract];
            }
+
+           // get aliases
+           /*
+           if($alias = $this->getAlias($abstract))
+           {
+               return $this->getConcrete($alias);
+           }
+           */
 
            $concrete = $this->getConcrete($abstract);
 
@@ -487,8 +548,6 @@ class Container implements \ArrayAccess, ContainerInterface
                         }, ARRAY_FILTER_USE_KEY));
 
                     }
-
-                    continue;
                 }
 
             } else{
@@ -499,11 +558,6 @@ class Container implements \ArrayAccess, ContainerInterface
 
         return $dependencies;
     }
-
-
-
-
-
 
 
 

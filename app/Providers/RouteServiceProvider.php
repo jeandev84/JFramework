@@ -17,9 +17,16 @@ class_alias('Jan\\Component\\Routing\\Route', 'Route');
 class RouteServiceProvider extends AbstractServiceProvider implements BootableServiceProvider
 {
 
+    /*
+    public $provides = [
+      'example',
+      'test'
+    ];
+    */
+
     /**
      * @return mixed
-   */
+    */
     public function boot()
     {
         $container = $this->getContainer();
