@@ -35,30 +35,6 @@ class Route
     ];
 
     /**
-     * @param string|array $methods
-     * @param string $path
-     * @param $target
-     * @param null $name
-     * @return Route
-     * @throws RouteException
-     */
-    public static function map($methods, string $path, $target, $name = null)
-    {
-         self::$currentRoute  = [
-            'methods' => self::resolveMethod($methods),
-            'path'    => self::resolvePath($path),
-            'target'  => self::resolveTarget($target),
-            'middleware' => []
-         ];
-
-         self::setName($name, $path);
-         self::$collections[] = self::$currentRoute;
-         return new self;
-    }
-
-
-
-    /**
      * Map all route by method GET
      * @param $path
      * @param $target
@@ -126,6 +102,7 @@ class Route
         self::resetOptions();
     }
 
+
     /**
      * @param string $prefix
      * @param \Closure $callback
@@ -153,10 +130,10 @@ class Route
      * @param string $controller
      * @return void
      * Example (path => 'api/', 'controller' => 'Api\Controllers\PostController')
-    */
+     */
     public static function resource(string $path, string $controller)
     {
-         // TODO FIX
+        // TODO FIX
         /*
          Route::group(['prefix' => $path], function () use ($controller, $path) {
 
@@ -176,13 +153,82 @@ class Route
 
 
     /**
+     * @param string|array $methods
+     * @param string $path
+     * @param $target
+     * @param null $name
+     * @return Route
+     * @throws RouteException
+     */
+    public static function map($methods, string $path, $target, $name = null)
+    {
+         self::$currentRoute  = [
+            'methods' => self::resolveMethod($methods),
+            'path'    => self::resolvePath($path),
+            'target'  => self::resolveTarget($target)
+         ];
+
+         self::addMiddlewareFromOptions($path);
+         self::addName($name, $path);
+         self::$collections[] = self::$currentRoute;
+         return new self;
+    }
+
+
+    /**
+     * Add middleware from options
+     *
+     * @param $path
+    */
+    private static function addMiddlewareFromOptions($path)
+    {
+        if($middlewares = self::getOption('middleware'))
+        {
+            self::addMiddleware(self::resolvePath($path), $middlewares);
+        }
+    }
+
+    /**
+     * @param array $middlewares
+     * @return Route
+    */
+    public function middleware(array $middlewares)
+    {
+        self::addMiddleware(
+            self::$currentRoute['path'],
+            $middlewares
+        );
+        return $this;
+    }
+
+    /**
+     * @param string $path
+     * @param array $middlewares
+    */
+    private static function addMiddleware(string $path, array $middlewares)
+    {
+         self::$middlewares[$path] = $middlewares;
+    }
+
+
+    /**
+     * Get all route middlewares
+     * @return mixed
+    */
+    public static function middlewares()
+    {
+        return self::$middlewares;
+    }
+
+
+    /**
      * @param $name
      * @return Route
      * @throws RouteException
     */
     public function name($name)
     {
-        self::setName($name,
+        self::addName($name,
             self::$currentRoute['path']
         );
 
@@ -286,7 +332,7 @@ class Route
     /**
      * @param string|\Closure $target
      * @return mixed
-     */
+    */
     private static function resolveTarget($target)
     {
         if(is_string($target) && strpos($target, '@') !== false)
@@ -349,7 +395,7 @@ class Route
      * @param $path
      * @throws RouteException
     */
-    private static function setName($name, $path)
+    private static function addName($name, $path)
     {
         if($name)
         {

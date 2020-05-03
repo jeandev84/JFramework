@@ -86,10 +86,11 @@ class Router
 
     /**
      * Add stack route middlewares
+     *
      * @param array $middlewares
      * @return Router
     */
-    public function addMiddleware(array $middlewares)
+    public function addMiddlewares(array $middlewares)
     {
         $this->middlewares = $middlewares;
         return $this;
@@ -105,6 +106,17 @@ class Router
     {
         return $this->middlewares;
     }
+
+
+    /**
+     * @param $path
+     * @return array|mixed
+    */
+    public function getMiddleware($path)
+    {
+        return $this->middlewares[$path] ?? [];
+    }
+
 
     /**
      * Return the current matched route if founded
@@ -142,7 +154,8 @@ class Router
                    if(preg_match($pattern = $this->compile($path), $this->resolveUrl($requestUri), $matches))
                    {
                        $matches = $this->filterParams($matches);
-                       return array_merge($route, compact('matches', 'pattern'));
+                       $middlewares = $this->getMiddleware($path);
+                       return array_merge($route, compact('matches', 'pattern', 'middlewares'));
                    }
                }
           }
