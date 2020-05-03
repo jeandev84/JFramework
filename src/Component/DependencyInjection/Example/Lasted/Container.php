@@ -1,5 +1,5 @@
 <?php
-namespace Jan\Component\DependencyInjection;
+namespace Jan\Component\DependencyInjection\Example;
 
 
 use Closure;
@@ -14,7 +14,7 @@ use ReflectionException;
 
 /**
  * Class Container
- * @package Jan\Component\DependencyInjection
+ * @package Jan\Component\DependencyInjection\Example
 */
 class Container implements \ArrayAccess, ContainerInterface
 {
@@ -130,14 +130,13 @@ class Container implements \ArrayAccess, ContainerInterface
     /**
      * Add Service Provider
      * @param string|AbstractServiceProvider $provider
-     * @return Container
      * @throws ReflectionException
      *
      *  Example:
      *  $this->addServiceProvider(new \App\Providers\AppServiceProvider());
      *  $this->addServiceProvider(App\Providers\AppServiceProvider::class);
      *
-     */
+    */
     public function addServiceProvider($provider)
     {
         if(is_string($provider))
@@ -149,10 +148,10 @@ class Container implements \ArrayAccess, ContainerInterface
         {
             $this->providers[] = $provider;
             $this->provides[get_class($provider)] = $provider->getProvides();
-            $this->runServiceProvider($provider);;
+            $this->runServiceProvider($provider);
+            return $this;
         }
 
-        return $this;
     }
 
 
@@ -426,6 +425,12 @@ class Container implements \ArrayAccess, ContainerInterface
     */
     public function resolve($abstract, array $arguments = [])
     {
+          // return instance if has already instantiated
+          if($this->instantiated($abstract))
+          {
+              return $this->instances[$abstract];
+          }
+
           $reflectedClass = new ReflectionClass($abstract);
 
           // for example if constructor has modificator private (not accessible)

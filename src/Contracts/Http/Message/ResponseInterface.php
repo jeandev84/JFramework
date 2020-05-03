@@ -1,10 +1,10 @@
 <?php
-namespace Jan\Component\Http\Contract;
+namespace Jan\Contracts\Http\Message;
 
 
 /**
  * Interface ResponseInterface
- * @package Jan\Component\Http\Contract
+ * @package Jan\Contracts\Http\Message
 */
 interface ResponseInterface
 {

@@ -2,11 +2,29 @@
 namespace Jan\Contracts\Http;
 
 
+
+use Jan\Contracts\Http\Message\RequestInterface;
+use Jan\Contracts\Http\Message\ResponseInterface;
+
+
 /**
- * Class Kernel
+ * Interface Kernel
  * @package Jan\Contracts\Http
 */
-class Kernel
+interface Kernel
 {
 
+     /**
+      * @param RequestInterface $request
+      * @return ResponseInterface
+     */
+     public function handle(RequestInterface $request): ResponseInterface;
+
+
+     /**
+      * @param RequestInterface $request
+      * @param ResponseInterface $response
+      * @return mixed
+     */
+     public function terminate(RequestInterface $request, ResponseInterface $response);
 }

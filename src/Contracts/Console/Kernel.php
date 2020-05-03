@@ -3,10 +3,10 @@ namespace Jan\Contracts\Console;
 
 
 /**
- * Class Kernel
+ * Interface Kernel
  * @package Jan\Contracts\Console
 */
-class Kernel
+interface Kernel
 {
 
 }
