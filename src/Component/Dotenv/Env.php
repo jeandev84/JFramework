@@ -30,29 +30,30 @@ class Env
     */
     public function load()
     {
+        $environs = [];
+
         foreach ($this->getEnvironements() as $environment)
         {
             $environment = trim(str_replace("\n", '', $environment));
-            if(strpos($environment, '=') !== false && stripos($environment, '#') === false)
+
+            if($this->hasAvailableEnvironment($environment))
             {
-                list($key, $value) = explode('=', $environment);
-                $key = trim($key);
-                $value = trim($value);
-                putenv($key.'='.$value);
+                 putenv($environment);
+                 list($key, $value) = explode('=', $environment);
+                 $environs[$key] = $value;
             }
         }
 
-        return $_ENV ?? [];
+        return $_ENV = array_merge($_ENV, $environs);
     }
 
 
-
-     /**
+    /**
       * Get environment from .env file
       *
       * @return array|false
       * @throws \Exception
-     */
+    */
     public function getEnvironements()
     {
         $filename = $this->basePath . DIRECTORY_SEPARATOR.'.env';
@@ -62,6 +63,16 @@ class Env
             throw new InvalidPathException(sprintf('Can not find file .env'));
         }
         return file($filename);
+    }
+
+    /**
+     * @param $environment
+     * @return bool
+    */
+    public function hasAvailableEnvironment($environment)
+    {
+        return strpos($environment, '=') !== false
+            && stripos($environment, '#') === false;
     }
 }
 
@@ -74,4 +85,4 @@ system("mycommand -with args");        // do system command;
                         // mycommand is loaded using
                         // libs in the new path list
 putenv("LD_LIBRARY_PATH=$saved");        // restore old value
- */
+*/
