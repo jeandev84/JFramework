@@ -62,5 +62,7 @@ $app = require_once realpath(__DIR__.'/../bootstrap/app.php');
 // $kernel->terminate($request, $response);
 dump($app);
 
+require_once __DIR__.'/../routes/api.php';
+
 
 

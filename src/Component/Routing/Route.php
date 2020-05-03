@@ -156,6 +156,8 @@ class Route
     */
     public static function resource(string $path, string $controller)
     {
+         // TODO FIX
+        /*
          Route::group(['prefix' => $path], function () use ($controller, $path) {
 
             $namePrefix = str_replace('/', '.', $path);
@@ -169,6 +171,7 @@ class Route
             Route::get('/{id}/restore', $controller.'@restore', $namePrefix.'.restore');
 
          });
+        */
     }
 
 

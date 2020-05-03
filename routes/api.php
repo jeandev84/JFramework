@@ -1,9 +1,13 @@
 <?php
 
+$options = [
+  'prefix' => 'api/',
+  'namespace' => 'Api'
+];
 
-Route::prefix('api/', function () {
+Route::group($options, function () {
 
-    Route::resource('posts', 'Api\\Controllers\\PostController');
+    Route::get('posts', 'PostController@index');
 });
 
-//dump(Route::collections());
+dump(Route::collections());
