@@ -15,6 +15,10 @@ class Env
     protected $basePath;
 
 
+    /** @var bool  */
+    protected $debug = false;
+
+
     /**
      * Env constructor.
      * @param string $basePath
@@ -24,14 +28,26 @@ class Env
         $this->basePath = rtrim($basePath, '\/');
     }
 
+
+    /**
+     * Set status debug for mode debogging
+     *
+     * @param bool $status
+     * @return Env
+    */
+    public function debug($status = false)
+    {
+        $this->debug = $status;
+        return $this;
+    }
+
+
     /**
      * @return array
      * @throws \Exception
     */
     public function load()
     {
-        $environs = [];
-
         foreach ($this->getEnvironements() as $environment)
         {
             $environment = trim(str_replace("\n", '', $environment));
@@ -40,11 +56,13 @@ class Env
             {
                  putenv($environment);
                  list($key, $value) = explode('=', $environment);
-                 $environs[$key] = $value;
+                 if($this->debug === true) {
+                     $_ENV[$key] = $value;
+                 }
             }
         }
 
-        return $_ENV = array_merge($_ENV, $environs);
+        return $_ENV ?? [];
     }
 
 

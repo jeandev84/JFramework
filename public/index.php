@@ -68,6 +68,7 @@ dump($app);
 try {
 
     $dotenv = (new \Jan\Component\Dotenv\Env(__DIR__.'/../'))
+              //->debug(true)
               ->load();
 
 } catch (Exception $e) {
@@ -76,8 +77,10 @@ try {
 }
 
 echo getenv('APP_NAME');
-dump($dotenv['DB_NAME']);
+echo '<br>';
 echo $_ENV['DB_NAME'];
-
 $_ENV['new'] = 'test';
 dump($_ENV);
+
+putenv('EXAMPLE=VALUE');
+echo getenv('EXAMPLE');
