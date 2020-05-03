@@ -64,23 +64,3 @@ $app = require_once realpath(__DIR__.'/../bootstrap/app.php');
 
 dump($app);
 
-
-try {
-
-    $dotenv = (new \Jan\Component\Dotenv\Env(__DIR__.'/../'))
-              //->debug(true)
-              ->load();
-
-} catch (Exception $e) {
-
-    die($e->getMessage());
-}
-
-echo getenv('APP_NAME');
-echo '<br>';
-echo $_ENV['DB_NAME'];
-$_ENV['new'] = 'test';
-dump($_ENV);
-
-putenv('EXAMPLE=VALUE');
-echo getenv('EXAMPLE');
