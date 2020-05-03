@@ -72,17 +72,25 @@ class Env
     public function hasAvailableEnvironment($environment)
     {
         return strpos($environment, '=') !== false
-            && stripos($environment, '#') === false;
+            && strpos($environment, '#') === false;
     }
 }
 
 /*
-$saved = getenv("LD_LIBRARY_PATH");        // save old value
-$newld = "/extra/library/dir:/another/path/to/lib";  // extra paths to add
-if ($saved) { $newld .= ":$saved"; }           // append old paths if any
-putenv("LD_LIBRARY_PATH=$newld");        // set new value
-system("mycommand -with args");        // do system command;
-                        // mycommand is loaded using
-                        // libs in the new path list
-putenv("LD_LIBRARY_PATH=$saved");        // restore old value
+try {
+
+    $dotenv = (new \Jan\Component\Dotenv\Env(__DIR__.'/../'))
+              ->load();
+
+} catch (Exception $e) {
+
+    die($e->getMessage());
+}
+
+echo getenv('APP_NAME');
+dump($dotenv['DB_NAME']);
+echo $_ENV['DB_NAME'];
+
+$_ENV['new'] = 'test';
+dump($_ENV);
 */
