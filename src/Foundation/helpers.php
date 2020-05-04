@@ -1,5 +1,27 @@
 <?php
 
+use Jan\Component\DependencyInjection\Container;
+
+
+if(! function_exists('app'))
+{
+
+     /**
+      * @param null $abstract
+      * @param array $parameters
+      * @return object
+      * @throws ReflectionException
+     */
+     function app($abstract = null, array $parameters = [])
+     {
+//         if(is_null($abstract))
+//         {
+//             return Container::getInstance();
+//         }
+//         return Container::getInstance()->make($abstract, $parameters);
+     }
+}
+
 
 if(! function_exists('base_path'))
 {
@@ -13,6 +35,7 @@ if(! function_exists('base_path'))
         return __DIR__.'/..//'. ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 }
+
 
 
 
@@ -49,13 +72,29 @@ if(! function_exists('env'))
 
 if(! function_exists('route'))
 {
-
     /**
      * @param $name
      * @param array $params
+     * @return bool|mixed
     */
     function route($name, $params = [])
     {
-         //
+         // base_url(). Route::generate($name, $params);
+         return \Jan\Component\Routing\Route::generate($name, $params);
+    }
+}
+
+
+if(! function_exists('asset'))
+{
+    /**
+     * @param $name
+     * @param array $params
+     * @return bool|mixed
+     */
+    function asset($path)
+    {
+        // for moment
+        return "/$path";
     }
 }

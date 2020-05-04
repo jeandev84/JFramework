@@ -2,13 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="<?= asset("assets/bootstrap/css/bootstrap.min.css") ?>">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Default layout</title>
 </head>
 <body>
-<h1>Default</h1>
+<h1>Default layout</h1>
+
 <?= $content ?>
+
+<!-- scripts -->
+<script src="<?= asset("assets/bootstrap/js/bootstrap.min.js") ?>"></script>
+<script src="<?= asset("assets/bootstrap/js/jquery-3.4.1.slim.min.js")?>"></script>
+<script src="<?= asset("assets/bootstrap/js/popper.min.js")?>"></script>
 </body>
 </html>

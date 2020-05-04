@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 
 use App\Entity\User;
+use Jan\Component\DependencyInjection\Container;
 use Jan\Component\Routing\Route;
 
 /**

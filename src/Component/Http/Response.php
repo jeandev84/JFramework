@@ -12,10 +12,7 @@ use Jan\Component\Http\Message\ResponseInterface;
 class Response implements ResponseInterface
 {
 
-    const HTTP_STATUS_MESSAGE = [
-        '200' => 'OK'
-    ];
-
+    use StatusCode;
 
     /**
      * @var string $protocolVersion
@@ -146,7 +143,7 @@ class Response implements ResponseInterface
     /**
      * @param array $headers
      * @return Response
-   */
+    */
     public function withHeaders(array $headers): Response
     {
         $this->setHeaders($headers);
@@ -159,22 +156,23 @@ class Response implements ResponseInterface
     */
     public function send()
     {
-//        if(! headers_sent())
-//        {
-//            return $this;
-//        }
-
         /*
+        if(! headers_sent())
+        {
+            return $this;
+        }
+
         HTTP/1.0 + 200 + OK = protocol + status + message
         header(sprintf('%s %s %s',
                 $this->protocolVersion,
                 $this->status,
                 self::HTTP_STATUS_MESSAGE[$this->status] ?? '')
         );
-        */
 
-//        http_response_code($this->status);
-//        $this->sendHeaders();
+
+        http_response_code($this->status);
+        $this->sendHeaders();
+        */
 
         $this->sendBody();
 

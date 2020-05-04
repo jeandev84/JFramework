@@ -53,9 +53,13 @@ class ArticleController extends BaseController
     */
     public function edit(int $id)
     {
+        /*
         echo Route::generate('article.edit', ['id' => $id]);
         echo '<br>';
         echo 'Article number : ' . $id .'<br>';
         return new Response('Articles edit test', 200, []);
+        */
+
+        return $this->render('articles/show.php', compact('id'));
     }
 }

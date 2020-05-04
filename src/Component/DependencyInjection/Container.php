@@ -64,12 +64,15 @@ class Container implements \ArrayAccess, ContainerInterface
 
     /**
      * @return Container
+     *
+     * (! static::$instance)
+     * is_null(static::$instance)
     */
     public static function getInstance()
     {
-        if(! static::$instance)
+        if(! isset(static::$instance))
         {
-            $instance = new static();
+            static::$instance = new static();
         }
 
         return static::$instance;
