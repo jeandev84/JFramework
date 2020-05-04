@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 
 use App\Entity\User;
+use Jan\Component\Routing\Route;
 
 /**
  * Class SiteController
@@ -11,8 +12,12 @@ use App\Entity\User;
 class SiteController extends BaseController
 {
 
+      /**
+       * @return \Jan\Component\Http\Response
+      */
       public function index()
       {
+          //echo Route::generate('site');
           return $this->render('site/index.php', []);
       }
 }
