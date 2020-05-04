@@ -24,7 +24,7 @@ class AppServiceProvider extends AbstractServiceProvider implements BootableServ
     */
     public function boot()
     {
-         //
+        //
     }
 
 

@@ -3,6 +3,7 @@ namespace Jan\Foundation\Http;
 
 
 use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
+use Jan\Component\Dotenv\Env;
 use Jan\Component\Http\Message\RequestInterface;
 use Jan\Component\Http\Message\ResponseInterface;
 use Jan\Component\Routing\RouteParam;
@@ -39,7 +40,9 @@ abstract class Kernel implements HttpKernelContract
     */
     public function __construct(ContainerInterface $container)
     {
-        $this->container = $container;
+          $this->container = $container;
+
+          $this->loadEnvironments();
     }
 
     /**
@@ -89,5 +92,21 @@ abstract class Kernel implements HttpKernelContract
         dump("Terminate en affichant des messages : Debug etc...". __METHOD__);
         */
         //echo '<div class="container">'. dump(__METHOD__) . '</div>';
+    }
+
+
+    /**
+     * Load environment variables
+    */
+    protected function loadEnvironments()
+    {
+        try {
+
+            $dotenv = (new Env($this->container->get('base.path')))
+                      ->load();
+
+        } catch (\Exception $e) {
+            exit($e->getMessage());
+        }
     }
 }
