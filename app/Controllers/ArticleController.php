@@ -20,6 +20,7 @@ class ArticleController extends BaseController
     /**
      * action index
      * @param ArticleRepository $articleRepository
+     * @return Response
      */
     public function index(ArticleRepository $articleRepository)
     {

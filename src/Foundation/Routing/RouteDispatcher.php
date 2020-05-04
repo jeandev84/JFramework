@@ -4,6 +4,7 @@ namespace Jan\Foundation\Routing;
 
 use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
 use Jan\Component\Http\Message\ResponseInterface;
+use Jan\Component\Routing\Route;
 use Jan\Component\Routing\RouteParam;
 use ReflectionException;
 use ReflectionMethod;
@@ -92,7 +93,7 @@ class RouteDispatcher
 
          if($target instanceof \Closure)
          {
-             $body = call_user_func($target, []);
+             $body = call_user_func($target, $this->route->getMatches());
          }
 
          if(is_array($target) && ($callback = $this->route->getControllerAndAction()))
@@ -134,10 +135,7 @@ class RouteDispatcher
          if(method_exists($controllerObjectResolved, $action))
          {
              $reflectedMethod = new ReflectionMethod($controllerClass, $action);
-             $methodParams = $this->container->resolveMethodDependencies(
-                 $reflectedMethod,
-                 $this->route->getMatches()
-             );
+             $methodParams = $this->resolveActionParams($reflectedMethod);
 
              $response =  call_user_func_array([$controllerObjectResolved, $action], $methodParams);
 
@@ -154,6 +152,17 @@ class RouteDispatcher
              return $response;
          }
      }
+
+
+     /**
+      * @param ReflectionMethod $reflectionMethod
+      * @return mixed
+     */
+     protected function resolveActionParams(ReflectionMethod $reflectionMethod)
+     {
+         return $this->container->resolveMethodDependencies($reflectionMethod, $this->route->getMatches());
+     }
+
 
 
      /**
