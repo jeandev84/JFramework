@@ -13,6 +13,6 @@ class UserRepository
     */
     public function __construct()
     {
-        echo __METHOD__."<br>";
+        // echo __METHOD__."<br>";
     }
 }

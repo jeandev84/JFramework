@@ -1,6 +1,6 @@
 <h1>Contact</h1>
 
-<form action="/contact" method="POST">
+<form action="<?= route('app.contact') ?>" method="POST">
     <div>
         <input type="text" name="username" placeholder="Somebody">
     </div>

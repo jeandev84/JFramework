@@ -7,7 +7,7 @@ use Jan\Component\Http\Message\RequestInterface;
 use Jan\Component\Http\Message\ResponseInterface;
 use Jan\Component\Routing\RouteParam;
 use Jan\Contracts\Http\Kernel as HttpKernelContract;
-use Jan\Foundation\Routing\RouteDispatcher;
+use Jan\Foundation\RouteDispatcher;
 
 
 /**
@@ -86,8 +86,8 @@ abstract class Kernel implements HttpKernelContract
         {
             die($response->getMessage());
         }
-        */
-
         dump("Terminate en affichant des messages : Debug etc...". __METHOD__);
+        */
+        //echo '<div class="container">'. dump(__METHOD__) . '</div>';
     }
 }

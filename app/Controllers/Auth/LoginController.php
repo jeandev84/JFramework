@@ -2,15 +2,21 @@
 namespace App\Controllers\Auth;
 
 
+use App\Controllers\BaseController;
+
+
 /**
  * Class LoginController
  * @package App\Controllers\Auth
  */
-class LoginController
+class LoginController extends BaseController
 {
 
+     /**
+      * @return \Jan\Component\Http\Response
+     */
      public function index()
      {
-         echo __METHOD__.'<br>';
+         return $this->render('auth/login.php');
      }
 }

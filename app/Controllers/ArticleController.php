@@ -43,7 +43,7 @@ class ArticleController extends BaseController
     {
          echo 'Slug article : '. $slug .' and ID : '. $id .'<br>';
          echo '<b>URI :</b> '. $request->getUri() .' <b>Method :</b> '. $request->getMethod() . ' ';
-         return $this->render('articles/show.php');
+         return $this->render('articles/show.php', compact('slug', 'id'));
     }
 
 
@@ -59,7 +59,6 @@ class ArticleController extends BaseController
         echo 'Article number : ' . $id .'<br>';
         return new Response('Articles edit test', 200, []);
         */
-
-        return $this->render('articles/show.php', compact('id'));
+        return $this->render('articles/edit.php', compact('id'));
     }
 }

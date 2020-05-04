@@ -7,8 +7,14 @@
     <title>Admin layout</title>
 </head>
 <body>
-<h1>Admin layout</h1>
-<?= $content ?>
+
+<?php include('partials/nav.php') ?>
+<div class="container">
+    <?= $content ?>
+    <div>
+        <code><small>layout admin</small></code>
+    </div>
+</div>
 
 <!-- scripts -->
 <script src="/assets/bootstrap/js/bootstrap.min.js"></script>

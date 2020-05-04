@@ -3,7 +3,9 @@ namespace App\Controllers;
 
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Jan\Component\DependencyInjection\Container;
+use Jan\Component\Http\Response;
 use Jan\Component\Routing\Route;
 
 /**
@@ -13,12 +15,33 @@ use Jan\Component\Routing\Route;
 class SiteController extends BaseController
 {
 
-      /**
-       * @return \Jan\Component\Http\Response
-      */
-      public function index()
-      {
-          //echo Route::generate('site');
-          return $this->render('site/index.php', []);
-      }
+    /**
+     * action index
+     * @param UserRepository $userRepository
+     * @return Response
+     */
+    public function index(UserRepository $userRepository): Response
+    {
+        return $this->render('site/home.php');
+    }
+
+
+    /**x`
+     * Action about
+     * @return Response
+     */
+    public function about(): Response
+    {
+        return $this->render('site/about.php');
+    }
+
+
+    /**
+     * Action contact
+     * @return Response
+     */
+    public function contact()
+    {
+        return $this->render('site/contact.php');
+    }
 }

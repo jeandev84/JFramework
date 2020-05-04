@@ -7,9 +7,15 @@
     <title>Default layout</title>
 </head>
 <body>
-<h1>Default layout</h1>
 
-<?= $content ?>
+<?php include('partials/nav.php') ?>
+<div class="container mt-4">
+    <?= $content ?>
+    <div>
+        <code><small>layout default</small></code>
+    </div>
+</div>
+
 
 <!-- scripts -->
 <script src="<?= asset("assets/bootstrap/js/bootstrap.min.js") ?>"></script>

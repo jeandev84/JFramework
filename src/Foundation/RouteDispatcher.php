@@ -1,5 +1,5 @@
 <?php
-namespace Jan\Foundation\Routing;
+namespace Jan\Foundation;
 
 
 use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
@@ -12,7 +12,7 @@ use ReflectionMethod;
 
 /**
  * Class RouteDispatcher
- * @package Jan\Foundation\Routing
+ * @package Jan\Foundation
 */
 class RouteDispatcher
 {

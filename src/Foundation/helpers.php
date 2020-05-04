@@ -98,3 +98,49 @@ if(! function_exists('asset'))
         return "/$path";
     }
 }
+
+
+
+if(! function_exists('view'))
+{
+    /**
+     * @param string $path
+     * @param array $data
+     * @return bool|mixed
+     */
+    function view(string $path, array $data = [])
+    {
+        // View(__DIR__.'/templates/views/');
+    }
+}
+
+
+
+if(! function_exists('response'))
+{
+    /**
+     * @param null $content
+     * @param int $status
+     * @param array $headers
+     * @return bool|mixed
+     */
+    function response($content = null, $status = 200, array $headers = [])
+    {
+         //
+    }
+}
+
+
+if(! function_exists('redirect'))
+{
+    /**
+     * @param null $http
+     * @return bool|mixed
+     */
+    function redirect($http = null)
+    {
+         //
+    }
+}
+
+
