@@ -167,7 +167,7 @@ class Route
          self::$currentRoute['target'] = self::resolvedTarget($target);
 
          self::addMiddlewareFromOptions($path);
-         self::addName($name, $path);
+         self::addName($name, self::$currentRoute['path']);
          self::$collections[] = self::$currentRoute;
          return new self;
     }
