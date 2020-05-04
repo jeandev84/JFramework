@@ -50,6 +50,7 @@ class Env
     {
         foreach ($this->getEnvironements() as $environment)
         {
+            /* $environment = trim(str_replace("\r\n", '', $environment)); */
             $environment = trim(str_replace("\n", '', $environment));
 
             if($this->hasAvailableEnvironment($environment))

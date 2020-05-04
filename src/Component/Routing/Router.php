@@ -2,6 +2,9 @@
 namespace Jan\Component\Routing;
 
 
+use Jan\Component\Routing\Exception\RouteException;
+
+
 /**
  * Class Router
  * @package Jan\Component\Routing
@@ -163,7 +166,9 @@ class Router
                    }
                }
           }
-          return false;
+
+          throw new RouteException('Route not found!', 404);
+          /* return false; */
     }
 
 

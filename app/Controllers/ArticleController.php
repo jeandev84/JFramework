@@ -15,7 +15,7 @@ use Jan\Component\Routing\Route;
 class ArticleController extends BaseController
 {
 
-    protected  $layout = false;
+    // protected  $layout = false;
 
     /**
      * action index

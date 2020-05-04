@@ -43,7 +43,6 @@ class Kernel
             // Routing
             $router = $this->container->get('router');
             $route = $router->match($request->getMethod(), $request->getUri());
-
             $dispatcher = new RouteDispatcher(new RouteParam($route));
             $dispatcher->setContainer($this->container);
 
@@ -53,6 +52,8 @@ class Kernel
         } catch (\Exception $e) {
 
             die($e->getMessage());
+
+            // Get new instance of error Handler and new ErrorHandler($e)
         }
 
         return $response;
