@@ -41,17 +41,19 @@ class ArticleController extends BaseController
     */
     public function show(Request $request, $slug, $id)
     {
+         /*
          echo 'Slug article : '. $slug .' and ID : '. $id .'<br>';
          echo '<b>URI :</b> '. $request->getUri() .' <b>Method :</b> '. $request->getMethod() . ' ';
+         */
          return $this->render('articles/show.php', compact('slug', 'id'));
     }
 
 
     /**
-     * @param int $id
+     * @param int $id [example id = 3]
      * @return Response
     */
-    public function edit(int $id)
+    public function edit(int $id = 3)
     {
         /*
         echo Route::generate('article.edit', ['id' => $id]);

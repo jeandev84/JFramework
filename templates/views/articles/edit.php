@@ -1,8 +1,6 @@
 <h1>Edit article</h1>
-<?= route('article.edit', ['id' => $id]) ?>
-<br>
-<a href="<?= route('article.edit', ['id' => $id])?>">Edit</a>
-<form action="<?= route('article.edit', ['id' => $id]) ?>" method="POST">
+
+<form action="<?= route('article.edit', ['slug' => 'mes-nouveaux-articles', 'id' => 1]) ?>" method="POST">
     <div class="form-group">
         <input type="text" name="name" class="form-control" placeholder="Somebody">
     </div>
@@ -14,3 +12,7 @@
     </div>
     <button type="submit" class="btn btn-success">Send</button>
 </form>
+
+<div class="mt-4">
+    <a href="<?= route('article.list') ?>" class="btn btn-info">Go to articles</a>
+</div>

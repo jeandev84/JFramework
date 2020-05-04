@@ -27,4 +27,10 @@ class ErrorHandler
 
      /** @return mixed */
      public function handle() { }
+
+
+
+     /** Log errors for development */
+     public function log() {}
+
 }

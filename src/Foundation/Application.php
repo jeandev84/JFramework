@@ -40,7 +40,8 @@ class Application extends Container
      * Application constructor.
      * @param string $basePath
      * @return void
-     */
+     * @throws \ReflectionException
+    */
     public function __construct(string $basePath = null)
     {
         if ($basePath) {

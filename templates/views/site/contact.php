@@ -1,14 +1,14 @@
 <h1>Contact</h1>
 
 <form action="<?= route('app.contact') ?>" method="POST">
-    <div>
-        <input type="text" name="username" placeholder="Somebody">
+    <div class="form-group">
+        <input type="text" name="username" placeholder="Somebody" class="form-control">
     </div>
-    <div>
-        <input type="password" name="password" placeholder="***-****-***">
+    <div class="form-group">
+        <input type="password" name="password" placeholder="***-****-***" class="form-control">
     </div>
-    <div>
-        <input type="email" name="email" placeholder="somebody@site.com">
+    <div class="form-group">
+        <input type="email" name="email" placeholder="somebody@site.com" class="form-control">
     </div>
-    <button type="submit">Send</button>
+    <button type="submit" class="btn btn-secondary">Send</button>
 </form>
