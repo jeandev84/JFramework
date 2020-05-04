@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Entity\User;
 use App\Foo;
+use App\Repository\UserRepository;
 use Jan\Component\FileSystem\FileSystem;
 
 /**
@@ -13,35 +14,22 @@ use Jan\Component\FileSystem\FileSystem;
 class HomeController
 {
 
-     /** @var FileSystem  */
-     protected $fileSystem;
-
-
-     /** @var User */
-     protected $user;
-
-
      /**
       * HomeController constructor.
       * @param FileSystem $fileSystem
-      * @param User $user
-      * @param null $id
      */
-     public function __construct(FileSystem $fileSystem, User $user, $id, $slug, $test)
+     public function __construct(FileSystem $fileSystem)
      {
          $this->fileSystem = $fileSystem;
-         $this->user = $user;
-
-         dump($this->fileSystem);
-         echo __METHOD__."<br>";
      }
 
-    /**
+     /**
       * action index
+      * @param UserRepository $userRepository
      */
-     public function index()
+     public function index(UserRepository $userRepository)
      {
-         echo __METHOD__.'<br>';
+         dump($userRepository);
      }
 
      /**

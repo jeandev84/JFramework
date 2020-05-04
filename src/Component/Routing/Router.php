@@ -153,9 +153,13 @@ class Router
                {
                    if(preg_match($pattern = $this->compile($path), $this->resolveUrl($requestUri), $matches))
                    {
-                       $matches = $this->filterParams($matches);
+                       $matches = $this->filteredParams($matches);
                        $middlewares = $this->getMiddleware($path);
-                       return array_merge($route, compact('matches', 'pattern', 'middlewares'));
+
+                       return array_merge(
+                           $route,
+                           compact('matches', 'pattern', 'middlewares')
+                       );
                    }
                }
           }
@@ -168,7 +172,7 @@ class Router
      * @param $matches
      * @return array
     */
-    private function filterParams($matches)
+    private function filteredParams($matches)
     {
         return array_filter($matches, function ($key) {
             return ! is_numeric($key);

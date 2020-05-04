@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Jan\Component\DependencyInjection\Contracts\BootableServiceProvider;
 use Jan\Component\DependencyInjection\ServiceProvider\AbstractServiceProvider;
+use Jan\Component\FileSystem\FileSystem;
 use Jan\Component\Routing\Route;
 use Jan\Component\Routing\Router;
 
@@ -32,8 +33,8 @@ class RouteServiceProvider extends AbstractServiceProvider implements BootableSe
         $container = $this->getContainer();
 
         // Load route of application
-        $container->get('fileSystem')->load('/routes/web.php');
-        $container->get('fileSystem')->load('/routes/api.php');
+        $container->get(FileSystem::class)->load('/routes/web.php');
+        $container->get(FileSystem::class)->load('/routes/api.php');
     }
 
 
@@ -44,7 +45,6 @@ class RouteServiceProvider extends AbstractServiceProvider implements BootableSe
     {
         // router
         $this->container->singleton('router', function () {
-
             $router = new Router(Route::collections());
             $router->addPatterns(Route::patterns());
             return $router;

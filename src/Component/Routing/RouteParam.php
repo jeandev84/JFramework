@@ -53,6 +53,29 @@ class RouteParam
 
 
       /**
+        * @return array
+      */
+      public function getControllerAndAction()
+      {
+          if(isset($this->getTarget()['controller']))
+          {
+               $controller = $this->getTarget()['controller'];
+          }
+
+          if(isset($this->getTarget()['action']))
+          {
+              $action = $this->getTarget()['action'];
+          }
+
+          if($controller && $action)
+          {
+              return [$controller, $action];
+          }
+
+          return [];
+      }
+
+      /**
        * @return mixed|null
       */
       public function getMatches()

@@ -62,7 +62,7 @@ $container->bind(\Jan\Component\FileSystem\FileSystem::class, function () use ($
 
 // $container->get(\App\Bar::class);
 
-dump($container->get(App\Controllers\HomeController::class, [
+dump($container->get(App\Controllers\PostController::class, [
     'id' => 1,
     'slug' => 'salut-les-amis',
     3
@@ -71,7 +71,7 @@ dump($container->get(App\Controllers\HomeController::class, [
 
 // $container->get(\App\Bar::class);
 
-dump($container->get(App\Controllers\HomeController::class, [
+dump($container->get(App\Controllers\PostController::class, [
     'id' => 1,
     'slug' => 'salut-les-amis',
     3

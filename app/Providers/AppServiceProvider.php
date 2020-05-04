@@ -5,10 +5,11 @@ namespace App\Providers;
 use Jan\Component\DependencyInjection\Contracts\BootableServiceProvider;
 use Jan\Component\DependencyInjection\ServiceProvider\AbstractServiceProvider;
 use Jan\Component\FileSystem\FileSystem;
-use Jan\Component\Http\Contract\RequestInterface;
-use Jan\Component\Http\Contract\ResponseInterface;
+use Jan\Component\Http\Message\RequestInterface;
+use Jan\Component\Http\Message\ResponseInterface;
 use Jan\Component\Http\Request;
 use Jan\Component\Http\Response;
+
 
 /**
  * Class AppServiceProvider
@@ -33,7 +34,7 @@ class AppServiceProvider extends AbstractServiceProvider implements BootableServ
         /* $container = $this->getContainer(); */
 
         // File System
-        $this->container->singleton('fileSystem', function () {
+        $this->container->singleton(FileSystem::class, function () {
             return new FileSystem($this->container->get('base.path'));
         });
 

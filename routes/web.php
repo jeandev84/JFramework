@@ -10,7 +10,12 @@ Route::get('/', function () {
 
     echo 'Welcome';
 
-}, 'home');
+}, 'welcome');
+
+Route::get('/site', 'SiteController@index', 'site');
+Route::get('/home', 'HomeController@index', 'home');
+Route::get('/articles', 'ArticleController@index', 'article.list');
+Route::get('/article/{slug}/{id}/show', 'ArticleController@show', 'article.show');
 
 
 /*
@@ -26,7 +31,6 @@ Route::map('GET|POST', '/contact', function () {
         dump($_POST);
     }
 });
-*/
 
 
 $options = ['middleware' => [
@@ -54,20 +58,4 @@ Route::get('/api', function () {
     'App\Middleware\NoValidKey'
 ]);
 
-dump(Route::collections());
-
-$router = new \Jan\Component\Routing\Router(\Jan\Component\Routing\Route::collections());
-$router->addPatterns(\Jan\Component\Routing\Route::patterns())
-       ->addMiddlewares(\Jan\Component\Routing\Route::middlewares());
-
-$route = $router->match($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
-
-if(! $route)
-{
-    dump('Route not found!');
-    die;
-}
-
-dump(\Jan\Component\Routing\Route::namedRoutes());
-dump($route);
-call_user_func($route['target'], $route['matches']);
+*/

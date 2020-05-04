@@ -162,11 +162,9 @@ class Route
      */
     public static function map($methods, string $path, $target, $name = null)
     {
-         self::$currentRoute  = [
-            'methods' => self::resolveMethod($methods),
-            'path'    => self::resolvePath($path),
-            'target'  => self::resolveTarget($target)
-         ];
+         self::$currentRoute['methods'] = self::resolvedMethod($methods);
+         self::$currentRoute['path'] = self::resolvedPath($path);
+         self::$currentRoute['target'] = self::resolvedTarget($target);
 
          self::addMiddlewareFromOptions($path);
          self::addName($name, $path);
@@ -184,7 +182,7 @@ class Route
     {
         if($middlewares = self::getOption('middleware'))
         {
-            self::addMiddleware(self::resolvePath($path), $middlewares);
+            self::addMiddleware(self::resolvedPath($path), $middlewares);
         }
     }
 
@@ -306,7 +304,7 @@ class Route
      * @param $methods
      * @return array|false|string[]
      */
-    private static function resolveMethod($methods)
+    private static function resolvedMethod($methods)
     {
         if(is_string($methods) && strpos($methods, '|') !== false)
         {
@@ -319,7 +317,7 @@ class Route
      * @param string $path
      * @return string
     */
-    private static function resolvePath(string $path)
+    private static function resolvedPath(string $path)
     {
         if($prefix = self::getOption('prefix'))
         {
@@ -333,7 +331,7 @@ class Route
      * @param string|\Closure $target
      * @return mixed
     */
-    private static function resolveTarget($target)
+    private static function resolvedTarget($target)
     {
         if(is_string($target) && strpos($target, '@') !== false)
         {

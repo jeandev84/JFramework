@@ -2,7 +2,7 @@
 namespace Jan\Component\Http;
 
 
-use Jan\Contracts\Http\Message\ResponseInterface;
+use Jan\Component\Http\Message\ResponseInterface;
 
 
 /**
@@ -159,10 +159,10 @@ class Response implements ResponseInterface
     */
     public function send()
     {
-        if(! headers_sent())
-        {
-            return $this;
-        }
+//        if(! headers_sent())
+//        {
+//            return $this;
+//        }
 
         /*
         HTTP/1.0 + 200 + OK = protocol + status + message
@@ -173,8 +173,9 @@ class Response implements ResponseInterface
         );
         */
 
-        http_response_code($this->status);
-        $this->sendHeaders();
+//        http_response_code($this->status);
+//        $this->sendHeaders();
+
         $this->sendBody();
 
     }

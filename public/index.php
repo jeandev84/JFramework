@@ -27,7 +27,8 @@ $app = require_once realpath(__DIR__.'/../bootstrap/app.php');
 |    Check instance of Kernel
 |-------------------------------------------------------
 */
-//$kernel = $app->get(Jan\Contracts\Http\Kernel::class);
+
+$kernel = $app->get(Jan\Contracts\Http\Kernel::class);
 
 
 
@@ -37,9 +38,9 @@ $app = require_once realpath(__DIR__.'/../bootstrap/app.php');
 |-------------------------------------------------------
 */
 
-//$response = $kernel->handle(
-//    $request = \Jan\Component\Http\Request::createFromGlobals()
-//);
+$response = $kernel->handle(
+    $request = \Jan\Component\Http\Request::createFromGlobals()
+);
 
 
 //dump($response);
@@ -50,7 +51,7 @@ $app = require_once realpath(__DIR__.'/../bootstrap/app.php');
 |-------------------------------------------------------
 */
 
-// $response->send();
+$response->send();
 
 
 /*
@@ -59,10 +60,8 @@ $app = require_once realpath(__DIR__.'/../bootstrap/app.php');
 |-------------------------------------------------------
 */
 
-// $kernel->terminate($request, $response);
+$kernel->terminate($request, $response);
+
+
+
 dump($app);
-
-require_once __DIR__.'/../routes/web.php';
-
-
-

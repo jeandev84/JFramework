@@ -3,8 +3,9 @@ namespace Jan\Contracts\Http;
 
 
 
-use Jan\Contracts\Http\Message\RequestInterface;
-use Jan\Contracts\Http\Message\ResponseInterface;
+use Jan\Component\Http\Message\RequestInterface;
+use Jan\Component\Http\Message\ResponseInterface;
+
 
 
 /**
