@@ -6,45 +6,42 @@ use App\Entity\User;
 use App\Foo;
 use App\Repository\UserRepository;
 use Jan\Component\FileSystem\FileSystem;
+use Jan\Component\Http\Response;
 
 /**
  * Class HomeController
  * @package App\Controllers
 */
-class HomeController
+class HomeController extends BaseController
 {
-
-     /**
-      * HomeController constructor.
-      * @param FileSystem $fileSystem
-     */
-     public function __construct(FileSystem $fileSystem)
-     {
-         $this->fileSystem = $fileSystem;
-     }
 
      /**
       * action index
       * @param UserRepository $userRepository
+      * @return Response
      */
-     public function index(UserRepository $userRepository)
+     public function index(UserRepository $userRepository): Response
      {
-         dump($userRepository);
+          return $this->render('index.php');
      }
 
-     /**
-      * action about
-     */
-     public function about()
-     {
-         echo __METHOD__.'<br>';
-     }
 
      /**
-      * action contact
+      * Action about
+      * @return Response
+     */
+     public function about(): Response
+     {
+         return $this->render('about.php');
+     }
+
+
+     /**
+      * Action contact
+      * @return Response
      */
      public function contact()
      {
-         echo __METHOD__.'<br>';
+         return $this->render('contact.php');
      }
 }

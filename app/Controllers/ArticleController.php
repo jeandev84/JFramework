@@ -5,49 +5,42 @@ namespace App\Controllers;
 use App\Repository\ArticleRepository;
 use Jan\Component\Http\Request;
 
+
+
 /**
  * Class ArticleController
  * @package App\Controllers
 */
-class ArticleController
+class ArticleController extends BaseController
 {
 
-
-    /**
-     * ArticleController constructor.
-    */
-    public function __construct(ArticleRepository $articleRepository)
-    {
-        echo "Article::run <br>";
-        $this->articleRepository = $articleRepository;
-    }
+    // protected  $layout = 'admin';
 
     /**
      * action index
-     * @param ArticleRepository $userRepository
+     * @param ArticleRepository $articleRepository
      */
     public function index(ArticleRepository $articleRepository)
     {
+        // $this->layout = 'admin';
+
         $articles = $articleRepository->getLasted();
 
-        return json_encode($articles);
+        $jsonBody = json_encode($articles);
+
+        return $this->render('articles/index.php', compact('articles'));
         // return 'index';
     }
 
     /**
      * action about
      * @param Request $request
+     * @return
     */
-    public function show(Request $request)
+    public function show(Request $request, $slug, $id)
     {
-         //
-    }
-
-    /**
-     * action contact
-     */
-    public function contact()
-    {
-        echo __METHOD__.'<br>';
+         echo 'Slug article : '. $slug .' and ID : '. $id .'<br>';
+         echo '<b>URI :</b> '. $request->getUri() .' <b>Method :</b> '. $request->getMethod() . ' ';
+         return $this->render('articles/show.php');
     }
 }

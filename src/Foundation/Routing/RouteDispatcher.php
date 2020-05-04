@@ -28,6 +28,10 @@ class RouteDispatcher
      protected $container;
 
 
+     /** @var array  */
+     protected $middlewareStack = [];
+
+
      /**
       * RouteDispatcher constructor.
       * @param RouteParam $route
@@ -35,8 +39,9 @@ class RouteDispatcher
      public function __construct(RouteParam $route)
      {
          $this->route = $route;
-         dump($route);
+         $this->middlewareStack = $route->getMiddlewares();
      }
+
 
      /**
       * @param ContainerInterface $container
@@ -51,6 +56,18 @@ class RouteDispatcher
 
 
      /**
+      * @param array $middlewares
+      * @return RouteDispatcher
+     */
+     public function addMiddlewares(array $middlewares)
+     {
+         $this->middlewareStack = array_merge($this->middlewareStack, $middlewares);
+
+         return $this;
+     }
+
+
+     /**
       * @return mixed
      */
      public function getResponse()
@@ -60,10 +77,15 @@ class RouteDispatcher
 
 
      /**
-      * Call route action
+      * @return ResponseInterface
+      * @throws ReflectionException
      */
-     public function callAction()
+     public function callAction(): ResponseInterface
      {
+         // TODO add callback middlewares before calling each action
+
+
+         // Get response
          $response = $this->getResponse();
          $target = $this->route->getTarget();
          $body = null;
@@ -83,6 +105,11 @@ class RouteDispatcher
              $response->withBody($body);
          }
 
+         if(is_array($body))
+         {
+             $response->withBody(json_encode($body));
+         }
+
          if($body instanceof ResponseInterface)
          {
              return $response;
@@ -94,14 +121,15 @@ class RouteDispatcher
 
      /**
       * @param array $callback
-      * @return string
+      * @return ResponseInterface
       * @throws ReflectionException
      */
-     private function getActionCallback(array $callback)
+     private function getActionCallback(array $callback): ResponseInterface
      {
          list($controllerClass, $action) = $callback;
          $controllerClass = sprintf('%s%s', $this->controllerPrefix, $controllerClass);
          $controllerObjectResolved = $this->container->get($controllerClass);
+         $controllerObjectResolved->setContainer($this->container);
 
          if(method_exists($controllerObjectResolved, $action))
          {
@@ -111,9 +139,9 @@ class RouteDispatcher
                  $this->route->getMatches()
              );
 
-             $respond =  call_user_func_array([$controllerObjectResolved, $action], $methodParams);
+             $response =  call_user_func_array([$controllerObjectResolved, $action], $methodParams);
 
-             if(! $respond instanceof ResponseInterface)
+             if(! $response instanceof ResponseInterface)
              {
                  exit(
                      sprintf('Method (%s) of controller (%s) must to return instance of Response',
@@ -122,39 +150,18 @@ class RouteDispatcher
                      )
                  );
              }
+
+             return $response;
          }
      }
 
 
      /**
-     * @throws \Exception
+      * @param array $middlewares
      */
-     protected function logicUsable()
+     private function runStackRouteMiddlewares(array $middlewares)
      {
-
-         $router = new \Jan\Component\Routing\Router(
-             \Jan\Component\Routing\Route::collections()
-         );
-         $router->addPatterns(\Jan\Component\Routing\Route::patterns())
-                ->addMiddlewares(\Jan\Component\Routing\Route::middlewares());
-
-         $route = $router->match($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
-
-         if(! $route)
-         {
-             dump('Route not found!');
-             die;
-         }
-
-         echo "<h3>Current route Param</h3>";
-         dump($route);
-
-         echo '<h3>Response</h3>';
-         call_user_func($route['target'], $route['matches']);
-
-         echo "<h3>Route collections</h3>";
-         dump(Route::collections());
-         //dump(\Jan\Component\Routing\Route::namedRoutes());
-
+           //
      }
+
 }

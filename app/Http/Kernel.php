@@ -31,26 +31,31 @@ class Kernel
     /**
      * @param RequestInterface $request
      * @return ResponseInterface
-    */
+     * @throws \ReflectionException
+   */
     public function handle(RequestInterface $request): ResponseInterface
     {
-          // Run action stack middlewares
+        try {
+
+            // Run action stack middlewares
 
 
-          // Routing
-          $router = $this->container->get('router');
-          $route = $router->match($request->getMethod(), $request->getUri());
+            // Routing
+            $router = $this->container->get('router');
+            $route = $router->match($request->getMethod(), $request->getUri());
 
-          $dispatcher = new RouteDispatcher(new RouteParam($route));
-          $dispatcher->setContainer($this->container);
-          $response = $dispatcher->callAction();
+            $dispatcher = new RouteDispatcher(new RouteParam($route));
+            $dispatcher->setContainer($this->container);
 
-          // Response
-          /*
-          $response = $this->container->get(ResponseInterface::class);
-          $response->setContent($body);
-          */
-          return $response;
+            // return instance of ResponseInterface
+            $response = $dispatcher->callAction();
+
+        } catch (\Exception $e) {
+
+            die($e->getMessage());
+        }
+
+        return $response;
     }
 
 
@@ -68,6 +73,6 @@ class Kernel
           }
           */
 
-          dump("Terminate ". __METHOD__);
+          dump("Terminate en affichant des messages : Debug etc...". __METHOD__);
     }
 }

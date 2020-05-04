@@ -94,6 +94,15 @@ class RouteParam
 
 
       /**
+       * @return mixed|null
+      */
+      public function getMiddlewares()
+      {
+          return $this->getParameter('middleware');
+      }
+
+
+      /**
        * @param $key
        * @return mixed|null
       */
