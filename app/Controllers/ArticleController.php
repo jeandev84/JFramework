@@ -4,7 +4,8 @@ namespace App\Controllers;
 
 use App\Repository\ArticleRepository;
 use Jan\Component\Http\Request;
-
+use Jan\Component\Http\Response;
+use Jan\Component\Routing\Route;
 
 
 /**
@@ -14,7 +15,7 @@ use Jan\Component\Http\Request;
 class ArticleController extends BaseController
 {
 
-    // protected  $layout = 'admin';
+    protected  $layout = false;
 
     /**
      * action index
@@ -42,5 +43,18 @@ class ArticleController extends BaseController
          echo 'Slug article : '. $slug .' and ID : '. $id .'<br>';
          echo '<b>URI :</b> '. $request->getUri() .' <b>Method :</b> '. $request->getMethod() . ' ';
          return $this->render('articles/show.php');
+    }
+
+
+    /**
+     * @param int $id
+     * @return Response
+    */
+    public function edit(int $id)
+    {
+        echo Route::generate('article.edit', ['id' => $id]);
+        echo '<br>';
+        echo 'Article number : ' . $id .'<br>';
+        return new Response('Articles edit test', 200, []);
     }
 }

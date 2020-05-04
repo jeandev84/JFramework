@@ -42,15 +42,16 @@ abstract class Controller
            $response = $this->container->get(ResponseInterface::class);
            $view = $this->container->get('view');
 
-           ob_start();
            $content = $view->render($template, $data);
 
+           ob_start();
            if($this->layout !== false)
            {
                require $view->resource('layouts/'. $this->layout .'.php');
            }
+           $content = ob_get_clean();
 
-           $response->withBody(ob_get_clean());
+           $response->withBody($content);
 
            return $response;
       }

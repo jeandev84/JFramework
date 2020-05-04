@@ -293,7 +293,7 @@ class Route
         {
             foreach($params as $k => $v)
             {
-                $path = preg_replace(["#{$k}#", "#:$k#"], [$v, $v], $path);
+                $path = preg_replace(["#{".$k."}#", "#:". $k ."#"], $v, $path);
             }
         }
         return $path;

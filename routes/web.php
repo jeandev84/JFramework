@@ -10,12 +10,21 @@ Route::get('/', function () {
 
     echo 'Welcome';
 
+    /*
+    return [
+        'id' => 1,
+        'title' => 'Title article',
+        'text' => 'something ..'
+    ];
+    */
+
 }, 'welcome');
 
 Route::get('/site', 'SiteController@index', 'site');
 Route::get('/home', 'HomeController@index', 'home');
 Route::get('/articles', 'ArticleController@index', 'article.list');
-Route::get('/article/{slug}/{id}', 'ArticleController@show', 'article.show');
+//Route::get('/article/{slug}/{id}', 'ArticleController@show', 'article.show');
+Route::get('/article/{id}/edit', 'ArticleController@edit', 'article.edit');
 
 
 /*

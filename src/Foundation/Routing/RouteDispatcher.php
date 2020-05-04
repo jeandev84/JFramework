@@ -112,7 +112,7 @@ class RouteDispatcher
 
          if($body instanceof ResponseInterface)
          {
-             return $response;
+             return $body;
          }
 
          return $response;
