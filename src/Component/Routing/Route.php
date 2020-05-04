@@ -163,10 +163,10 @@ class Route
     public static function map($methods, string $path, $target, $name = null)
     {
          self::$currentRoute['methods'] = self::resolvedMethod($methods);
-         self::$currentRoute['path'] = self::resolvedPath($path);
-         self::$currentRoute['target'] = self::resolvedTarget($target);
+         self::$currentRoute['path']    = self::resolvedPath($path);
+         self::$currentRoute['target']  = self::resolvedTarget($target);
 
-         self::addMiddlewareFromOptions($path);
+         self::addMiddlewareFromOptions(self::$currentRoute['path']);
          self::addName($name, self::$currentRoute['path']);
          self::$collections[] = self::$currentRoute;
          return new self;
@@ -182,7 +182,7 @@ class Route
     {
         if($middlewares = self::getOption('middleware'))
         {
-            self::addMiddleware(self::resolvedPath($path), $middlewares);
+            self::addMiddleware($path, $middlewares);
         }
     }
 
