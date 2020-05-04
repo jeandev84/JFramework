@@ -16,7 +16,7 @@ class FileStorage extends FileSystem implements StorageInterface
 
 
     /** @var string  */
-    protected $storageKey = '__default';
+    protected $storageKey = '.default';
 
 
     /**
