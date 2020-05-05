@@ -2,12 +2,11 @@
 namespace Jan\Foundation;
 
 
-use App\Providers\AppServiceProvider;
-use App\Providers\FileSystemServiceProvider;
-use App\Providers\RouteServiceProvider;
-use App\Providers\ViewServiceProvider;
+use Jan\Foundation\Providers\AppServiceProvider;
+use Jan\Foundation\Providers\DatabaseServiceProvider;
+use Jan\Foundation\Providers\RouteServiceProvider;
+use Jan\Foundation\Providers\ViewServiceProvider;
 use Jan\Component\DependencyInjection\Container;
-use Jan\Component\FileSystem\FileSystem;
 
 
 /**
@@ -165,6 +164,7 @@ class Application extends Container
     {
         $this->addServiceProvider(AppServiceProvider::class);
         $this->addServiceProvider(RouteServiceProvider::class);
+        $this->addServiceProvider(DatabaseServiceProvider::class);
 
         // last to load
         $this->addServiceProvider(ViewServiceProvider::class);
