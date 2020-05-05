@@ -296,7 +296,8 @@ class Route
                 $path = preg_replace(["#{".$k."}#", "#:". $k ."#"], $v, $path);
             }
         }
-        return $path;
+
+        return '/'. trim($path, '/');
     }
 
 
