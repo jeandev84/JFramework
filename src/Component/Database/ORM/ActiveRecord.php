@@ -36,7 +36,7 @@ abstract class ActiveRecord
 
 
     /** @var \DateTime */
-    // protected $deletedAt;
+    protected $deletedAt;
 
 
     /**
@@ -177,13 +177,29 @@ abstract class ActiveRecord
         return $this->manager->execute($sql, ['id' => $id]);
     }
 
+
+    /**
+     * @param int $id
+     * @return mixed
+     * @throws \ReflectionException
+    */
+    public function restore(int $id)
+    {
+        if($this->isSoftDeleted())
+        {
+            // deleted_at (datetime may be)
+            $sql = 'UPDATE '. $this->tableName() .' SET deleted_at = 0 WHERE id = :id';
+            return $this->manager->execute($sql, ['id' => $id]);
+        }
+    }
+
     /**
      * @return int
     */
     protected function isSoftDeleted()
     {
-        return $this->softDelete === true;
-        // & property_exists($this, 'deletedAt');
+        return $this->softDelete === true
+               || property_exists($this, 'deletedAt');
         // \in_array('deleted_at', $mappedProperties)
     }
 

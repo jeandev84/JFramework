@@ -35,7 +35,6 @@ class SiteController extends BaseController
         $users = $userRepository->findAll();
         dump($users);
 
-
         $userRepository->delete(23);
         dump($users);
 
