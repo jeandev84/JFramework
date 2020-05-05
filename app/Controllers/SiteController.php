@@ -24,12 +24,21 @@ class SiteController extends BaseController
     */
     public function index(UserRepository $userRepository): Response
     {
+        /*
         $users = $userRepository->find(['name' => 'brown1', 'address' => 'street 345']);
 
         if(! $users)
         {
             throw new Exception('No user setted!', 400);
         }
+        */
+        $users = $userRepository->findAll();
+        dump($users);
+
+
+        $userRepository->delete(23);
+        dump($users);
+
 
         return $this->render('site/home.php', compact('users'));
     }
