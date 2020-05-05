@@ -12,5 +12,8 @@
     <div class="form-group">
         <input type="password" name="confirm_password" class="form-control" placeholder="confirm your password">
     </div>
+    <div class="form-group">
+        <input type="text" name="address" placeholder="Moscou, street 45" class="form-control">
+    </div>
     <button type="submit" class="btn btn-success">Send</button>
 </form>

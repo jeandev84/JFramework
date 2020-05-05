@@ -11,7 +11,7 @@ use PDO;
 /**
  * Abstract class ActiveRecord
  * @package Jan\Component\Database\ORM
-*/
+ */
 abstract class ActiveRecord
 {
 
@@ -47,7 +47,7 @@ abstract class ActiveRecord
     /**
      * @return string
      * @throws \ReflectionException
-    */
+     */
     protected function tableName()
     {
         if($this->table)
@@ -65,7 +65,7 @@ abstract class ActiveRecord
      * @param string $sql
      * @param array $params
      * @return mixed
-    */
+     */
     public function query($sql, $params = [])
     {
         return $this->manager->execute($sql, $params);
@@ -77,7 +77,7 @@ abstract class ActiveRecord
      *
      * from manager can get connection via method
      * $this->getManager()->getConnection() ...
-    */
+     */
     public function getManager()
     {
         return $this->manager;
@@ -89,8 +89,9 @@ abstract class ActiveRecord
      */
     public function findAll()
     {
-        $result = $this->manager->execute('SELECT * FROM '. $this->tableName())
-                                ->getResults();
+        $result = $this->manager->addSql('SELECT * FROM '. $this->tableName())
+            ->executeQuery()
+            ->getResults();
 
 
         return $result ?? [];
@@ -114,10 +115,71 @@ abstract class ActiveRecord
             }
         }
 
-        $result = $this->manager->execute($sql, $criteria)
-                                ->getResults();
+        $result = $this->manager->addSql($sql)
+            ->addValues($criteria)
+            ->executeQuery()
+            ->getResults();
 
         return $result ?? [];
     }
 
+
+    /* public function find($id, $lockMode = null, $lockVersion = null) {} */
+
+
+    public function findOneBy(array $criteria, array $oderBy = null)
+    {
+        //
+    }
+
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    {
+        //
+    }
+
+    public function findOne()
+    {
+        //
+    }
+
+
+    /**
+     * @param array $properties
+     */
+    protected function update(array $properties)
+    {
+
+    }
+
+
+    /**
+     * @param array $properties
+     */
+    protected function insert(array $properties)
+    {
+
+    }
+
+
+    /**
+     * Save data to the database
+     */
+    public function save()
+    {
+
+    }
+
+
+    /**
+     * @param object $object
+     */
+    public function persist(object $object)
+    {
+
+    }
+
+    public function flush()
+    {
+
+    }
 }
