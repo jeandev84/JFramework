@@ -32,7 +32,7 @@ abstract class ActiveRecord
 
 
     /** @var bool  */
-    protected $softDelete = false;
+    protected $softDelete = true;
 
 
     /** @var \DateTime */
@@ -101,7 +101,8 @@ abstract class ActiveRecord
 
         if($this->isSoftDeleted())
         {
-            $sql .= ' WHERE deleted_at != false'; // WHERE deleted_at = true
+            // $sql .= ' WHERE deleted_at != false'; // WHERE deleted_at = true
+            $sql .= ' WHERE deleted_at = 0'; // WHERE deleted_at = true
         }
 
         $result = $this->manager->execute($sql)
@@ -131,7 +132,8 @@ abstract class ActiveRecord
 
         if($this->isSoftDeleted())
         {
-            $sql .= ' AND WHERE deleted_at != false'; // WHERE
+            // $sql .= ' AND WHERE deleted_at != false'; // WHERE
+            $sql .= ' AND WHERE deleted_at = 0'; // WHERE
         }
 
         $result = $this->manager->execute($sql, $criteria)
@@ -169,10 +171,26 @@ abstract class ActiveRecord
         if($this->isSoftDeleted())
         {
             // deleted_at (datetime may be)
-            $sql = 'UPDATE '. $this->tableName() .' SET deleted_at = true WHERE id = :id';
+            $sql = 'UPDATE '. $this->tableName() .' SET deleted_at = 1 WHERE id = :id';
         }
 
-        return $this->manager->exec($sql);
+        return $this->manager->execute($sql, ['id' => $id]);
+    }
+
+
+    /**
+     * @param int $id
+     * @return mixed
+     * @throws \ReflectionException
+    */
+    public function restore(int $id)
+    {
+        if($this->isSoftDeleted())
+        {
+            // deleted_at (datetime may be)
+            $sql = 'UPDATE '. $this->tableName() .' SET deleted_at = 0 WHERE id = :id';
+            return $this->manager->execute($sql, ['id' => $id]);
+        }
     }
 
     /**
@@ -180,7 +198,9 @@ abstract class ActiveRecord
     */
     protected function isSoftDeleted()
     {
-        return $this->softDelete === true & property_exists($this, 'deletedAt');
+        return $this->softDelete === true
+               || property_exists($this, 'deletedAt');
+        // \in_array('deleted_at', $mappedProperties)
     }
 
 
