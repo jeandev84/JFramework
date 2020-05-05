@@ -19,6 +19,14 @@ use PDOStatement;
 class Statement implements QueryManagerInterface
 {
 
+    /** @var string */
+    protected $sql;
+
+
+    /** @var array  */
+    protected $params = [];
+
+
     /** @var PDO  */
     protected $connection;
 
@@ -36,33 +44,26 @@ class Statement implements QueryManagerInterface
     protected $executedSql = [];
 
 
-     /**
-      * Query constructor.
-      *
-      * @param PDO $connection
+    /**
+     * Query constructor.
+     *
+     * @param PDO $connection
+     * @param string|null $classMap
      */
-     public function __construct(PDO $connection)
+     public function __construct(PDO $connection, string $classMap = null)
      {
          $this->addConnection($connection);
+         $this->registerClassMap($classMap);
      }
 
-     /**
-      * @param string $entity
-      * @return Statement
-     */
-     public function registerClassMap(string $entity)
-     {
-         $this->classMap = $entity;
 
-         return $this;
-     }
 
      /**
-      * @param $sql
+      * @param string|null $sql
       * @param array $params
       * @return Statement
      */
-     public function execute(string $sql, array $params = [])
+     public function execute(string $sql = null, array $params = [])
      {
          try {
 
@@ -75,7 +76,7 @@ class Statement implements QueryManagerInterface
 
          } catch (PDOException $e) {
 
-             die($e->getMessage());
+             throw $e;
          }
 
          return $this;
@@ -89,9 +90,11 @@ class Statement implements QueryManagerInterface
      public function exec($sql)
      {
          try {
-             return $this->connection->exec($sql);
+
+             $this->connection->exec($sql);
+
          } catch (PDOException $e) {
-             exit($e->getMessage());
+             throw $e;
          }
      }
 
@@ -110,7 +113,7 @@ class Statement implements QueryManagerInterface
          } catch (PDOException $e) {
 
              $this->connection->rollBack();
-             die($e->getMessage());
+             throw $e;
          }
      }
 
@@ -122,7 +125,7 @@ class Statement implements QueryManagerInterface
       * @return array
       * @throws Exception
      */
-     public function fetchAll($fetchStyle = PDO::FETCH_OBJ)
+     public function getResults($fetchStyle = PDO::FETCH_OBJ)
      {
          if($this->classMap)
          {
@@ -134,6 +137,7 @@ class Statement implements QueryManagerInterface
      }
 
 
+
      /**
       * Get first result
       *
@@ -143,26 +147,6 @@ class Statement implements QueryManagerInterface
      public function getFirstResult()
      {
          return $this->fetchAll()[0] ?? null;
-     }
-
-
-     /**
-      * Fetch one result
-      *
-      * @param int $fetchStyle
-      * @return mixed
-      * @throws Exception
-     */
-     public function fetchOne($fetchStyle = PDO::FETCH_OBJ)
-     {
-         // TO FIX
-//         if($this->classMap)
-//         {
-//             return $this->getCurrentStatement()
-//                         ->fetch(PDO::FETCH_CLASS, $this->classMap);
-//         }
-
-         // return $this->getCurrentStatement()->fetch($fetchStyle);
      }
 
 
@@ -206,7 +190,7 @@ class Statement implements QueryManagerInterface
      */
      public function getCurrentStatement()
      {
-         if(is_null($this->stmt))
+         if(! $this->stmt)
          {
              throw new StatementException(
                  'Can not executed because there are not statement yet executed!'
@@ -234,5 +218,41 @@ class Statement implements QueryManagerInterface
     {
         return $this->connection;
     }
+
+
+    /**
+     * @param string $sql
+     * @return mixed
+     */
+    public function addSql(string $sql)
+    {
+        $this->sql = $sql;
+
+        return $this;
+    }
+
+    /**
+     * @param array $values
+     * @return mixed
+    */
+    public function addValues(array $values = [])
+    {
+        $this->params = $values;
+
+        return $this;
+    }
+
+
+    /**
+     * @param string|null $classMap
+     * @return Statement
+    */
+    public function registerClassMap(?string $classMap)
+    {
+        $this->classMap = $classMap;
+
+        return $this;
+    }
+
 }
 

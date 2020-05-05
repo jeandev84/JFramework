@@ -1,9 +1,9 @@
 <?php
-namespace App\Controllers;
+namespace App\Controllers\Example;
 
 
+use App\Controllers\BaseController;
 use App\Repository\UserRepository;
-use Exception;
 use Jan\Component\Http\Response;
 
 
@@ -20,18 +20,24 @@ class SiteController extends BaseController
      * @return Response
      *
      * password_hash('secret123', PASSWORD_BCRYPT)
-     * @throws Exception
     */
     public function index(UserRepository $userRepository): Response
     {
-        $users = $userRepository->find(['name' => 'brown1', 'address' => 'street 345']);
+        /* $users = $userRepository->findAll(); */
+        // $users = [];
+//        $user = $userRepository->query('SELECT * FROM users WHERE id = :id', ['id' => 15])
+//                               ->getFirstResult();
+//        dump($user);
 
-        if(! $users)
-        {
-            throw new Exception('No user setted!', 400);
-        }
+//        $userRepository->getManager()
+//             ->execute("INSERT INTO users (name, email, password, address, role) VALUES ('brown23', 'brown23@site.com', 'secret123', 'street 345', 'user')");
+//        $lastId = $userRepository->getManager()->lastId();
+//        dump($lastId);
 
-        return $this->render('site/home.php', compact('users'));
+        $users = $userRepository->findAll();
+        dump($users);
+
+        return $this->render('site/home.php', compact('users', 'user'));
     }
 
 
