@@ -2,11 +2,9 @@
 namespace App\Controllers;
 
 
-use App\Entity\User;
 use App\Repository\UserRepository;
-use Jan\Component\DependencyInjection\Container;
 use Jan\Component\Http\Response;
-use Jan\Component\Routing\Route;
+
 
 /**
  * Class SiteController
@@ -19,10 +17,26 @@ class SiteController extends BaseController
      * action index
      * @param UserRepository $userRepository
      * @return Response
-     */
+     *
+     * password_hash('secret123', PASSWORD_BCRYPT)
+    */
     public function index(UserRepository $userRepository): Response
     {
-        return $this->render('site/home.php');
+        /* $users = $userRepository->findAll(); */
+        // $users = [];
+//        $user = $userRepository->query('SELECT * FROM users WHERE id = :id', ['id' => 15])
+//                               ->getFirstResult();
+//        dump($user);
+
+//        $userRepository->getManager()
+//             ->execute("INSERT INTO users (name, email, password, address, role) VALUES ('brown23', 'brown23@site.com', 'secret123', 'street 345', 'user')");
+//        $lastId = $userRepository->getManager()->lastId();
+//        dump($lastId);
+
+        $users = $userRepository->findAll();
+        dump($users);
+
+        return $this->render('site/home.php', compact('users', 'user'));
     }
 
 
