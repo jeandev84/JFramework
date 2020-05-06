@@ -31,14 +31,15 @@ class SiteController extends BaseController
         {
             throw new Exception('No user setted!', 400);
         }
-        */
+
         $users = $userRepository->findAll();
         dump($users);
 
         $userRepository->delete(23);
         dump($users);
+        */
 
-
+        $users = [];
         return $this->render('site/home.php', compact('users'));
     }
 
