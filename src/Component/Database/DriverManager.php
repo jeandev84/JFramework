@@ -4,7 +4,9 @@ namespace Jan\Component\Database;
 
 use Exception;
 use Jan\Component\Database\Contracts\DatabaseInterface;
+use Jan\Component\Database\Extensions\PDO\Drivers\Mysql;
 use Jan\Component\Database\Extensions\PDO\Drivers\MysqlConnection;
+use Jan\Component\Database\Extensions\PDO\Drivers\Sqlite;
 use Jan\Component\Database\Extensions\PDO\Drivers\SqliteConnection;
 
 
@@ -69,8 +71,8 @@ class DriverManager
      public function getAvailableConnections()
      {
          return [
-             new MysqlConnection($this->config),
-             new SqliteConnection($this->config),
+             new Mysql($this->config),
+             new Sqlite($this->config),
          ];
      }
 }

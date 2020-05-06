@@ -15,10 +15,11 @@ use PDO;
 abstract class PdoConnection implements DatabaseInterface
 {
 
-    use Configuration;
-
-
-    const DEFAULT_OPTIONS = [
+    /**
+     * @var array $options  [ Default Optional params for PDO ]
+     * @var array $config   [ Config array ]
+     */
+    private $options = [
         PDO::ATTR_PERSISTENT => true, // permit to insert data
         PDO::ATTR_EMULATE_PREPARES => 0,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
@@ -26,18 +27,25 @@ abstract class PdoConnection implements DatabaseInterface
     ];
 
 
+    /** @var  Configuration */
+    protected $config;
+
+
     /**
      * AbstractPdoConnection constructor.
+     * @param Configuration $config
      * @throws \Exception
-    */
-    public function __construct()
+     */
+    public function __construct(Configuration $config)
     {
-        if(! \in_array($this->driver, PDO::getAvailableDrivers()))
+        if(! \in_array($driver = $config->getDriver(), PDO::getAvailableDrivers()))
         {
             throw new \Exception(
-                sprintf('This driver (%s) is not available or unenabled!', $this->driver)
+                sprintf('This driver (%s) is not available or unenabled!', $driver)
             );
         }
+
+        $this->config = $config;
     }
 
 
@@ -45,7 +53,7 @@ abstract class PdoConnection implements DatabaseInterface
     /**
      * Get connection
      * @return mixed|PDO
-    */
+     */
     public function connect()
     {
         try {
@@ -53,7 +61,7 @@ abstract class PdoConnection implements DatabaseInterface
                 $this->getDsn(),
                 $this->getUsername(),
                 $this->getPassword(),
-                array_merge(self::DEFAULT_OPTIONS, (array) $this->getOptions())
+                array_merge($this->options, (array) $this->getOptions())
             );
 
         } catch (\PDOException $exception) {
@@ -67,7 +75,7 @@ abstract class PdoConnection implements DatabaseInterface
 
     /**
      * Disconnect to database
-    */
+     */
     public function disconnect()
     {
         // return null;
@@ -78,7 +86,7 @@ abstract class PdoConnection implements DatabaseInterface
     /**
      * Get driver
      * @return string
-    */
+     */
     abstract public function getDriver(): string;
 
 
@@ -86,25 +94,25 @@ abstract class PdoConnection implements DatabaseInterface
      * Get current dsn
      *
      * @return string
-    */
+     */
     protected function getDsn()
     {
         return sprintf('%s:host=%s;port=%s;dbname=%s;charset=%s;',
             $this->getDriver(),
-            $this->host,
-            $this->port,
-            $this->database,
-            $this->charset
+            $this->config->getHost(),
+            $this->config->getPort(),
+            $this->config->getDatabase(),
+            $this->config->getCharset()
         );
     }
 
 
     /**
      * @return mixed
-    */
+     */
     protected function getUsername()
     {
-        return $this->username;
+        return $this->config->getUsername();
     }
 
     /**
@@ -112,15 +120,16 @@ abstract class PdoConnection implements DatabaseInterface
      */
     protected function getPassword()
     {
-        return $this->password;
+        return $this->config->getPassword();
     }
+
 
     /**
      * @return mixed|void
-    */
+     */
     protected function getOptions()
     {
-        return $this->options;
+        return $this->config->getOptions();
     }
 
 }
