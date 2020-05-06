@@ -11,6 +11,7 @@ use Jan\Component\Http\Message\RequestInterface;
 */
 class Request implements RequestInterface
 {
+
     /**
      * Request constructor.
      * TODO add constructor params
