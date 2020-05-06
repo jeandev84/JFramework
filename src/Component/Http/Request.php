@@ -11,12 +11,10 @@ use Jan\Component\Http\Message\RequestInterface;
 */
 class Request implements RequestInterface
 {
-
-
     /**
      * Request constructor.
      * TODO add constructor params
-    */
+     */
     public function __construct()
     {
     }
@@ -24,7 +22,7 @@ class Request implements RequestInterface
 
     /**
      * @return static
-    */
+     */
     public static function createFromGlobals()
     {
         $request = new static();
@@ -37,27 +35,28 @@ class Request implements RequestInterface
 
     public static function createRequest()
     {
-         //
+        //
     }
 
 
     protected static function factory()
     {
-         //
+        //
     }
 
 
     /**
      * @return mixed
-    */
+     */
     public function getUri()
     {
-        return $_SERVER['REQUEST_URI'];
+        return $this->server('REQUEST_URI');
     }
+
 
     /**
      * @return mixed
-    */
+     */
     public function getBaseUrl()
     {
         //
@@ -68,6 +67,52 @@ class Request implements RequestInterface
      */
     public function getMethod()
     {
-       return $_SERVER['REQUEST_METHOD'];
+        return $this->server('REQUEST_METHOD');
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isAjax()
+    {
+        return $this->server('HTTP_X_REQUESTED_WITH') === 'XMLHttpRequest';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPost()
+    {
+        return $this->getMethod() === 'POST';
+    }
+
+    /**
+     * @param string $key
+     * @return mixed|null
+     */
+    public function post(string $key)
+    {
+        return $_POST[$key] ?? null;
+    }
+
+    /**
+     * @param string $key
+     * @return mixed|null
+     */
+    public function get(string $key)
+    {
+        return $_GET[$key] ?? null;
+    }
+
+
+    /**
+     * @param string $key
+     * @param null $default
+     * @return mixed|null
+     */
+    public function server(string $key, $default = null)
+    {
+        return $_SERVER[$key] ?? $default;
     }
 }
