@@ -146,7 +146,7 @@ class Statement implements QueryManagerInterface
      */
      public function getFirstResult()
      {
-         return $this->fetchAll()[0] ?? null;
+         return $this->getResults()[0] ?? null;
      }
 
 
