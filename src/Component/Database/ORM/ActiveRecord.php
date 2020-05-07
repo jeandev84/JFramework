@@ -81,14 +81,7 @@ abstract class ActiveRecord
     */
     public function findAll()
     {
-        $sql = 'SELECT * FROM '. $this->tableName();
-
-        if($this->isSoftDeleted())
-        {
-            // $sql .= ' WHERE deleted_at != false'; // WHERE deleted_at = true
-            $sql .= ' WHERE deleted_at = 0'; // WHERE deleted_at = true
-        }
-
+        $sql = $this->getConcreteSql('SELECT * FROM '. $this->tableName());
         $results = $this->getRecords($this->manager->execute($sql));
 
         return $results ?? [];
@@ -102,7 +95,9 @@ abstract class ActiveRecord
      */
     public function find(array $criteria)
     {
-        $sql = 'SELECT * FROM '. $this->tableName() .' WHERE ';
+        $sql = 'SELECT * FROM '. $this->tableName() .' WHERE '; // WHERE
+
+        // AND WHERE
         foreach ($criteria as $column => $value)
         {
             $sql .= $column .' = :'. $column;
@@ -112,12 +107,7 @@ abstract class ActiveRecord
             }
         }
 
-        if($this->isSoftDeleted())
-        {
-            // $sql .= ' AND WHERE deleted_at != false'; // WHERE
-            $sql .= ' AND WHERE deleted_at = 0'; // WHERE
-        }
-
+        $sql = $this->getConcreteSql($sql, false);
         $result = $this->getRecords($this->manager->execute($sql, $criteria));
 
         return $result ?? [];
@@ -217,6 +207,22 @@ abstract class ActiveRecord
        return property_exists($this, 'id') && is_null($this->id);
     }
 
+
+    /**
+     * @param string $sql
+     * @param bool $where
+     * @return string
+     */
+    protected function getConcreteSql(string $sql, $where = true)
+    {
+        if($this->isSoftDeleted())
+        {
+            // $sql .= ' AND WHERE deleted_at != false'; // WHERE
+            $sql .= ($where ? ' WHERE ' : ' AND ') .' deleted_at = 0'; // WHERE
+        }
+
+        return $sql;
+    }
 
     /** Get name of table string */
     abstract protected function tableName();

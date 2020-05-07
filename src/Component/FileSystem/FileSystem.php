@@ -1,6 +1,4 @@
 <?php
-
-
 namespace Jan\Component\FileSystem;
 
 
@@ -131,9 +129,18 @@ class FileSystem
      }
 
 
+     /**
+      * @param $source
+      * @return bool|string
+     */
      public function mkdir($source)
      {
-         //
+         if(! is_dir($directory = $this->resource($source)))
+         {
+             mkdir($directory, 0777, true);
+         }
+
+         return $directory ?? false;
      }
 
 
@@ -146,13 +153,8 @@ class FileSystem
     {
         if($source)
         {
-            return str_replace(['\\', '/'],
-                DIRECTORY_SEPARATOR,
-                trim($source, '\/')
-            );
+            return str_replace(['\\', '/'], DIRECTORY_SEPARATOR, trim($source, '\/'));
         }
-
-        return '';
     }
 
 

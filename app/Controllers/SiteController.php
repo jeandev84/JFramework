@@ -32,12 +32,14 @@ class SiteController extends BaseController
             throw new Exception('No user setted!', 400);
         }
 
+        $users = $userRepository->find(['name' => 'brown1', 'address' => 'street 345']);
+        dump($users);
         */
-        $users = $userRepository->findAll();
-        dump($users);
+        //$users = $userRepository->findAll();
+        //dump($users);
 
-        $userRepository->delete(23);
-        dump($users);
+        //$userRepository->delete(23);
+        //dump($users);
 
         return $this->render('site/home.php', compact('users'));
     }
@@ -46,7 +48,7 @@ class SiteController extends BaseController
     /**x`
      * Action about
      * @return Response
-     */
+    */
     public function about(): Response
     {
         return $this->render('site/about.php');
@@ -61,4 +63,29 @@ class SiteController extends BaseController
     {
         return $this->render('site/contact.php');
     }
+
+
+    /*
+    public function demo(UserRepository $userRepository): Response
+    {
+        $users = $userRepository->find(['name' => 'brown1', 'address' => 'street 345']);
+
+        if(! $users)
+        {
+            throw new Exception('No user setted!', 400);
+        }
+
+        $users = $userRepository->find(['name' => 'brown1', 'address' => 'street 345']);
+        dump($users);
+        //$users = $userRepository->findAll();
+        //dump($users);
+
+        //$userRepository->delete(23);
+        //dump($users);
+
+        // return $this->render('site/home.php', compact('users'));
+    }
+    */
+
+
 }
