@@ -4,18 +4,24 @@ namespace Jan\Component\Database\ORM;
 
 use Jan\Component\Database\Contracts\EntityManagerInterface;
 use Jan\Component\Database\Contracts\QueryManagerInterface;
+use Jan\Component\Database\Statement;
 
 
 /**
  * Class EntityManager
  * @package Jan\Component\Database\ORM
+ *
+ * TODO Refactoring
 */
 class EntityManager implements EntityManagerInterface
 {
-    
 
     /** @var object */
     protected $entityObject;
+
+
+    /** @var array  */
+    protected $objectCollections = [];
 
 
     /** @var QueryManagerInterface  */
@@ -29,7 +35,11 @@ class EntityManager implements EntityManagerInterface
     /** @var  */
     protected $recordType = false;
     
-    
+
+    /** @var int */
+    protected $lastId;
+
+
     /**
      * EntityManager constructor.
      * @param QueryManagerInterface $manager
@@ -40,12 +50,27 @@ class EntityManager implements EntityManagerInterface
     }
 
 
+    /**
+     * @param object $entityObject
+     * @param array $attributes
+     * @return array
+    */
+    public function mapClassProperties(object $entityObject, array $attributes = [])
+    {
+        if($attributes)
+        {
+            return $attributes;
+        }
+
+        return $this->resolveObjectProperties($entityObject);
+    }
+
 
     /**
      * @param object $entityObject
      * @return array
     */
-    public function mapClassProperties(object $entityObject)
+    public function resolveObjectProperties(object $entityObject)
     {
         $reflectedObject = new \ReflectionObject($entityObject);
         $properties = [];
@@ -59,14 +84,14 @@ class EntityManager implements EntityManagerInterface
 
         return $properties;
     }
-    
+
 
     /**
      * @param object $entityObject
     */
     public function persist(object $entityObject)
     {
-        $this->initialise($entityObject, 'PERSIST');
+        $this->collect($entityObject, 'PERSIST');
     }
 
 
@@ -75,124 +100,145 @@ class EntityManager implements EntityManagerInterface
     */
     public function delete(object $entityObject)
     {
-        $this->initialise($entityObject, 'DELETE');
+        $this->collect($entityObject, 'DELETE');
     }
-    
-    
+
+    /**
+     * @param $properties
+     * @return
+     * @throws \Exception
+    */
+    protected function getId($properties)
+    {
+        if(! \array_key_exists('id', $properties))
+        {
+            throw new \Exception('Property (id) is required for flushing data');
+        }
+
+        return $properties['id'];
+    }
+
     /**
      * Save to the database
-    */
+     * @throws \Exception
+     */
     public function flush()
     {
-         // save to the database
-         // dump($this->properties, $this->entityObject);
-         if($this->hasId())
-         {
-             if($this->hasPersist())
-             {
-                 echo 'Insert';
-                 $this->insert();
+       // Begin transaction
+       try {
 
-             } else{
+            $this->manager->getConnection()->beginTransaction();
 
-                 echo 'Update';
-                 $this->update();
-             }
-             
-             if($this->hasDelete())
-             {
-                  $this->remove();
-             }
+            foreach ($this->objectCollections as $record => $objects)
+            {
+                foreach ($objects as $object)
+                {
+                    $properties = $this->mapClassProperties($object);
 
-         } else{
+                    if($record === 'PERSIST')
+                    {
+                        if(! is_null($this->getId($properties)))
+                        {
+                            $this->update($object, $properties);
+                        } else {
+                            $this->insert($object, $properties);
+                        }
+                    }
 
-             throw new \Exception('id property is not setted!');
-         }
+                    if($record === 'DELETE')
+                    {
+                        dump('Delete');
+                        //$this->remove($object, $properties);
+                    }
+                }
+            }
+
+            $this->manager->getConnection()->commit();
+
+        } catch (\Exception $e) {
+
+            $this->manager->getConnection()->rollback();
+            throw $e;
+        }
+
     }
 
 
     /**
      * Insert data to the database
-    */
-    protected function insert()
+     *
+     * Retourne last insertId
+     * @param object $entityObject
+     * @param array $properties
+     * @return
+     */
+    protected function insert(object $entityObject, array $properties)
     {
-        // dump($this->properties);
-        $columns = array_keys($this->properties);
-
-        $fields = '`'. implode('`, `', $columns) . '`';
-        $binds = implode(', ', array_fill(0, count($columns), '?'));
-
-        /*
-        $sql = 'INSERT INTO `' . $this->entityObject->tableName() .'`';
-        $sql .= '('. $fields .')';
-        $sql .= ' VALUES('. $binds .')';
-        */
-
         $sql = sprintf('INSERT INTO `%s`(%s) VALUES (%s)',
-            $this->entityObject->tableName(),
-            $fields,
-            $binds
+            $entityObject->tableName(),
+            $this->formatInsertFields($properties),
+            $this->formatInsertBinds($properties)
         );
 
-        $this->manager->execute($sql, array_values($this->properties));
+        $this->manager->execute($sql, array_values($properties));
+        return $this->lastId = $this->manager->getConnection()->lastInsertId();
     }
-
 
 
     /**
      * Update data to the database
-    */
-    protected function update()
+     *
+     * @param object $entityObject
+     * @param array $properties
+     * @return void
+     */
+    protected function update(object $entityObject, array $properties)
     {
-        dump($this->properties);
+        $sql = sprintf('UPDATE %s SET %s WHERE id = ?',
+          $entityObject->tableName(),
+          $this->assignColumn($properties)
+        );
+
+        $values = array_merge(array_values($properties), (array) $properties['id']);
+        $this->manager->execute($sql, $values);
+    }
+
+
+    /**
+     * @param array $properties
+     * @return string
+     */
+    protected function assignColumn(array $properties)
+    {
+        $affected = [];
+        foreach (array_keys($properties) as $column)
+        {
+            array_push($affected, sprintf(' `%s` = ?', $column));
+        }
+
+        return join(',', $affected);
     }
 
 
     /**
      * Remove object from database
-    */
-    protected function remove()
-    {
-        $sql = 'DELETE FROM '. $this->entityObject->tableName() .' WHERE id = :id';
-        return $this->manager->execute($sql, ['id' => $this->getObjectId()]);
-    }
-    
-    
-    /**
-     * Determine if has new record
-     * @return bool
-     */
-    protected function isNewRecord()
-    {
-        return is_null($this->properties['id']);
-    }
-
-    /**
-     * @return bool
-    */
-    protected function hasId()
-    {
-        return array_key_exists('id', $this->properties);
-    }
-
-
-    /**
+     * @param object $entityObject
+     * @param array $properties
      * @return mixed
     */
-    private function getObjectId()
+    protected function remove(object $entityObject, array $properties)
     {
-         if($this->hasId())
-         {
-             return $this->properties['id'];
-         }
+        $sql = 'DELETE FROM '. $entityObject->tableName() .' WHERE id = :id';
+        return $this->manager->execute($sql, ['id' => $properties['id']]);
     }
-    
+
+
     /**
      * @return bool
     */
     protected function hasPersist()
     {
-        return $this->isNewRecord() && $this->recordType === 'PERSIST';
+        return $this->recordType === 'PERSIST';
     }
 
     
@@ -204,14 +250,34 @@ class EntityManager implements EntityManagerInterface
         return $this->recordType === 'DELETE';
     }
 
+
     /**
      * @param object $entityObject
      * @param string $recordType 
    */
-    protected function initialise(object $entityObject, string $recordType)
+    protected function collect(object $entityObject, string $recordType)
     {
-        $this->properties = $this->mapClassProperties($entityObject);
-        $this->recordType = $recordType;
-        $this->entityObject = $entityObject;
+        $this->objectCollections[$recordType][] = $entityObject;
+    }
+
+
+    /**
+     * @param array $properties
+     * @return string
+     */
+    protected function formatInsertFields(array $properties)
+    {
+        return '`'. implode('`, `', array_keys($properties)) . '`';
+    }
+
+
+    /**
+     * @param array $properties
+     * @return string
+    */
+    protected function formatInsertBinds(array $properties)
+    {
+        $columns = array_keys($properties);
+        return implode(', ', array_fill(0, count($columns), '?'));
     }
 }

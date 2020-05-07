@@ -2,6 +2,7 @@
 namespace Jan\Component\Database\ORM;
 
 
+use Jan\Component\Database\Contracts\EntityManagerInterface;
 use Jan\Component\Database\Contracts\QueryManagerInterface;
 
 /**
@@ -36,21 +37,24 @@ class Model implements \ArrayAccess
 
      /**
       * Model constructor.
-      * @param EntityManager $entityManager
+      * @param EntityManagerInterface $entityManager
      */
-     public function __construct(EntityManager $entityManager)
+     public function __construct(EntityManagerInterface $entityManager = null)
      {
-          $this->entityManager = $entityManager;
+          $this->entityManager = $entityManager ?? new EntityManager();
      }
 
 
      /**
-      *
+      * Save data to the database
      */
      public function save()
      {
+         // implements some methods for fillable
+         // guarded
+
          $this->entityManager->persist($this);
-         $this->flush();
+         $this->entityManager->flush();
      }
 
 

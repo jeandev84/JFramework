@@ -29,7 +29,8 @@ trait ActiveRecord
 
 
     /** @var bool  */
-    protected $softDelete = true;
+    protected $softDelete = true; // true
+
 
 
     /** @var \DateTime */
@@ -84,6 +85,7 @@ trait ActiveRecord
         $sql = $this->getConcreteSql('SELECT * FROM '. $this->tableName());
         $results = $this->getRecords($this->manager->execute($sql));
 
+        //dd($sql);
         return $results ?? [];
     }
 
@@ -108,18 +110,20 @@ trait ActiveRecord
         }
 
         $sql = $this->getConcreteSql($sql, false);
-        $result = $this->getRecords($this->manager->execute($sql, $criteria));
+        $result = $this->getFirstRecord($this->manager->execute($sql, $criteria));
 
-        return $result ?? [];
+        return $result;
     }
 
 
     /**
      * @param array $criteria
+     * @return array|mixed
+     * @throws \ReflectionException
     */
     public function findOne(array $criteria)
     {
-         //
+         return $this->find($criteria)[0] ?? [];
     }
 
 
@@ -166,8 +170,8 @@ trait ActiveRecord
     */
     protected function isSoftDeleted()
     {
-        return $this->softDelete === true
-               || property_exists($this, 'deletedAt');
+        return $this->softDelete === true;
+               // || property_exists($this, 'deletedAt');
         // \in_array('deleted_at', $mappedProperties)
     }
 
@@ -183,7 +187,7 @@ trait ActiveRecord
         if($this->isSoftDeleted())
         {
             // $sql .= ' AND WHERE deleted_at != false'; // WHERE
-            $sql .= ($where ? ' WHERE ' : ' AND ') .' deleted_at = 0'; // WHERE
+            $sql .= ($where ? ' WHERE ' : ' AND ') .' deleted_at = 0 OR NULL'; // WHERE
         }
 
         return $sql;

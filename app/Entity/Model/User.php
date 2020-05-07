@@ -1,5 +1,5 @@
 <?php
-namespace App\Entity;
+namespace App\Entity\Model;
 
 
 use Jan\Component\Database\ORM\Model;
@@ -37,7 +37,7 @@ class User extends Model
     */
     public function __construct()
     {
-        // instance collections data
+
     }
 
     /**
@@ -132,4 +132,11 @@ class User extends Model
         return $this;
     }
 
+    /**
+     * @return object
+     */
+    protected function mapClassObject(): object
+    {
+        // TODO: Implement mapClassObject() method.
+    }
 }

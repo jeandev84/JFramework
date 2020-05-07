@@ -8,7 +8,7 @@ use Jan\Component\Routing\Exception\RouteException;
  * Class Route
  * @package Jan\Component\Routing
  *
- * Route collection factory
+ * Route collection
 */
 class Route
 {
@@ -304,7 +304,7 @@ class Route
     /**
      * @param $methods
      * @return array|false|string[]
-     */
+    */
     private static function resolvedMethod($methods)
     {
         if(is_string($methods) && strpos($methods, '|') !== false)

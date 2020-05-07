@@ -62,6 +62,5 @@ class Configuration
       {
             return $this->get($name);
       }
-
 }
 

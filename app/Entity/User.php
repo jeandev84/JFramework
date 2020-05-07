@@ -52,6 +52,8 @@ class User
     public function __construct()
     {
         // instance collections data
+        // always it will setted 0
+        $this->deleted_at = 0;
     }
 
     /**
