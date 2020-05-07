@@ -115,6 +115,15 @@ abstract class ActiveRecord
 
 
     /**
+     * @param array $criteria
+    */
+    public function findOne(array $criteria)
+    {
+         //
+    }
+
+
+    /**
      * Save data to the database
     */
     public function save()
@@ -128,7 +137,6 @@ abstract class ActiveRecord
             return $this->insert($mappedProperties);
         }
     }
-
 
 
     /**
@@ -146,7 +154,7 @@ abstract class ActiveRecord
             $sql = 'UPDATE '. $this->tableName() .' SET deleted_at = 1 WHERE id = :id';
         }
 
-        return $this->manager->execute($sql, ['id' => $id]);
+        return $this->manager->execute($sql, ['id' => $id]); // compact('id')
     }
 
 
@@ -161,7 +169,7 @@ abstract class ActiveRecord
         {
             // deleted_at (datetime may be)
             $sql = 'UPDATE '. $this->tableName() .' SET deleted_at = 0 WHERE id = :id';
-            return $this->manager->execute($sql, ['id' => $id]);
+            return $this->manager->execute($sql, ['id' => $id]); // compact('id')
         }
     }
 

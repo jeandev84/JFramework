@@ -2,8 +2,10 @@
 namespace App\Controllers;
 
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Exception;
+use Jan\Component\Database\ORM\EntityManager;
 use Jan\Component\Http\Response;
 
 
@@ -24,33 +26,28 @@ class SiteController extends BaseController
     */
     public function index(UserRepository $userRepository): Response
     {
-        /*
-        $users = $userRepository->find(['name' => 'brown1', 'address' => 'street 345']);
-
-        if(! $users)
-        {
-            throw new Exception('No user setted!', 400);
-        }
-
-        $users = $userRepository->find(['name' => 'brown1', 'address' => 'street 345']);
-        dump($users);
-        */
-        //$users = $userRepository->findAll();
-        //dump($users);
-
-        //$userRepository->delete(23);
-        //dump($users);
-
         return $this->render('site/home.php', compact('users'));
     }
 
 
     /**x`
      * Action about
+     * @param EntityManager $entityManager
      * @return Response
-    */
-    public function about(): Response
+     */
+    public function about(EntityManager $entityManager): Response
     {
+        $user = new User();
+        $user->setName('jean')
+             ->setEmail('jeanyao@ymail.com')
+             ->setAddress('Kurgan, volodorskovo 38')
+             ->setRole('user');
+
+//        dd($user);
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+
         return $this->render('site/about.php');
     }
 
