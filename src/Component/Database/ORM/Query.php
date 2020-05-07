@@ -9,6 +9,7 @@ namespace Jan\Component\Database\ORM;
 class Query
 {
 
+
      /** @var QueryBuilder */
      private $queryBuilder;
 

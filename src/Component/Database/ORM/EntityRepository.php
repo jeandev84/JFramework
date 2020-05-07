@@ -7,8 +7,11 @@ namespace Jan\Component\Database\ORM;
  * Class EntityRepository
  * @package Jan\Component\Database\ORM
 */
-class EntityRepository extends ActiveRecord
+class EntityRepository
 {
+
+    use ActiveRecord;
+
 
     /**
      * @return string

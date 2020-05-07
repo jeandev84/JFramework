@@ -53,7 +53,7 @@ class EntityManager implements EntityManagerInterface
     */
     public function persist(object $entityObject)
     {
-        $reflectedObject = new \ReflectionClass($entityObject);
+        $reflectedObject = new \ReflectionObject($entityObject);
         $this->entityMapped = $reflectedObject->getName();
 
         foreach($reflectedObject->getProperties() as $property)
@@ -62,6 +62,8 @@ class EntityManager implements EntityManagerInterface
              $this->properties[] = $property->getName();
              $this->fills[$property->getName()] = $property->getValue($entityObject);
         }
+
+        $this->entityObject = $entityObject;
     }
 
 
@@ -80,9 +82,10 @@ class EntityManager implements EntityManagerInterface
 
          dump($this->properties, $this->fills);
 
-         if(isset($this->fills['id']))
+         if($this->isNewRecord())
          {
              $this->update();
+
          } else{
 
              $this->insert();
@@ -90,14 +93,25 @@ class EntityManager implements EntityManagerInterface
     }
 
 
-    public function insert()
+    protected function insert()
     {
          dump('Insert data');
     }
 
 
-    public function update()
+    protected function update()
     {
         dump('Update data');
     }
+
+
+    /**
+     * Determine if has new record
+     * @return bool
+     */
+    protected function isNewRecord()
+    {
+        return property_exists($this->entityObject, 'id') && isset($this->fills['id']);
+    }
+
 }

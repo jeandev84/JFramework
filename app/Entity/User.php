@@ -2,11 +2,14 @@
 namespace App\Entity;
 
 
+use Jan\Component\Database\ORM\Model;
+
+
 /**
  * Class User
  * @package App\Entity
 */
-class User
+class User extends Model
 {
 
     /** @var int */

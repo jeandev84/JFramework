@@ -10,10 +10,10 @@ use PDO;
 
 
 /**
- * Abstract class ActiveRecord
+ * trait ActiveRecord
  * @package Jan\Component\Database\ORM
 */
-abstract class ActiveRecord
+trait ActiveRecord
 {
 
     /** @var string */
@@ -39,9 +39,9 @@ abstract class ActiveRecord
     /**
      * EntityRepository constructor.
      * @param QueryManagerInterface $manager
-     * @param string $entityClass
+     * @param string|null $entityClass
      */
-    public function __construct(QueryManagerInterface $manager, string $entityClass)
+    public function __construct(QueryManagerInterface $manager, string $entityClass = null)
     {
         $this->manager = $manager;
         $this->entityClass = $entityClass;
@@ -124,22 +124,6 @@ abstract class ActiveRecord
 
 
     /**
-     * Save data to the database
-    */
-    public function save()
-    {
-        $mappedProperties = [];
-
-        if(! $this->isNewRecord())
-        {
-            return $this->update($mappedProperties);
-        }else{
-            return $this->insert($mappedProperties);
-        }
-    }
-
-
-    /**
      * @param int $id
      * @return
      * @throws \ReflectionException
@@ -152,6 +136,8 @@ abstract class ActiveRecord
         {
             // deleted_at (datetime may be)
             $sql = 'UPDATE '. $this->tableName() .' SET deleted_at = 1 WHERE id = :id';
+
+            // $sql = 'UPDATE '. $this->tableName() .' SET deleted_at = '. $this->deletedAt .' WHERE id = :id';
         }
 
         return $this->manager->execute($sql, ['id' => $id]); // compact('id')
@@ -187,26 +173,6 @@ abstract class ActiveRecord
 
 
     /**
-     * @param array $propertiesFromDb
-     * @return string
-    */
-    protected function update(array $propertiesFromDb)
-    {
-          return 'Updated!';
-    }
-
-
-    /**
-     * @param array $propertiesFromDb
-     * @return string
-    */
-    protected function insert(array $propertiesFromDb)
-    {
-         return 'Inserted!';
-    }
-
-
-    /**
      * Determine if has new record
      * @return bool
     */
@@ -231,6 +197,64 @@ abstract class ActiveRecord
 
         return $sql;
     }
+
+
+    /** TODO Refactor */
+
+
+    /**
+     * @param array $propertiesFromDb
+     * @return string
+     */
+    protected function update(array $propertiesFromDb)
+    {
+        return 'Updated!';
+    }
+
+
+    /**
+     * @param array $propertiesFromDb
+     * @return string
+     */
+    protected function insert(array $propertiesFromDb)
+    {
+        return 'Inserted!';
+    }
+
+
+    /**
+     * Save data to the database
+     */
+    public function save()
+    {
+        $mappedProperties = $this->mapProperties();
+
+        if(! $this->isNewRecord())
+        {
+            return $this->update($mappedProperties);
+        }else{
+            return $this->insert($mappedProperties);
+        }
+    }
+
+
+    /**
+     * @throws \ReflectionException
+     */
+    public function mapProperties()
+    {
+        $reflectedObject = new \ReflectionObject($this);
+
+        $properties = [];
+        foreach ($reflectedObject->getProperties() as $property)
+        {
+            $propertyName = $property->getName();
+            $properties[$propertyName] = $property->getValue($this);
+        }
+
+        return $properties;
+    }
+
 
     /** Get name of table string */
     abstract protected function tableName();

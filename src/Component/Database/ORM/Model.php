@@ -6,8 +6,11 @@ namespace Jan\Component\Database\ORM;
  * Class Model
  * @package Jan\Component\Database\ORM
 */
-class Model extends ActiveRecord implements \ArrayAccess
+class Model implements \ArrayAccess
 {
+
+
+     use ActiveRecord;
 
 
      /** @var string */
@@ -91,19 +94,6 @@ class Model extends ActiveRecord implements \ArrayAccess
          return $this->getAttribute($field);
      }
 
-
-     /**
-      * @param $name
-      * @param $arguments
-      * @return mixed
-      *
-      * Model facade
-     */
-     public static function __callStatic($name, $arguments)
-     {
-          $class = new static(); // (get_called_class())
-          return call_user_func_array([$class, $name], $arguments);
-     }
 
 
     /**
