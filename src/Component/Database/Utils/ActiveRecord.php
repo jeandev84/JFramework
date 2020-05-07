@@ -2,7 +2,6 @@
 namespace Jan\Component\Database\ORM;
 
 
-use Exception;
 use Jan\Component\Database\Contracts\QueryManagerInterface;
 use Jan\Component\Database\Statement;
 use PDO;
@@ -16,6 +15,10 @@ use PDO;
 abstract class ActiveRecord
 {
 
+    /** @var Statement */
+    protected $statement;
+
+
     /** @var string */
     protected $table;
 
@@ -25,7 +28,7 @@ abstract class ActiveRecord
 
 
     /** @var string  */
-    protected $entityClass;
+    protected $entity;
 
 
     /** @var bool  */
@@ -39,41 +42,50 @@ abstract class ActiveRecord
     /**
      * EntityRepository constructor.
      * @param QueryManagerInterface $manager
-     * @param string $entityClass
+     * @param string $entity
      */
-    public function __construct(QueryManagerInterface $manager, string $entityClass)
+    public function __construct(QueryManagerInterface $manager, string $entity)
     {
         $this->manager = $manager;
-        $this->entityClass = $entityClass;
+        $this->manager->setEntity($entity);
+        $this->entity = $entity;
+    }
+
+
+    /** Get name of table string */
+    abstract protected function tableName();
+
+
+    /**
+     * @return QueryManagerInterface
+     *
+     * from manager can get connection via method
+     * $this->getManager()->getConnection() ...
+     */
+    public function getManager()
+    {
+        return $this->manager;
     }
 
 
     /**
-     * @param \PDOStatement $stmt
-     * @param int $fetchStyle
-     * @return array
+     * @return mixed
     */
-    protected function getRecords(\PDOStatement $stmt, $fetchStyle = PDO::FETCH_OBJ)
+    public function getConnection()
     {
-        if($this->entityClass)
-        {
-            return $stmt->fetchAll(PDO::FETCH_CLASS, $this->entityClass);
-        }
-
-        return $stmt->fetchAll($fetchStyle);
+        return $this->manager->getConnection();
     }
 
 
     /**
-     * @param \PDOStatement $stmt
-     * @param int $fetchStyle
-     * @return array|mixed
+     * @param string $sql
+     * @param array $params
+     * @return mixed
     */
-    protected function getFirstRecord(\PDOStatement $stmt, $fetchStyle = PDO::FETCH_OBJ)
+    public function query($sql, $params = [])
     {
-          return $this->getRecords($stmt, $fetchStyle)[0] ?? [];
+        return $this->manager->execute($sql, $params);
     }
-
 
 
     /**
@@ -89,9 +101,11 @@ abstract class ActiveRecord
             $sql .= ' WHERE deleted_at = 0'; // WHERE deleted_at = true
         }
 
-        $results = $this->getRecords($this->manager->execute($sql));
+        $result = $this->manager->execute($sql)
+                                ->getResults();
 
-        return $results ?? [];
+
+        return $result ?? [];
     }
 
 
@@ -118,7 +132,8 @@ abstract class ActiveRecord
             $sql .= ' AND WHERE deleted_at = 0'; // WHERE
         }
 
-        $result = $this->getRecords($this->manager->execute($sql, $criteria));
+        $result = $this->manager->execute($sql, $criteria)
+                                ->getResults();
 
         return $result ?? [];
     }
@@ -130,7 +145,6 @@ abstract class ActiveRecord
     public function save()
     {
         $mappedProperties = [];
-
         if(! $this->isNewRecord())
         {
             return $this->update($mappedProperties);
@@ -216,8 +230,4 @@ abstract class ActiveRecord
     {
        return property_exists($this, 'id') && is_null($this->id);
     }
-
-
-    /** Get name of table string */
-    abstract protected function tableName();
 }

@@ -2,6 +2,8 @@
 namespace Jan\Component\Database\ORM;
 
 
+use PDO;
+
 
 /**
  * Class EntityRepository
@@ -21,7 +23,7 @@ class EntityRepository extends ActiveRecord
             return $this->table;
         }
 
-        $reflectedClass = new \ReflectionClass($this->entityClass);
+        $reflectedClass = new \ReflectionClass($this->entity);
         return mb_strtolower($reflectedClass->getShortName()).'s';
 
     }

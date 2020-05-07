@@ -4,10 +4,6 @@ namespace Jan\Component\Database;
 
 use Exception;
 use Jan\Component\Database\Contracts\DatabaseInterface;
-use Jan\Component\Database\Extensions\PDO\Drivers\Mysql;
-use Jan\Component\Database\Extensions\PDO\Drivers\MysqlConnection;
-use Jan\Component\Database\Extensions\PDO\Drivers\Sqlite;
-use Jan\Component\Database\Extensions\PDO\Drivers\SqliteConnection;
 
 
 /**
@@ -19,19 +15,41 @@ use Jan\Component\Database\Extensions\PDO\Drivers\SqliteConnection;
 class DriverManager
 {
 
-     /** @var Configuration  */
-     private $config;
+     /** @var string [ Current driver ] */
+     private $driver;
 
+
+     /**
+      * @var array
+     */
+     private $connections = [];
+
+
+     /**
+      * DriverManager constructor.
+      * @param string $driver
+     */
+     public function __construct(string $driver)
+     {
+           $this->driver = $driver;
+     }
 
 
     /**
-     * DriverManager constructor.
-     * @param Configuration $config
-     * @throws Exception
+     * @param array $connections
      */
-     public function __construct(Configuration $config)
+    public function addConnections(array $connections)
+    {
+         $this->connections = $connections;
+    }
+
+
+    /**
+     * @return array
+     */
+     public function getAvailableConnections()
      {
-           $this->config = $config;
+          return $this->connections;
      }
 
 
@@ -60,19 +78,7 @@ class DriverManager
      */
      public function isActiveDriver(DatabaseInterface $connection)
      {
-         return ($connection->getDriver() === $this->config->getDriver());
+         return ($connection->getDriver() === $this->driver);
      }
 
-
-     /**
-      * @return array
-      * @throws Exception
-     */
-     public function getAvailableConnections()
-     {
-         return [
-             new Mysql($this->config),
-             new Sqlite($this->config),
-         ];
-     }
 }

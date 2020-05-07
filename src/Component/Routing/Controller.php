@@ -2,6 +2,7 @@
 namespace Jan\Component\Routing;
 
 
+use Jan\Component\Database\Contracts\QueryManagerInterface;
 use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
 use Jan\Component\Http\Message\ResponseInterface;
 use Jan\Component\Http\Response;
@@ -81,6 +82,15 @@ abstract class Controller
     public function getContainer()
     {
         return $this->container;
+    }
+
+
+    /**
+     * @return mixed
+    */
+    public function getManager()
+    {
+        return $this->container->get(QueryManagerInterface::class);
     }
 
 }

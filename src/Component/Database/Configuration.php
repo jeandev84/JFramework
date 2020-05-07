@@ -7,8 +7,6 @@ namespace Jan\Component\Database;
  * @package Jan\Component\Database
  *
  * Database configuration manager
- *
- * TODO remove this configuration file !
 */
 class Configuration
 {
@@ -62,9 +60,6 @@ class Configuration
      */
       public function __call($name, $arguments)
       {
-            $name = strtolower(
-                str_replace('get', '', $name)
-            );
             return $this->get($name);
       }
 

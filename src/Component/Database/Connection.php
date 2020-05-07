@@ -26,11 +26,14 @@ class Connection
      public static function make(array $config)
      {
           $config = new Configuration($config);
-          $databaseManager = new DriverManager($config);
+          $driverManager = new DriverManager($config->driver());
+          $driverManager->addConnections(ConnectionStack::storage($config));
+
           if(is_null(self::$instance))
           {
-              self::$instance = call_user_func([$databaseManager , 'getConnection']);
+              self::$instance = call_user_func([$driverManager , 'getConnection']);
           }
+
           return self::$instance;
       }
 

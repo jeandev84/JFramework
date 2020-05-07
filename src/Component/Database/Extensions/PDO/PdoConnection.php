@@ -38,7 +38,7 @@ abstract class PdoConnection implements DatabaseInterface
      */
     public function __construct(Configuration $config)
     {
-        if(! \in_array($driver = $config->getDriver(), PDO::getAvailableDrivers()))
+        if(! \in_array($driver = $config->driver(), PDO::getAvailableDrivers()))
         {
             throw new \Exception(
                 sprintf('This driver (%s) is not available or unenabled!', $driver)
@@ -99,10 +99,10 @@ abstract class PdoConnection implements DatabaseInterface
     {
         return sprintf('%s:host=%s;port=%s;dbname=%s;charset=%s;',
             $this->getDriver(),
-            $this->config->getHost(),
-            $this->config->getPort(),
-            $this->config->getDatabase(),
-            $this->config->getCharset()
+            $this->config->host(),
+            $this->config->port(),
+            $this->config->database(),
+            $this->config->charset()
         );
     }
 
@@ -112,7 +112,7 @@ abstract class PdoConnection implements DatabaseInterface
      */
     protected function getUsername()
     {
-        return $this->config->getUsername();
+        return $this->config->username();
     }
 
     /**
@@ -120,7 +120,7 @@ abstract class PdoConnection implements DatabaseInterface
      */
     protected function getPassword()
     {
-        return $this->config->getPassword();
+        return $this->config->password();
     }
 
 
@@ -129,7 +129,7 @@ abstract class PdoConnection implements DatabaseInterface
      */
     protected function getOptions()
     {
-        return $this->config->getOptions();
+        return $this->config->options();
     }
 
 }

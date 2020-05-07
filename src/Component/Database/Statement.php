@@ -19,14 +19,6 @@ use PDOStatement;
 class Statement implements QueryManagerInterface
 {
 
-    /** @var string */
-    protected $sql;
-
-
-    /** @var array  */
-    protected $params = [];
-
-
     /** @var PDO  */
     protected $connection;
 
@@ -35,41 +27,54 @@ class Statement implements QueryManagerInterface
     protected $stmt;
 
 
-    /** @var string|null  */
-    protected $classMap;
-
-
-
     /** @var array  */
     protected $executedSql = [];
+
 
 
     /**
      * Query constructor.
      *
      * @param PDO $connection
-     * @param string|null $classMap
      */
-     public function __construct(PDO $connection, string $classMap = null)
+     public function __construct(PDO $connection)
      {
          $this->addConnection($connection);
-         $this->registerClassMap($classMap);
      }
 
 
+    /**
+     * @return mixed|PDO
+    */
+    public function getConnection()
+    {
+        return $this->connection;
+    }
 
-     /**
-      * @param string|null $sql
-      * @param array $params
-      * @return Statement
+
+    /**
+     * @param $connection
+     * @return mixed
+    */
+    public function addConnection($connection)
+    {
+        $this->connection = $connection;
+    }
+
+
+    /**
+     * @param string|null $sql
+     * @param array $params
+     * @return PDOStatement
+     * @throws StatementException
      */
-     public function execute(string $sql = null, array $params = [])
+     public function execute(string $sql = null, array $params = []): PDOStatement
      {
          try {
 
              $this->stmt = $this->connection->prepare($sql);
 
-             if($this->stmt->execute($params))
+             if($this->isExecuted($params))
              {
                  $this->executedSql[] = compact('sql', 'params');
              }
@@ -79,7 +84,7 @@ class Statement implements QueryManagerInterface
              throw $e;
          }
 
-         return $this;
+         return $this->getStatement();
      }
 
 
@@ -91,11 +96,13 @@ class Statement implements QueryManagerInterface
      {
          try {
 
-             $this->connection->exec($sql);
+             $status = $this->connection->exec($sql);
 
          } catch (PDOException $e) {
              throw $e;
          }
+
+         return $status;
      }
 
 
@@ -119,38 +126,6 @@ class Statement implements QueryManagerInterface
 
 
      /**
-      * Fetch all results
-      *
-      * @param int $fetchStyle
-      * @return array
-      * @throws Exception
-     */
-     public function getResults($fetchStyle = PDO::FETCH_OBJ)
-     {
-         if($this->classMap)
-         {
-             return $this->getCurrentStatement()
-                         ->fetchAll(PDO::FETCH_CLASS, $this->classMap);
-         }
-
-         return $this->getCurrentStatement()->fetchAll($fetchStyle);
-     }
-
-
-
-     /**
-      * Get first result
-      *
-      * @return array
-      * @throws Exception
-     */
-     public function getFirstResult()
-     {
-         return $this->getResults()[0] ?? null;
-     }
-
-
-     /**
       * Get row count
       *
       * @return int
@@ -158,7 +133,7 @@ class Statement implements QueryManagerInterface
      */
      public function count()
      {
-         return $this->getCurrentStatement()->rowCount();
+         return $this->getStatement()->rowCount();
      }
 
 
@@ -182,15 +157,26 @@ class Statement implements QueryManagerInterface
      }
 
 
-    /**
-     * Get statement
-     *
-     * @return PDOStatement
-     * @throws StatementException
+     /**
+      * @return mixed|void
+      * @throws StatementException
      */
-     public function getCurrentStatement()
+     public function getResults()
      {
-         if(! $this->stmt)
+         return $this->getStatement()
+                     ->fetchAll(PDO::FETCH_OBJ);
+     }
+
+
+     /**
+      * Get statement
+      *
+      * @return PDOStatement
+      * @throws StatementException
+     */
+     public function getStatement()
+     {
+         if(! $this->hasStatement())
          {
              throw new StatementException(
                  'Can not executed because there are not statement yet executed!'
@@ -202,57 +188,21 @@ class Statement implements QueryManagerInterface
 
 
     /**
-     * @param $connection
-     * @return mixed|void
+     * @return bool
     */
-    public function addConnection($connection)
+    private function hasStatement()
     {
-        $this->connection = $connection;
+        return $this->stmt instanceof PDOStatement;
     }
 
 
     /**
-     * @return mixed|PDO
+     * @param array $params
+     * @return bool
     */
-    public function getConnection()
+    private function isExecuted(array $params)
     {
-        return $this->connection;
+        return $this->stmt->execute($params);
     }
-
-
-    /**
-     * @param string $sql
-     * @return mixed
-     */
-    public function addSql(string $sql)
-    {
-        $this->sql = $sql;
-
-        return $this;
-    }
-
-    /**
-     * @param array $values
-     * @return mixed
-    */
-    public function addValues(array $values = [])
-    {
-        $this->params = $values;
-
-        return $this;
-    }
-
-
-    /**
-     * @param string|null $classMap
-     * @return Statement
-    */
-    public function registerClassMap(?string $classMap)
-    {
-        $this->classMap = $classMap;
-
-        return $this;
-    }
-
 }
 
