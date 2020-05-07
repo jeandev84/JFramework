@@ -29,7 +29,7 @@ class SiteController extends BaseController
     }
 
 
-    /**x`
+    /**
      * Action about
      *
      * @throws Exception
