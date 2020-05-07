@@ -66,7 +66,6 @@ class Statement implements QueryManagerInterface
      * @param string|null $sql
      * @param array $params
      * @return PDOStatement
-     * @throws StatementException
      */
      public function execute(string $sql = null, array $params = []): PDOStatement
      {
@@ -84,7 +83,7 @@ class Statement implements QueryManagerInterface
              throw $e;
          }
 
-         return $this->getStatement();
+         return $this->stmt;
      }
 
 
@@ -96,13 +95,12 @@ class Statement implements QueryManagerInterface
      {
          try {
 
-             $status = $this->connection->exec($sql);
+             $this->connection->exec($sql);
 
          } catch (PDOException $e) {
              throw $e;
          }
 
-         return $status;
      }
 
 
@@ -174,7 +172,7 @@ class Statement implements QueryManagerInterface
       * @return PDOStatement
       * @throws StatementException
      */
-     public function getStatement()
+     private function getStatement()
      {
          if(! $this->hasStatement())
          {

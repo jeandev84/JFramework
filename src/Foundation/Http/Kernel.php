@@ -2,6 +2,7 @@
 namespace Jan\Foundation\Http;
 
 
+use Jan\Component\Database\Contracts\QueryManagerInterface;
 use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
 use Jan\Component\Dotenv\Env;
 use Jan\Component\Http\Message\RequestInterface;
@@ -41,7 +42,6 @@ abstract class Kernel implements HttpKernelContract
     public function __construct(ContainerInterface $container)
     {
           $this->container = $container;
-
           $this->loadEnvironments();
     }
 
@@ -101,6 +101,13 @@ abstract class Kernel implements HttpKernelContract
         dump("Terminate en affichant des messages : Debug etc...". __METHOD__);
         */
         //echo '<div class="container">'. dump(__METHOD__) . '</div>';
+
+        $query = $this->container->get(QueryManagerInterface::class);
+        if($executed = $query->executedSql())
+        {
+            echo "From : ". __METHOD__.'<br>';
+            dump($executed);
+        }
     }
 
 

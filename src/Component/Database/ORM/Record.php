@@ -7,6 +7,9 @@ namespace Jan\Component\Database\ORM;
  * @package Jan\Component\Database\ORM
  *
  * PDO Record
+ *
+ * This class will be check all record like find(), findBy(), findOne() ....
+ *
 */
 class Record
 {

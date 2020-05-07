@@ -12,6 +12,9 @@ use PDO;
 /**
  * trait ActiveRecord
  * @package Jan\Component\Database\ORM
+ *
+ * TODO Refactoring
+ * May be this class don't needed
 */
 trait ActiveRecord
 {

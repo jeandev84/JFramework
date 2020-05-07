@@ -29,13 +29,14 @@ class DatabaseServiceProvider extends AbstractServiceProvider implements Bootabl
     */
     public function register()
     {
-        $this->container->singleton(QueryManagerInterface::class, function () {
-
+        $this->container->singleton(Connection::class, function () {
             $filesystem = $this->container->get(FileSystem::class);
             $config = $filesystem->load('config/database.php');
-            $connection = Connection::make($config['mysql']);
+            return Connection::make($config['mysql']);
+        });
 
-            return new Statement($connection);
+        $this->container->singleton(QueryManagerInterface::class, function () {
+            return new Statement($this->container->get(Connection::class));
         });
     }
 

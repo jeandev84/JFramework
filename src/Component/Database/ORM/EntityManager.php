@@ -11,30 +11,19 @@ use Jan\Component\Database\Statement;
  * Class EntityManager
  * @package Jan\Component\Database\ORM
  *
- * TODO Refactoring
+ * TODO Refactoring this class
+ * Restructure all
 */
 class EntityManager implements EntityManagerInterface
 {
 
-    /** @var object */
-    protected $entityObject;
-
-
     /** @var array  */
-    protected $objectCollections = [];
+    protected $objectRegistries = [];
 
 
     /** @var QueryManagerInterface  */
     protected $manager;
 
-
-    /** @var array */
-    protected $properties = [];
-
-    
-    /** @var  */
-    protected $recordType = false;
-    
 
     /** @var int */
     protected $lastId;
@@ -53,6 +42,8 @@ class EntityManager implements EntityManagerInterface
     /**
      * @param object $entityObject
      * @param array $attributes
+     * [ $attributes used For example if we want to definie our properties ]
+     *
      * @return array
     */
     public function mapClassProperties(object $entityObject, array $attributes = [])
@@ -91,7 +82,7 @@ class EntityManager implements EntityManagerInterface
     */
     public function persist(object $entityObject)
     {
-        $this->collect($entityObject, 'PERSIST');
+        $this->collectByRecordType($entityObject, 'PERSIST');
     }
 
 
@@ -100,8 +91,10 @@ class EntityManager implements EntityManagerInterface
     */
     public function delete(object $entityObject)
     {
-        $this->collect($entityObject, 'DELETE');
+        $this->collectByRecordType($entityObject, 'DELETE');
     }
+
+
 
     /**
      * @param $properties
@@ -129,7 +122,7 @@ class EntityManager implements EntityManagerInterface
 
             $this->manager->getConnection()->beginTransaction();
 
-            foreach ($this->objectCollections as $record => $objects)
+            foreach ($this->objectRegistries as $record => $objects)
             {
                 foreach ($objects as $object)
                 {
@@ -147,8 +140,7 @@ class EntityManager implements EntityManagerInterface
 
                     if($record === 'DELETE')
                     {
-                        dump('Delete');
-                        //$this->remove($object, $properties);
+                        $this->remove($object, $properties);
                     }
                 }
             }
@@ -192,7 +184,7 @@ class EntityManager implements EntityManagerInterface
      * @param array $properties
      * @return void
      */
-    protected function update(object $entityObject, array $properties)
+    private function update(object $entityObject, array $properties)
     {
         $sql = sprintf('UPDATE %s SET %s WHERE id = ?',
           $entityObject->tableName(),
@@ -208,7 +200,7 @@ class EntityManager implements EntityManagerInterface
      * @param array $properties
      * @return string
      */
-    protected function assignColumn(array $properties)
+    private function assignColumn(array $properties)
     {
         $affected = [];
         foreach (array_keys($properties) as $column)
@@ -226,7 +218,7 @@ class EntityManager implements EntityManagerInterface
      * @param array $properties
      * @return mixed
     */
-    protected function remove(object $entityObject, array $properties)
+    private function remove(object $entityObject, array $properties)
     {
         $sql = 'DELETE FROM '. $entityObject->tableName() .' WHERE id = :id';
         return $this->manager->execute($sql, ['id' => $properties['id']]);
@@ -234,30 +226,12 @@ class EntityManager implements EntityManagerInterface
 
 
     /**
-     * @return bool
-    */
-    protected function hasPersist()
-    {
-        return $this->recordType === 'PERSIST';
-    }
-
-    
-    /**
-     * @return bool
-    */
-    protected function hasDelete()
-    {
-        return $this->recordType === 'DELETE';
-    }
-
-
-    /**
      * @param object $entityObject
      * @param string $recordType 
    */
-    protected function collect(object $entityObject, string $recordType)
+    protected function collectByRecordType(object $entityObject, string $recordType)
     {
-        $this->objectCollections[$recordType][] = $entityObject;
+        $this->objectRegistries[$recordType][] = $entityObject;
     }
 
 

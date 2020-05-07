@@ -33,4 +33,12 @@ interface QueryManagerInterface
      */
      public function getResults();
 
+
+     /** @return int */
+     public function count();
+
+
+     /** @return int */
+     public function lastId();
+
 }
