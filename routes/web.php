@@ -7,7 +7,12 @@
 */
 
 
-Route::get('/', 'SiteController@index', 'app.home');
+Route::get('/', 'SiteController@index', 'app.home')
+->middleware([
+    App\Middlewares\DemoMiddleware::class,
+    App\Middlewares\PageNotFoundMiddleware::class
+]);
+
 Route::get('/about', 'SiteController@about', 'app.about');
 Route::map('GET|POST', '/contact', 'SiteController@contact', 'app.contact');
 
