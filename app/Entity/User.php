@@ -45,6 +45,16 @@ class User
         return $this->id;
     }
 
+    // just for testing something
+    // in realtime we don't need to set id
+    // because id autoincremented generally
+    public function setId(?int $id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
 
     /**
      * @return string

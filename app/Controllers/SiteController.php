@@ -38,7 +38,8 @@ class SiteController extends BaseController
     public function about(EntityManager $entityManager): Response
     {
         $user = new User();
-        $user->setName('jean')
+        $user->setId(1)
+            ->setName('jean')
              ->setEmail('jeanyao@ymail.com')
              ->setAddress('Kurgan, volodorskovo 38')
              ->setRole('user');

@@ -53,7 +53,7 @@ class EntityManager implements EntityManagerInterface
     */
     public function persist(object $entityObject)
     {
-        $reflectedObject = new \ReflectionObject($entityObject);
+        $reflectedObject = new \ReflectionClass($entityObject);
         $this->entityMapped = $reflectedObject->getName();
 
         foreach($reflectedObject->getProperties() as $property)
@@ -80,10 +80,11 @@ class EntityManager implements EntityManagerInterface
 
          dump($this->properties, $this->fills);
 
-         if($this->properties['id'])
+         if(isset($this->fills['id']))
          {
              $this->update();
          } else{
+
              $this->insert();
          }
     }
@@ -91,12 +92,12 @@ class EntityManager implements EntityManagerInterface
 
     public function insert()
     {
-         //
+         dump('Insert data');
     }
 
 
     public function update()
     {
-         //
+        dump('Update data');
     }
 }
