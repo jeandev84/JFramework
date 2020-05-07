@@ -27,8 +27,8 @@ class SiteController extends BaseController
     public function index(UserRepository $userRepository): Response
     {
         // dump($userRepository->findAll());
-
         // dump(User::findAll());
+
 
         return $this->render('site/home.php', compact('users'));
     }
@@ -43,12 +43,13 @@ class SiteController extends BaseController
     {
         $user = new User();
         $user->setId(1)
-            ->setName('jean')
-             ->setEmail('jeanyao@ymail.com')
-             ->setAddress('Kurgan, volodorskovo 38')
-             ->setRole('user');
+              ->setName('user123')
+              ->setEmail('user123@site.com')
+              ->setPassword(password_hash('secret123', PASSWORD_BCRYPT))
+              ->setAddress('Moscou , golovinskoe dom 8 2a')
+              ->setRole('admin');
 
-//        dd($user);
+
         $entityManager->persist($user);
         $entityManager->flush();
 
@@ -66,6 +67,28 @@ class SiteController extends BaseController
         return $this->render('site/contact.php');
     }
 
+
+    /**
+     * @param EntityManager $entityManager
+     * @return Response
+     * @throws Exception
+    */
+    public function createNewUser(EntityManager $entityManager): Response
+    {
+        $user = new User();
+        $user->setId(1)
+            ->setName('user123')
+            ->setEmail('user123@site.com')
+            ->setPassword(password_hash('secret123', PASSWORD_BCRYPT))
+            ->setAddress('Moscou , golovinskoe dom 8 2a')
+            ->setRole('admin');
+
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return $this->render('site/about.php');
+    }
 
     /*
     public function demo(UserRepository $userRepository): Response

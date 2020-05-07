@@ -15,7 +15,10 @@ use Jan\Component\Database\Contracts\DatabaseInterface;
 class DriverManager
 {
 
-     /** @var string [ Current driver ] */
+     /**
+      * @var string
+      * [ Current driver ]
+     */
      private $driver;
 
 

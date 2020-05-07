@@ -9,14 +9,8 @@ use Jan\Component\Database\ORM\Model;
  * Class User
  * @package App\Entity
 */
-class User
+class User extends Model
 {
-
-    /**
-     * @var string
-    */
-    //private $table = 'users';
-
 
     /** @var int */
     private $id;
@@ -24,10 +18,6 @@ class User
 
     /** @var string */
     private $name;
-
-
-    /** @var string */
-    private $password;
 
 
     /** @var string */
@@ -42,10 +32,6 @@ class User
     private $role;
 
 
-    /** @var  */
-    private $deleted_at = null;
-
-
     /**
      * User constructor.
     */
@@ -55,9 +41,9 @@ class User
     }
 
     /**
-     * @return null|int
+     * @return int
     */
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -91,25 +77,6 @@ class User
         $this->name = $name;
         return $this;
     }
-
-    /**
-     * @return string
-     */
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
-
-    /**
-     * @param string $password
-     * @return User
-     */
-    public function setPassword(string $password): User
-    {
-        $this->password = $password;
-        return $this;
-    }
-
 
     /**
      * @return string
@@ -165,29 +132,4 @@ class User
         return $this;
     }
 
-    public function tableName()
-    {
-        return 'users';
-    }
-
-
-    /**
-     * @param $deletedAt
-     * @return $this
-     */
-    public function setDeletedAt($deletedAt)
-    {
-        $this->deleted_at = $deletedAt;
-
-        return $this;
-    }
-
-
-    /**
-     * @return null
-    */
-    public function getDeletedAt()
-    {
-        return $this->deleted_at;
-    }
 }

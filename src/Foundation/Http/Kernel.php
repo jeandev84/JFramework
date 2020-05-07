@@ -68,7 +68,16 @@ abstract class Kernel implements HttpKernelContract
 
         } catch (\Exception $e) {
 
-            die($e->getMessage());
+            // TODO Implement Error Handler
+            echo '<div class=""><h2>Fatal error</h2>';
+            echo '<b>Message</b> : '. $e->getMessage().'<br>';
+            echo '<b>Code</b> : '. $e->getCode().'<br>';
+            echo '<b>Line</b> : '. $e->getLine().'<br>';
+            echo '<b>File path</b> : '. $e->getFile().'<br>';
+            echo '<b>Trace String</b> : '. $e->getTraceAsString().'<br>';
+            // echo 'Trace : '. dump($e->getTrace());
+            echo '</div>';
+            exit('Something want wrong!');
 
             // Get new instance of error Handler and new ErrorHandler($e)
         }

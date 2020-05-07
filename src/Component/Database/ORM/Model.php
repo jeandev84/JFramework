@@ -2,6 +2,8 @@
 namespace Jan\Component\Database\ORM;
 
 
+use Jan\Component\Database\Contracts\QueryManagerInterface;
+
 /**
  * Class Model
  * @package Jan\Component\Database\ORM
@@ -9,8 +11,7 @@ namespace Jan\Component\Database\ORM;
 class Model implements \ArrayAccess
 {
 
-
-     use ActiveRecord;
+     // use ActiveRecord;
 
 
      /** @var string */
@@ -28,6 +29,29 @@ class Model implements \ArrayAccess
      /** @var array  */
      protected $guard = ['id'];
 
+
+     /** @var EntityManager */
+     protected $entityManager;
+
+
+     /**
+      * Model constructor.
+      * @param EntityManager $entityManager
+     */
+     public function __construct(EntityManager $entityManager)
+     {
+          $this->entityManager = $entityManager;
+     }
+
+
+     /**
+      *
+     */
+     public function save()
+     {
+         $this->entityManager->persist($this);
+         $this->flush();
+     }
 
 
      /**

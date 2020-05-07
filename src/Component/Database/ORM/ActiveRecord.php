@@ -40,7 +40,7 @@ trait ActiveRecord
      * EntityRepository constructor.
      * @param QueryManagerInterface $manager
      * @param string|null $entityClass
-     */
+    */
     public function __construct(QueryManagerInterface $manager, string $entityClass = null)
     {
         $this->manager = $manager;
@@ -172,15 +172,6 @@ trait ActiveRecord
     }
 
 
-    /**
-     * Determine if has new record
-     * @return bool
-    */
-    protected function isNewRecord()
-    {
-       return property_exists($this, 'id') && is_null($this->id);
-    }
-
 
     /**
      * @param string $sql
@@ -196,63 +187,6 @@ trait ActiveRecord
         }
 
         return $sql;
-    }
-
-
-    /** TODO Refactor */
-
-
-    /**
-     * @param array $propertiesFromDb
-     * @return string
-     */
-    protected function update(array $propertiesFromDb)
-    {
-        return 'Updated!';
-    }
-
-
-    /**
-     * @param array $propertiesFromDb
-     * @return string
-     */
-    protected function insert(array $propertiesFromDb)
-    {
-        return 'Inserted!';
-    }
-
-
-    /**
-     * Save data to the database
-     */
-    public function save()
-    {
-        $mappedProperties = $this->mapProperties();
-
-        if(! $this->isNewRecord())
-        {
-            return $this->update($mappedProperties);
-        }else{
-            return $this->insert($mappedProperties);
-        }
-    }
-
-
-    /**
-     * @throws \ReflectionException
-     */
-    public function mapProperties()
-    {
-        $reflectedObject = new \ReflectionObject($this);
-
-        $properties = [];
-        foreach ($reflectedObject->getProperties() as $property)
-        {
-            $propertyName = $property->getName();
-            $properties[$propertyName] = $property->getValue($this);
-        }
-
-        return $properties;
     }
 
 
