@@ -15,11 +15,17 @@ class RouteParam
 
 
      /**
-      * RouteManager constructor.
-      * @param array $route
+       * RouteManager constructor.
+       * @param array $route
+       * @throws \Exception
      */
       public function __construct($route)
       {
+           if(! $route)
+           {
+               throw new \Exception('Route not found!', 404);
+           }
+
            $this->route = $route;
       }
 

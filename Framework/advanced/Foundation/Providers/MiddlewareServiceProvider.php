@@ -19,7 +19,6 @@ class MiddlewareServiceProvider extends AbstractServiceProvider
     public function register()
     {
          $this->container->singleton(MiddlewareStack::class, function () {
-
              return new MiddlewareStack();
          });
     }

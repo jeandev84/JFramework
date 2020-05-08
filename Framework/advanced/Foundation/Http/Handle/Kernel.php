@@ -1,5 +1,5 @@
 <?php
-namespace Jan\Foundation\Http;
+namespace Jan\Foundation\Http\Handle;
 
 
 use Jan\Component\Database\Contracts\QueryManagerInterface;
@@ -14,20 +14,20 @@ use Jan\Foundation\RouteDispatcher;
 
 /**
  * Class Kernel
- * @package Jan\Foundation\Http
+ * @package Jan\Foundation\Http\Handle
  */
 abstract class Kernel implements HttpKernelContract
 {
 
     /**
      * @var array
-    */
+     */
     protected $middlewares = [];
 
 
     /**
      * @var array
-    */
+     */
     protected $routeMiddlewares = [];
 
 
@@ -38,47 +38,58 @@ abstract class Kernel implements HttpKernelContract
     /**
      * Kernel constructor.
      * @param ContainerInterface $container
-    */
+     */
     public function __construct(ContainerInterface $container)
     {
-          $this->container = $container;
-          $this->loadEnvironments();
+        $this->container = $container;
+        $this->loadEnvironments();
     }
 
     /**
      * @param RequestInterface $request
      * @return ResponseInterface
      * @throws \ReflectionException
-    */
+     */
     public function handle(RequestInterface $request): ResponseInterface
     {
         try {
 
-            $dispatcher = $this->container->get(RouteDispatcher::class);
+            // TODO implement create a service provider for Dispatching route
+            // and call this service here like :
+            // $response = $this->container->get(RouteDispatcher::class);
+            /* $router = $this->container['router']; */
+            $router = $this->container->get('router');
+            $route = $router->match($request->getMethod(), $request->getUri());
+            $dispatcher = new RouteDispatcher(new RouteParam($route));
+
+            // To add stack merge middlewares
+            $dispatcher->setContainer($this->container);
             $dispatcher->addMiddlewares(array_merge($this->middlewares, $this->routeMiddlewares));
+
+            // return instance of ResponseInterface
             $response = $dispatcher->callAction();
 
         } catch (\Exception $e) {
 
-             $debug = getenv('APP_DEBUG');
+            $debug = getenv('APP_DEBUG');
 
-             # Tres important de comparer au string "true" de la sorte
-             if($debug == "true")
-             {
-                 $this->displayError($e);
+            # Tres important de comparer au string "true" de la sorte
+            if($debug == "true")
+            {
+                $this->displayError($e);
 
-             }else{
+            }else{
 
-                 $response = $this->container->get(ResponseInterface::class);
-                 $viewObject = $this->container->get('view');
-                 $template = $viewObject->render('errors/'. $e->getCode() . '.php', compact('e'));
-                 # templates/errors/404.php
-                 # templates/errors/400.php
-                 # templates/errors/500.php
+                $response = $this->container->get(ResponseInterface::class);
+                $viewObject = $this->container->get('view');
+                $template = $viewObject->render('errors/'. $e->getCode() . '.php', compact('e'));
+                # templates/errors/404.php
+                # templates/errors/400.php
+                # templates/errors/500.php
 
-                 $response->withStatus($e->getCode())
-                          ->withBody($template);
-             }
+                $response->withStatus($e->getCode())
+                    ->withBody($template);
+            }
 
             // Get new instance of error Handler and new ErrorHandler($e)
         }
@@ -114,13 +125,13 @@ abstract class Kernel implements HttpKernelContract
 
     /**
      * Load environment variables
-    */
+     */
     protected function loadEnvironments()
     {
         try {
 
             $dotenv = (new Env($this->container->get('base.path')))
-                      ->load();
+                ->load();
 
         } catch (\Exception $e) {
             exit($e->getMessage());
@@ -130,7 +141,7 @@ abstract class Kernel implements HttpKernelContract
 
     /**
      * @param \Exception $e
-    */
+     */
     protected function displayError(\Exception $e)
     {
         // TODO Implement Error Handler

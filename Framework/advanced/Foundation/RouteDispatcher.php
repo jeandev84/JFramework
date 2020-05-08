@@ -41,7 +41,7 @@ class RouteDispatcher
      */
      public function __construct(RouteParam $route)
      {
-         $this->route = $route;
+          $this->route = $route;
      }
 
 
@@ -84,26 +84,18 @@ class RouteDispatcher
 
 
      /**
-      * @return mixed
-     */
-     public function getResponse()
-     {
-         return $this->container->get(ResponseInterface::class);
-     }
-
-
-     /**
       * @return ResponseInterface
       * @throws ReflectionException
      */
      public function callAction(): ResponseInterface
      {
-         // Run middlewares
+         // Run all stack middlewares of application
          $response = $this->runStackRouteMiddlewares();
 
+         // Get Response
          if(! $response instanceof ResponseInterface)
          {
-             $response = $this->getResponse();
+             $response = $this->container->get(ResponseInterface::class);
          }
 
          $target = $this->route->getTarget();
@@ -154,22 +146,7 @@ class RouteDispatcher
          {
              $reflectedMethod = new ReflectionMethod($controllerClass, $action);
              $methodParams = $this->resolveActionParams($reflectedMethod);
-
-             $response =  call_user_func_array([$controllerObjectResolved, $action], $methodParams);
-
-             /*
-             if(! $response instanceof ResponseInterface)
-             {
-                 exit(
-                     sprintf('Method (%s) of controller (%s) must to return instance of Response',
-                     $controllerClass,
-                     $action
-                     )
-                 );
-             }
-             */
-
-             return $response;
+             return call_user_func_array([$controllerObjectResolved, $action], $methodParams);
          }
      }
 
