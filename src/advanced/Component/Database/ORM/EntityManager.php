@@ -4,7 +4,7 @@ namespace Jan\Component\Database\ORM;
 
 use Jan\Component\Database\Contracts\EntityManagerInterface;
 use Jan\Component\Database\Contracts\QueryManagerInterface;
-use Jan\Component\Database\Statement;
+
 
 
 /**
@@ -31,6 +31,7 @@ class EntityManager implements EntityManagerInterface
 
     /**
      * EntityManager constructor.
+     *
      * @param QueryManagerInterface $manager
     */
     public function __construct(QueryManagerInterface $manager)
@@ -122,13 +123,13 @@ class EntityManager implements EntityManagerInterface
 
             $this->manager->getConnection()->beginTransaction();
 
-            foreach ($this->objectRegistries as $record => $objects)
+            foreach ($this->objectRegistries as $recordType => $objects)
             {
                 foreach ($objects as $object)
                 {
                     $properties = $this->mapClassProperties($object);
 
-                    if($record === 'PERSIST')
+                    if($recordType === 'PERSIST')
                     {
                         if(! is_null($this->getId($properties)))
                         {
@@ -138,7 +139,7 @@ class EntityManager implements EntityManagerInterface
                         }
                     }
 
-                    if($record === 'DELETE')
+                    if($recordType === 'DELETE')
                     {
                         $this->remove($object, $properties);
                     }
@@ -163,7 +164,7 @@ class EntityManager implements EntityManagerInterface
      * @param object $entityObject
      * @param array $properties
      * @return
-     */
+    */
     protected function insert(object $entityObject, array $properties)
     {
         $sql = sprintf('INSERT INTO `%s`(%s) VALUES (%s)',
@@ -199,8 +200,8 @@ class EntityManager implements EntityManagerInterface
     /**
      * @param array $properties
      * @return string
-     */
-    private function assignColumn(array $properties)
+    */
+    protected function assignColumn(array $properties)
     {
         $affected = [];
         foreach (array_keys($properties) as $column)
@@ -218,7 +219,7 @@ class EntityManager implements EntityManagerInterface
      * @param array $properties
      * @return mixed
     */
-    private function remove(object $entityObject, array $properties)
+    protected function remove(object $entityObject, array $properties)
     {
         $sql = 'DELETE FROM '. $entityObject->tableName() .' WHERE id = :id';
         return $this->manager->execute($sql, ['id' => $properties['id']]);

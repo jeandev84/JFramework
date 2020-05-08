@@ -57,7 +57,7 @@ abstract class Kernel implements HttpKernelContract
         try {
 
             $dispatcher = $this->container->get(RouteDispatcher::class);
-            $dispatcher->addMiddlewares(array_merge($this->middlewares, $this->routeMiddlewares));
+            $dispatcher->addMiddlewares($this->getMiddlewares());
             $response = $dispatcher->callAction();
 
         } catch (\Exception $e) {
@@ -127,6 +127,18 @@ abstract class Kernel implements HttpKernelContract
         } catch (\Exception $e) {
             exit($e->getMessage());
         }
+    }
+
+
+    /**
+     * @return array
+    */
+    protected function getMiddlewares()
+    {
+        return array_merge(
+            $this->middlewares,
+            $this->routeMiddlewares
+        );
     }
 
 

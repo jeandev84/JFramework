@@ -1,18 +1,16 @@
 <?php
-namespace Jan\Component\Helpers\Serialise;
-
-
+namespace Jan\Component\Helpers;
 
 
 /**
  * Class Serialiser
- * @package Jan\Component\Helpers\Serialise
+ * @package Jan\Component\Helpers
 */
 class Serialiser
 {
 
      /** @var array  */
-     protected $cache = [];
+     protected static $cache = [];
 
 
      /**
@@ -20,39 +18,40 @@ class Serialiser
       * @param $context
       * @return string
      */
-     public function serialise($name, $context)
+     public static function serialise($name, $context)
      {
-         $this->cache[$name] = serialize($context);
+         self::$cache[$name] = serialize($context);
      }
 
      /**
       * @param $name
       * @return bool
      */
-     public function serialised($name)
+     public static function serialised($name)
      {
-         return isset($this->cache[$name]);
+         return isset(self::$cache[$name]);
      }
 
-    /**
-     * @param $name
-     * @return mixed
-     * @throws \Exception
+     /**
+      * @param $name
+      * @return mixed
+      * @throws \Exception
      */
-     public function deserialise($name)
+     public static function deserialise($name)
      {
-          if(! $this->serialised($name))
+          if(! self::serialised($name))
           {
-             $this->abortIf(sprintf('This name %s is not serialized!', $name));
+             self::abortIf(sprintf('This name %s is not serialized!', $name));
           }
-          return unserialize($this->cache[$name]);
+
+          return unserialize(self::$cache[$name]);
      }
 
      /**
       * @param $message
       * @throws \Exception
      */
-     protected function abortIf($message)
+     protected static function abortIf($message)
      {
          throw new \Exception($message);
      }
@@ -73,13 +72,13 @@ $user->setName('jean');
 $user->setEmail('jeanyao@ymail.com');
 $user->setPassword('secret');
 
-$serialiser = new Serialiser();
-$serialiser->serialise('user.id', $user);
+Serializer::serialise('user.id', $user);
 
 try {
 
-    $context = $serialiser->deserialise('user.id');
+    $context = Serializer::deserialise('user.id');
     dump($context);
+
 } catch (\Exception $e) {
 
     dump($e->getMessage());

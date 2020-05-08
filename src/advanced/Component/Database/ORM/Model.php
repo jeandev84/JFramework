@@ -5,6 +5,7 @@ namespace Jan\Component\Database\ORM;
 use Jan\Component\Database\Contracts\EntityManagerInterface;
 use Jan\Component\Database\Contracts\QueryManagerInterface;
 
+
 /**
  * Class Model
  * @package Jan\Component\Database\ORM

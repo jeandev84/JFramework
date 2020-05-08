@@ -23,6 +23,7 @@ interface EntityManagerInterface
     public function delete(object $object);
 
 
+
     /** save data */
     public function flush();
 }
