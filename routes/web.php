@@ -60,7 +60,7 @@ Route::group($options, function () {
     Route::get('/cart', 'Ajax\\CartController@index', 'ajax.cart.index');
     Route::get('/cart/add', 'Ajax\\CartController@add', 'ajax.cart.add');
     Route::get('/product', 'Ajax\\ProductController@index', 'ajax.product.list');
-    Route::get('/product/add', 'Ajax\\ProductController@index', 'ajax.product.list');
+    Route::get('/product/add', 'Ajax\\ProductController@add', 'ajax.product.create');
 });
 
 
