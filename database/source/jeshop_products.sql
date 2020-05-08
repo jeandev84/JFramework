@@ -1,0 +1,50 @@
+create table products
+(
+    product_id       int(100) auto_increment
+        primary key,
+    product_cat      int(100)     not null,
+    product_brand    int(100)     not null,
+    product_title    varchar(255) not null,
+    product_price    int(100)     not null,
+    product_desc     text         not null,
+    product_image    text         not null,
+    product_keywords text         not null
+);
+
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (1, 1, 2, 'Samsung Dous 2', 5000, 'Samsung Dous 2 sgh ', 'samsung mobile.jpg', 'samsung mobile electronics');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (2, 1, 3, 'iPhone 5s', 25000, 'iphone 5s', 'iphone mobile.jpg', 'mobile iphone apple');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (3, 1, 3, 'iPad', 30000, 'ipad apple brand', 'ipad.jpg', 'apple ipad tablet');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (4, 1, 3, 'iPhone 6s', 32000, 'Apple iPhone ', 'iphone.jpg', 'iphone apple mobile');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (5, 1, 2, 'iPad 2', 10000, 'samsung ipad', 'ipad 2.jpg', 'ipad tablet samsung');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (6, 1, 1, 'Hp Laptop r series', 35000, 'Hp Red and Black combination Laptop', 'k2-_ed8b8f8d-e696-4a96-8ce9-d78246f10ed1.v1.jpg-bc204bdaebb10e709a997a8bb4518156dfa6e3ed-optim-450x450.jpg', 'hp laptop ');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (7, 1, 1, 'Laptop Pavillion', 50000, 'Laptop Hp Pavillion', '12039452_525963140912391_6353341236808813360_n.png', 'Laptop Hp Pavillion');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (8, 1, 4, 'Sony', 40000, 'Sony Mobile', 'sony mobile.jpg', 'sony mobile');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (9, 1, 3, 'iPhone New', 12000, 'iphone', 'white iphone.png', 'iphone apple mobile');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (10, 2, 6, 'Red Ladies dress', 1000, 'red dress for girls', 'red dress.jpg', 'red dress ');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (11, 2, 6, 'Blue Heave dress', 1200, 'Blue dress', 'images.jpg', 'blue dress cloths');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (12, 2, 6, 'Ladies Casual Cloths', 1500, 'ladies casual summer two colors pleted', '7475-ladies-casual-dresses-summer-two-colors-pleated.jpg', 'girl dress cloths casual');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (13, 2, 6, 'SpringAutumnDress', 1200, 'girls dress', 'Spring-Autumn-Winter-Young-Ladies-Casual-Wool-Dress-Women-s-One-Piece-Dresse-Dating-Clothes-Medium.jpg_640x640.jpg', 'girl dress');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (14, 2, 6, 'Casual Dress', 1400, 'girl dress', 'download.jpg', 'ladies cloths girl');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (15, 2, 6, 'Formal Look', 1500, 'girl dress', 'shutterstock_203611819.jpg', 'ladies wears dress girl');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (16, 3, 6, 'Sweter for men', 600, '2012-Winter-Sweater-for-Men-for-better-outlook', '2012-Winter-Sweater-for-Men-for-better-outlook.jpg', 'black sweter cloth winter');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (17, 3, 6, 'Gents formal', 1000, 'gents formal look', 'gents-formal-250x250.jpg', 'gents wear cloths');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (19, 3, 6, 'Formal Coat', 3000, 'ad', 'images (1).jpg', 'coat blazer gents');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (20, 3, 6, 'Mens Sweeter', 1600, 'jg', 'Winter-fashion-men-burst-sweater.png', 'sweeter gents ');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (21, 3, 6, 'T shirt', 800, 'ssds', 'IN-Mens-Apparel-Voodoo-Tiles-09._V333872612_.jpg', 'formal t shirt black');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (22, 4, 6, 'Yellow T shirt ', 1300, 'yello t shirt with pant', '1.0x0.jpg', 'kids yellow t shirt');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (23, 4, 6, 'Girls cloths', 1900, 'sadsf', 'GirlsClothing_Widgets.jpg', 'formal kids wear dress');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (24, 4, 6, 'Blue T shirt', 700, 'g', 'images.jpg', 'kids dress');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (25, 4, 6, 'Yellow girls dress', 750, 'as', 'images (3).jpg', 'yellow kids dress');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (26, 4, 6, 'Skyblue dress', 650, 'nbk', 'kids-wear-121.jpg', 'skyblue kids dress');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (27, 4, 6, 'Formal look', 690, 'sd', 'image28.jpg', 'formal kids dress');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (32, 5, 0, 'Book Shelf', 2500, 'book shelf', 'furniture-book-shelf-250x250.jpg', 'book shelf furniture');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (33, 6, 2, 'Refrigerator', 35000, 'Refrigerator', 'CT_WM_BTS-BTC-AppliancesHome_20150723.jpg', 'refrigerator samsung');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (34, 6, 4, 'Emergency Light', 1000, 'Emergency Light', 'emergency light.JPG', 'emergency light');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (35, 6, 0, 'Vaccum Cleaner', 6000, 'Vaccum Cleaner', 'images (2).jpg', 'Vaccum Cleaner');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (36, 6, 5, 'Iron', 1500, 'gj', 'iron.JPG', 'iron');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (37, 6, 5, 'LED TV', 20000, 'LED TV', 'images (4).jpg', 'led tv lg');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (38, 6, 4, 'Microwave Oven', 3500, 'Microwave Oven', 'images.jpg', 'Microwave Oven');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (39, 6, 5, 'Mixer Grinder', 2500, 'Mixer Grinder', 'singer-mixer-grinder-mg-46-medium_4bfa018096c25dec7ba0af40662856ef.jpg', 'Mixer Grinder');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (40, 2, 6, 'Formal girls dress', 3000, 'Formal girls dress', 'girl-walking.jpg', 'ladies');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (45, 1, 2, 'Samsung Galaxy Note 3', 10000, '0', 'samsung_galaxy_note3_note3neo.JPG', 'samsung galaxy Note 3 neo');
+INSERT INTO jeshop.products (product_id, product_cat, product_brand, product_title, product_price, product_desc, product_image, product_keywords) VALUES (46, 1, 2, 'Samsung Galaxy Note 3', 10000, '', 'samsung_galaxy_note3_note3neo.JPG', 'samsung galxaxy note 3 neo');

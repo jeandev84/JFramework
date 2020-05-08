@@ -6,56 +6,40 @@
  | -----------------------------------------------------------------
 */
 
-
-Route::get('/', 'SiteController@index', 'app.home')
-->middleware([
-    App\Middlewares\DemoMiddleware::class,
-    App\Middlewares\PageNotFoundMiddleware::class
-]);
-
-Route::get('/about', 'SiteController@about', 'app.about');
-Route::map('GET|POST', '/contact', 'SiteController@contact', 'app.contact');
+# Home
+Route::map('GET|POST', '/', 'HomeController@index', 'home');
 
 
 
-Route::get('/articles', 'ArticleController@index', 'article.list');
-Route::get('/article/{slug}/{id}', 'ArticleController@show', 'article.show');
-Route::map('GET|POST', '/article/{id}/edit', 'ArticleController@edit', 'article.edit');
-
-
-Route::map('GET|POST', '/auth/login', 'Auth\\LoginController@index', 'auth.login');
-Route::map('GET|POST', '/auth/register', 'Auth\\RegisterController@index', 'auth.register');
-Route::get('/auth/logout', 'Auth\\LogoutController@index', 'auth.logout');
-
-
-Route::get('GET', '/user/profile', 'ProfileController@index', 'user.profile');
+# Product
+Route::get('/product', 'ProductController@index', 'product.list');
 
 
 
-/**
-$options = ['middleware' => [
-  'App\Middleware\Authenticate',
-  'App\Middleware\NotValidCredentials'
-  ]
+# Category
+Route::get('/category', 'CategoryController@index', 'category.list');
+
+
+
+
+# Cart
+Route::get('/cart', 'CartController@index', 'cart');
+
+
+# Auth
+$options = [
+  'prefix' => 'auth/',
+  'namespace' => 'Auth'
 ];
 
-Route::group($options , function () {
+Route::group($options, function () {
 
-    Route::get('/auth', function () {
-
-        echo 'Auth::run';
-
-    }, 'auth');
-
+    Route::get('/signin/', 'SigninController@index', 'auth.signin');
+    Route::get('/signup/', 'SignupController@index', 'auth.signup');
 });
 
 
-Route::get('/api', function () {
+Route::get('/logout', 'LogoutController@index', 'logout');
 
-    return 'Api::run';
 
-}, 'api')->middleware([
-    'App\Middleware\NoValidKey'
-]);
-
-*/
+//dd(Route::collections());

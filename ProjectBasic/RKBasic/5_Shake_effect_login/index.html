@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Your Website</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="style.css" type="text/css" />
+<script type="text/javascript"></script>
+</head>
+
+<body>
+
+<div class="login-form">
+	<div class="login-face"><img src="login_face.png"></div>
+	<section class="form">
+		<form>
+			<div class="input uname">
+				<input type="text" id="username" placeholder="Username" required/>
+				<i class="fa fa-user"></i>
+			</div>
+			<div class="input pass">
+				<input type="password" id="password" placeholder="Password" required/>
+				<i class="fa fa-lock"></i>
+			</div>
+			<a href="#" style="float:right;color:gray;font-size:14px;text-decoration:none;
+			font-family:san-serif,Arial;margin-bottom:10px;">Lost Your Password?</a>
+			<p class="error-msg">Wrong Credential</p>
+			<div>
+				<input type="submit" id="login" value="Log in"  />
+			</div>
+			
+		</form>
+	</section>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#login").click(function(){
+		if($("#username").val() == ""){
+			$(".input").addClass("error");
+			$("#username").css({"border":"2px solid red"});
+		}
+		if($("#password").val() == ""){
+			$(".pass").addClass("error");
+		}
+
+	})
+	$(".input").click(function(){
+		$(".input").removeClass("error");
+		$("#username").css({"border":"2px solid #ddd"});
+	})
+})
+</script>
+
+</body>
+</html>

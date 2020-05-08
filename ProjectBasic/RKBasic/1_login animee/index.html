@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Your Website</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="style.css" type="text/css" />
+<script type="text/javascript"></script>
+</head>
+
+<body>
+
+<div class="login-form">
+	<div class="front-face">
+		<span class="text">LOGIN</span>
+		<span class="loader"></span>
+	</div>
+	<form>	
+		<input type="text" placeholder="Username" class="input" required/>
+		<input type="password" placeholder="Password" class="input" required/>
+		<button class="input-btn"></button>
+	</form>
+</div>
+
+</body>
+</html>
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".input").on("focus",function(){
+		$(".login-form").addClass("focused");
+	})
+	$(".input-btn").on("click",function(e){
+		e.preventDefault();
+		$(".login-form").removeClass("focused").addClass("loading");
+	})
+})
+</script>

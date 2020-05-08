@@ -1,49 +1,98 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="<?= route('app.home') ?>">
-        <?= env('APP_NAME')?>
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarText">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="<?= route('app.home')?>">Home <span class="sr-only">(current)</span></a>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="<?= route('home') ?>" class="navbar-brand">
+                <?= env('APP_NAME')?>
+            </a>
+        </div>
+
+        <!-- left menu -->
+        <ul class="nav navbar-nav">
+            <li>
+                <a href="<?= route('home')?>">
+                    <span class="glyphicon glyphicon-home"></span>
+                    Home
+                </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?= route('app.about')?>">About</a>
+            <li>
+                <a href="<?= route('product.list')?>">
+                    <span class="glyphicon glyphicon-modal-window"></span>
+                    Product
+                </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?= route('app.contact')?>">Contact</a>
+            <li style="width: 300px;left: 10px;top: 10px;">
+                <input type="text" class="form-control" id="search">
             </li>
-            <li class="nav-item">
-                <a href="https://github.com/jeandev84/JFramework" class="nav-link" target="_blank">
-                    Github <i class="fa fa-github"></i>
+            <li style="top: 10px;left: 20px;">
+                <input type="submit" class="btn btn-primary" id="search_btn">
+            </li>
+        </ul>
+        <!--/-- end left menu -->
+
+        <!-- right menu -->
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <? //= route('cart')?>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-shopping-cart"></span>
+                    Cart <span class="badge">0</span>
+                </a>
+                <div class="dropdown-menu" style="width: 400px;">
+                     <div class="panel panel-success">
+                         <div class="panel-heading">
+                             <div class="row">
+                                 <!-- serial number -->
+                                 <div class="col-md-3">Sl.No</div>
+                                 <div class="col-md-3">Product Image</div>
+                                 <div class="col-md-3">Product Name</div>
+                                 <div class="col-md-3">Price in $.</div>
+                             </div>
+                         </div>
+                         <div class="panel-body"></div>
+                         <div class="panel-footer"></div>
+                     </div>
+                </div>
+            </li>
+            <li>
+                <? //= route('auth.signin')?>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-user"></span>
+                    Signin
+                </a>
+
+                <!-- Drop down -->
+                <ul class="dropdown-menu">
+                   <div style="width:300px;">
+                       <div class="panel panel-primary">
+                           <div class="panel-heading">Login</div>
+                           <div class="panel-heading">
+                               <label for="email">
+                                   Email
+                               </label>
+                               <input type="email" class="form-control" id="email" required>
+                               <label for="password">Password</label>
+                               <input type="password" class="form-control" id="password" required>
+                               <p><br></p>
+                               <a href="#" style="color: white; list-style: none;">Forgetten Password</a>
+                               <input type="submit" class="btn btn-success" style="float: right;" id="login" value="Login">
+                           </div>
+                           <div class="panel-info" id="e_msg"></div>
+                       </div>
+                   </div>
+                </ul>
+                <!--/ end Drop down -->
+            </li>
+            <li>
+                <a href="<?= route('auth.signup')?>">
+                    <span class="glyphicon glyphicon-user"></span>
+                    Signup
                 </a>
             </li>
         </ul>
-        <ul class="navbar-nav"">
+        <!--/-- end right menu -->
 
-         <!-- momently it will be implement after authentication functonnalities -->
-          <?php if(false): ?>
-            <!-- if user login -->
-            <li class="nav-item">
-               <a class="nav-link" href="<?= route('user.profile') ?>">Profile [ Hi!, Yao ]</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?= route('auth.logout') ?>">Logout</a>
-            </li>
-          <?php endif; ?>
-            <!-- / end user login -->
-
-            <!-- if ! user does not login -->
-            <li class="nav-item">
-               <a class="nav-link" href="<?= route('auth.login')?>">Login</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?= route('auth.register') ?>">Register</a>
-            </li>
-            <!-- /end not login -->
-        </ul>
     </div>
-</nav>
+</div>
+<p><br></p>
+<p><br></p>
+<p><br></p>

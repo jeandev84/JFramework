@@ -16,7 +16,7 @@ class UserRepository extends EntityRepository
     /**
      * UserRepository constructor.
      * @param QueryManagerInterface $manager
-     */
+    */
     public function __construct(QueryManagerInterface $manager)
     {
         parent::__construct($manager, User::class);

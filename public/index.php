@@ -8,7 +8,7 @@
 */
 
 
-require_once realpath(__DIR__ .'/../vendor/autoload.php');
+require_once realpath(__DIR__ . '/../vendor/autoload.php');
 
 
 
@@ -18,7 +18,7 @@ require_once realpath(__DIR__ .'/../vendor/autoload.php');
 |-------------------------------------------------------
 */
 
-$app = require_once realpath(__DIR__.'/../bootstrap/app.php');
+$app = require_once realpath(__DIR__ . '/../bootstrap/app.php');
 
 
 
@@ -43,6 +43,7 @@ $response = $kernel->handle(
 );
 
 
+//dump($response);
 
 /*
 |-------------------------------------------------------

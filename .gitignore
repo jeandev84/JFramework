@@ -1,6 +1,3 @@
 .idea
 vendor
-node_modules/*
-.env
-storage/*
-storage/Framework/*
+node_modules/

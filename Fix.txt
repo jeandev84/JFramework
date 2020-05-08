@@ -1,0 +1,7 @@
+1. Fix named route
+if route does not isset show error message
+
+if(! isset(self::$namedRoutes[$name]))
+{
+   throw new Exception('This route name does not exist');
+}
