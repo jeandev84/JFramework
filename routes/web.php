@@ -28,7 +28,7 @@ Route::map('GET|POST', '/auth/register', 'Auth\\RegisterController@index', 'auth
 Route::get('/auth/logout', 'Auth\\LogoutController@index', 'auth.logout');
 
 
-Route::get('GET', '/user/profile', 'ProfileController@index', 'user.profile');
+Route::get('/user/profile', 'ProfileController@index', 'user.profile');
 
 
 
