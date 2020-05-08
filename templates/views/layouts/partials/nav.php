@@ -25,7 +25,7 @@
         <ul class="navbar-nav"">
 
          <!-- momently it will be implement after authentication functonnalities -->
-          <?php if(false): ?>
+          <?php if(isset($_SESSION['auth'])): ?>
             <!-- if user login -->
             <li class="nav-item">
                <a class="nav-link" href="<?= route('user.profile') ?>">Profile [ Hi!, Yao ]</a>
@@ -37,12 +37,14 @@
             <!-- / end user login -->
 
             <!-- if ! user does not login -->
-            <li class="nav-item">
-               <a class="nav-link" href="<?= route('auth.login')?>">Login</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<?= route('auth.register') ?>">Register</a>
-            </li>
+           <?php if(! isset($_SESSION['auth'])): ?>
+               <li class="nav-item">
+                   <a class="nav-link" href="<?= route('auth.login')?>">Login</a>
+               </li>
+               <li class="nav-item">
+                   <a class="nav-link" href="<?= route('auth.register') ?>">Register</a>
+               </li>
+           <?php endif; ?>
             <!-- /end not login -->
         </ul>
     </div>
