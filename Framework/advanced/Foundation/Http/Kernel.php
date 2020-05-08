@@ -69,16 +69,25 @@ abstract class Kernel implements HttpKernelContract
 
         } catch (\Exception $e) {
 
-            // TODO Implement Error Handler
-            echo '<div class=""><h2>Fatal error</h2>';
-            echo '<b>Message</b> : '. $e->getMessage().'<br>';
-            echo '<b>Code</b> : '. $e->getCode().'<br>';
-            echo '<b>Line</b> : '. $e->getLine().'<br>';
-            echo '<b>File path</b> : '. $e->getFile().'<br>';
-            echo '<b>Trace String</b> : '. $e->getTraceAsString().'<br>';
-            // echo 'Trace : '. dump($e->getTrace());
-            echo '</div>';
-            exit('Something want wrong!');
+             $debug = getenv('APP_DEBUG');
+
+             # Tres important de comparer au string "true" de la sorte
+             if($debug == "true")
+             {
+                 $this->displayError($e);
+
+             }else{
+
+                 $response = $this->container->get(ResponseInterface::class);
+                 $viewObject = $this->container->get('view');
+                 $template = $viewObject->render('errors/'. $e->getCode() . '.php', compact('e'));
+                 # templates/errors/404.php
+                 # templates/errors/400.php
+                 # templates/errors/500.php
+
+                 $response->withStatus($e->getCode())
+                          ->withBody($template);
+             }
 
             // Get new instance of error Handler and new ErrorHandler($e)
         }
@@ -125,5 +134,23 @@ abstract class Kernel implements HttpKernelContract
         } catch (\Exception $e) {
             exit($e->getMessage());
         }
+    }
+
+
+    /**
+     * @param \Exception $e
+    */
+    protected function displayError(\Exception $e)
+    {
+        // TODO Implement Error Handler
+        echo '<div class=""><h2>Fatal error</h2>';
+        echo '<b>Message</b> : '. $e->getMessage().'<br>';
+        echo '<b>Code</b> : '. $e->getCode().'<br>';
+        echo '<b>Line</b> : '. $e->getLine().'<br>';
+        echo '<b>File path</b> : '. $e->getFile().'<br>';
+        echo '<b>Trace String</b> : '. $e->getTraceAsString().'<br>';
+        // echo 'Trace : '. dump($e->getTrace());
+        echo '</div>';
+        exit('Something want wrong!');
     }
 }
