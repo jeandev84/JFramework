@@ -101,6 +101,8 @@ class RouteDispatcher
          $target = $this->route->getTarget();
          $body = null;
 
+         //TODO Refactoring without Parse
+
          if($target instanceof \Closure)
          {
              $body = call_user_func($target, $this->route->getMatches());
