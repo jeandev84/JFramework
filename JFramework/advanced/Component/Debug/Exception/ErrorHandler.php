@@ -12,16 +12,16 @@ class ErrorHandler
 {
 
      /** @var Exception */
-     protected $error;
+     protected $exception;
 
 
      /**
       * ErrorHandler constructor.
-      * @param Exception $error
+      * @param Exception $exception
      */
-     public function __construct(Exception $error)
+     public function __construct(Exception $exception)
      {
-         $this->error = $error;
+          $this->exception = $exception;
      }
 
 
@@ -31,6 +31,9 @@ class ErrorHandler
 
 
      /** Log errors for development */
-     public function log() {}
+     public function log()
+     {
+         // error_log('');
+     }
 
 }

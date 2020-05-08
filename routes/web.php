@@ -45,6 +45,24 @@ Route::map('GET|POST', '/auth/register', 'Auth\\RegisterController@index', 'auth
 Route::get('/user/profile', 'ProfileController@index', 'user.profile');
 
 
+# Example
+$options = [
+  'prefix' => '',
+  'namespace' => 'Ajax',
+  'middleware' => [
+      App\Middlewares\isAjax::class
+  ]
+];
+
+Route::group($options, function () {
+
+    // This group will be called only by request xhr (ajax)
+    Route::get('/cart', 'Ajax\\CartController@index', 'ajax.cart.index');
+    Route::get('/cart/add', 'Ajax\\CartController@add', 'ajax.cart.add');
+    Route::get('/product', 'Ajax\\ProductController@index', 'ajax.product.list');
+    Route::get('/product/add', 'Ajax\\ProductController@index', 'ajax.product.list');
+});
+
 
 /**
 $options = ['middleware' => [

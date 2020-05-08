@@ -3,10 +3,7 @@ namespace Jan\Component\DependencyInjection\Exceptions;
 
 
 /**
- * Class NotResolveDependencyException
+ * Class InstanceException
  * @package Jan\Component\DependencyInjection\Exceptions
- */
-class ResolverDependencyException extends \Exception
-{
-
-}
+*/
+class InstanceException extends \Exception {}
