@@ -168,16 +168,19 @@ class RouteDispatcher
      */
      protected function resolveActionParams(ReflectionMethod $reflectionMethod)
      {
-         return $this->container->resolveMethodDependencies($reflectionMethod, $this->route->getMatches());
+         return $this->container->resolveMethodDependencies(
+             $reflectionMethod,
+             $this->route->getMatches()
+         );
      }
 
 
      /**
        * @return mixed
      */
-     private function runStackRouteMiddlewares()
+     protected function runStackRouteMiddlewares()
      {
-         $middlewareStack = $this->container->get(MiddlewareStack::class);
+         $middlewareStack = $this->container->get('middleware');
          if($middlewares = $this->middlewareStorage)
          {
              foreach ($middlewares as $middleware)
