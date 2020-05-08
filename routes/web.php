@@ -23,9 +23,23 @@ Route::get('/article/{slug}/{id}', 'ArticleController@show', 'article.show');
 Route::map('GET|POST', '/article/{id}/edit', 'ArticleController@edit', 'article.edit');
 
 
+$options = [
+  'prefix' => '',
+  'middleware' => [
+      \App\Middlewares\Authenticated::class
+  ]
+];
+
+
+Route::group($options, function () {
+
+    Route::get('/dashboard', 'Admin\\DashboardController@index', 'admin.dashboard.index');
+    Route::get('/auth/logout', 'Auth\\LogoutController@index', 'auth.logout');
+});
+
 Route::map('GET|POST', '/auth/login', 'Auth\\LoginController@index', 'auth.login');
 Route::map('GET|POST', '/auth/register', 'Auth\\RegisterController@index', 'auth.register');
-Route::get('/auth/logout', 'Auth\\LogoutController@index', 'auth.logout');
+
 
 
 Route::get('/user/profile', 'ProfileController@index', 'user.profile');

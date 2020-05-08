@@ -13,7 +13,7 @@
 <?php include('partials/nav.php') ?>
 <div class="container mt-4">
     <?= $content ?>
-    <div>
+    <div style="text-align: center;">
         <code><small>layout default</small></code>
     </div>
 </div>

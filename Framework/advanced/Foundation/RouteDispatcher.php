@@ -32,7 +32,7 @@ class RouteDispatcher
 
 
      /** @var array  */
-     protected $routeMiddlewares;
+     protected $middlewareStorage = [];
 
 
      /**
@@ -42,9 +42,19 @@ class RouteDispatcher
      public function __construct(RouteParam $route)
      {
          $this->route = $route;
-         $this->routeMiddlewares = $route->getMiddlewares();
      }
 
+
+     /**
+      * @param string $namespace
+      * @return RouteDispatcher
+     */
+     public function namespace(string $namespace)
+     {
+          $this->controllerPrefix = rtrim($namespace, '\\') .'\\';
+
+          return $this;
+     }
 
      /**
       * @param ContainerInterface $container
@@ -64,7 +74,10 @@ class RouteDispatcher
      */
      public function addMiddlewares(array $middlewares = [])
      {
-         $this->routeMiddlewares = array_merge($this->routeMiddlewares, $middlewares);
+         $this->middlewareStorage = array_merge(
+             $this->route->getMiddlewares(),
+             $middlewares
+         );
 
          return $this;
      }
@@ -177,7 +190,7 @@ class RouteDispatcher
      private function runStackRouteMiddlewares()
      {
          $middlewareStack = $this->container->get(MiddlewareStack::class);
-         if($middlewares = $this->routeMiddlewares)
+         if($middlewares = $this->middlewareStorage)
          {
              foreach ($middlewares as $middleware)
              {

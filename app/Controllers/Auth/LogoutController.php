@@ -17,7 +17,7 @@ class LogoutController extends BaseController
      */
      public function index()
      {
-         exit('Logout!');
+         exit('Your are Log out!');
          // header('Location : '. route('app.home'));
      }
 }
