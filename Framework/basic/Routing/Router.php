@@ -44,8 +44,11 @@ class Router
     */
     public function map($methods, string $path, $handler, string $name = null)
     {
-          $this->route = compact('methods', 'path', 'handler', 'name');
-          $this->routes[] = $this->route;
+          $route = compact('methods', 'path', 'handler');
+          $this->routes[] = $route;
+          $this->route = $route;
+
+         $this->routeName($name, $path);
           return $this;
     }
 
@@ -82,12 +85,12 @@ class Router
     {
         foreach ($this->routes as $route)
         {
-            list($methods, $path, $handler, $name) = $route;
+            list($methods, $path, $handler, $name) =  array_values($route);
 
             if(\in_array($requestMethod, $this->resolvedMethods($methods)))
             {
                    // TODO prepare part path and URI
-                  if(preg_match($this->compile($path), $requestUri, $matches))
+                  if(preg_match($this->compile($path), $this->resolvedPath($requestUri), $matches))
                   {
                        return $route;
                   }
@@ -128,6 +131,15 @@ class Router
 
 
     /**
+     * @param string $path
+    */
+    private function convertorParam(string $path)
+    {
+           //
+    }
+
+
+    /**
      * @param string $uri
      * @return string
     */
@@ -149,5 +161,24 @@ class Router
         }
 
         return (array) $methods;
+    }
+
+
+    /**
+     * @param $name
+     * @param $path
+     * @throws RouterException
+    */
+    private function routeName($name, $path)
+    {
+        if($name)
+        {
+            if(isset($this->namedRoutes[$name]))
+            {
+                throw new RouterException('This name (%s) already taken!');
+            }
+
+            $this->namedRoutes[$name] = $path;
+        }
     }
 }

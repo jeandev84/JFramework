@@ -30,7 +30,7 @@ class Sqlite extends PdoConnection
     {
         return sprintf('%s:%s',
           $this->getDriver(),
-          $this->config->getDatabase()
+          $this->config->database()
         );
     }
 
