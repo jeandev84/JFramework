@@ -9,11 +9,9 @@ use Jan\Component\Http\Message\RequestInterface;
 use Jan\Component\Routing\Route;
 use Jan\Component\Routing\RouteParam;
 use Jan\Component\Routing\Router;
+use Jan\Foundation\Loader;
 use Jan\Foundation\RouteDispatcher;
 
-
-//TODO change and set it in core alias dependency injection
-class_alias('Jan\\Component\\Routing\\Route', 'Route');
 
 /**
  * Class RouteServiceProvider
@@ -34,11 +32,7 @@ class RouteServiceProvider extends AbstractServiceProvider implements BootableSe
     */
     public function boot()
     {
-        $container = $this->getContainer();
-
-        // Load route of application
-        $container->get(FileSystem::class)->load('/routes/web.php');
-        $container->get(FileSystem::class)->load('/routes/api.php');
+        $this->container[Loader::class]->loadImportanteResources();
 
         // router
         $this->container->singleton('router', function () {
@@ -59,18 +53,14 @@ class RouteServiceProvider extends AbstractServiceProvider implements BootableSe
 
         $this->container->singleton(RouteDispatcher::class, function () use($request) {
 
-            // TODO implement create a service provider for Dispatching route
-            // and call this service here like :
-            // $response = $this->container->get(RouteDispatcher::class);
-            /* $router = $this->container['router']; */
             $router = $this->container->get('router');
             $route = $router->match($request->getMethod(), $request->getUri());
             $dispatcher = new RouteDispatcher(new RouteParam($route));
 
-            // Can define controller namespace prefix
-            /* $dispactcher->namespace('App\\Controllers\\'); */
+            # namespace already defined by default
+            # can set new namespace for changes
+            /* $dispatcher->withControllerNamespace('App\\Controllers\\'); */
 
-            // To add stack merge middlewares
             $dispatcher->setContainer($this->container);
 
             return $dispatcher;

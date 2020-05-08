@@ -12,7 +12,6 @@
 <div class="container mt-4">
     <div class="text-center">
         <h1>Ooops! Something went wrong!</h1>
-        <h2>Page not found!</h2>
         <code><?= __FILE__ ?></code>
         <p><a href="/">Go back ?</a></p>
     </div>

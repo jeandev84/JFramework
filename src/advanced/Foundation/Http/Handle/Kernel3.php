@@ -9,14 +9,15 @@ use Jan\Component\Http\Message\RequestInterface;
 use Jan\Component\Http\Message\ResponseInterface;
 use Jan\Component\Routing\RouteParam;
 use Jan\Contracts\Http\Kernel as HttpKernelContract;
+use Jan\Foundation\Loader;
 use Jan\Foundation\RouteDispatcher;
 
 
 /**
- * Class Kernel
- * @package Jan\Foundation\Http\Handle
+ * Class Kernel3
+ * @package Jan\Foundation\Http
  */
-abstract class Kernel implements HttpKernelContract
+abstract class Kernel3 implements HttpKernelContract
 {
 
     /**
@@ -48,25 +49,13 @@ abstract class Kernel implements HttpKernelContract
     /**
      * @param RequestInterface $request
      * @return ResponseInterface
-     * @throws \ReflectionException
      */
     public function handle(RequestInterface $request): ResponseInterface
     {
         try {
 
-            // TODO implement create a service provider for Dispatching route
-            // and call this service here like :
-            // $response = $this->container->get(RouteDispatcher::class);
-            /* $router = $this->container['router']; */
-            $router = $this->container->get('router');
-            $route = $router->match($request->getMethod(), $request->getUri());
-            $dispatcher = new RouteDispatcher(new RouteParam($route));
-
-            // To add stack merge middlewares
-            $dispatcher->setContainer($this->container);
+            $dispatcher = $this->container->get(RouteDispatcher::class);
             $dispatcher->addMiddlewares(array_merge($this->middlewares, $this->routeMiddlewares));
-
-            // return instance of ResponseInterface
             $response = $dispatcher->callAction();
 
         } catch (\Exception $e) {
@@ -80,15 +69,24 @@ abstract class Kernel implements HttpKernelContract
 
             }else{
 
-                $response = $this->container->get(ResponseInterface::class);
                 $viewObject = $this->container->get('view');
-                $template = $viewObject->render('errors/'. $e->getCode() . '.php', compact('e'));
-                # templates/errors/404.php
-                # templates/errors/400.php
-                # templates/errors/500.php
+                $viewPath = 'errors/'. $e->getCode() . '.php';
+                $template = $viewObject->resourcePath($viewPath);
+                $response = $this->container->get(ResponseInterface::class);
 
-                $response->withStatus($e->getCode())
-                    ->withBody($template);
+                if($viewObject->loadIf($template))
+                {
+                    $template = $viewObject->render($viewPath, compact('e'));
+                    # templates/errors/404.php
+                    # templates/errors/400.php
+                    # templates/errors/500.php
+
+                    $response->withStatus($e->getCode())
+                        ->withBody($template);
+                } else{
+
+                    exit('View ' . $viewObject->resourcePath($template) . ' does not exist!');
+                }
             }
 
             // Get new instance of error Handler and new ErrorHandler($e)

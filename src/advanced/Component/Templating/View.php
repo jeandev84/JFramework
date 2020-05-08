@@ -103,20 +103,38 @@ class View
       */
       public function resource(string $path)
       {
-          $template = sprintf('%s%s%s',
+          $template = $this->resourcePath($path);
+
+          if(! $this->loadIf($template))
+          {
+              throw new ViewException(sprintf('Can not found view (%s) ', $template), 404);
+          }
+
+          return $template;
+      }
+
+
+      /**
+       * @param $path
+       * @return string
+      */
+      public function resourcePath($path)
+      {
+          return sprintf('%s%s%s',
               $this->resolvedBasePath(),
               DIRECTORY_SEPARATOR,
               $this->resolvedPath($path)
           );
+      }
 
-          if(! file_exists($template))
-          {
-              throw new ViewException(
-                  sprintf('Can not found view (%s) ', $template)
-              );
-          }
 
-          return $template;
+      /**
+       * @param $path
+       * @return bool
+      */
+      public function loadIf($template)
+      {
+          return file_exists($template);
       }
 
       /**

@@ -4,6 +4,7 @@ namespace Jan\Foundation;
 
 use Jan\Foundation\Providers\AppServiceProvider;
 use Jan\Foundation\Providers\DatabaseServiceProvider;
+use Jan\Foundation\Providers\LoaderServiceProvider;
 use Jan\Foundation\Providers\MiddlewareServiceProvider;
 use Jan\Foundation\Providers\RouteServiceProvider;
 use Jan\Foundation\Providers\ViewServiceProvider;
@@ -163,7 +164,10 @@ class Application extends Container
      */
     protected function registerBaseServiceProviders()
     {
+        # Order very important here!!!
         $this->addServiceProvider(AppServiceProvider::class);
+        $this->addServiceProvider(LoaderServiceProvider::class);
+        #
         $this->addServiceProvider(RouteServiceProvider::class);
         $this->addServiceProvider(DatabaseServiceProvider::class);
         $this->addServiceProvider(MiddlewareServiceProvider::class);

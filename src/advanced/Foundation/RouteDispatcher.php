@@ -8,6 +8,7 @@ use Jan\Component\Http\Message\ResponseInterface;
 use Jan\Component\Http\Middleware\MiddlewareStack;
 use Jan\Component\Routing\Route;
 use Jan\Component\Routing\RouteParam;
+use Jan\Foundation\Exceptions\RouteDispatcherException;
 use ReflectionException;
 use ReflectionMethod;
 
@@ -49,7 +50,7 @@ class RouteDispatcher
       * @param string $namespace
       * @return RouteDispatcher
      */
-     public function namespace(string $namespace)
+     public function withControllerNamespace(string $namespace)
      {
           $this->controllerPrefix = rtrim($namespace, '\\') .'\\';
 
@@ -141,6 +142,14 @@ class RouteDispatcher
      {
          list($controllerClass, $action) = $callback;
          $controllerClass = sprintf('%s%s', $this->controllerPrefix, $controllerClass);
+
+         if(! class_exists($controllerClass))
+         {
+              throw new RouteDispatcherException(
+                  sprintf('Class (%s) does not exist!', $controllerClass)
+              , 404);
+         }
+
          $controllerObjectResolved = $this->container->get($controllerClass);
          $controllerObjectResolved->setContainer($this->container);
 
