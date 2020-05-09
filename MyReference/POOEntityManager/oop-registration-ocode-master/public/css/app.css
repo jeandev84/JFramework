@@ -1,0 +1,105 @@
+*{
+	margin: 0;
+}
+
+body 
+{
+	font-family: 'Arial', Helvetica, sans-serif;
+	font-size: 15px;
+	color: #555;
+	font-weight: 400;
+	/*background: #eee;*/
+}
+
+.container
+{
+	width: 80%;
+	margin: 0 auto;
+}
+
+nav
+{
+   padding: 10px;
+}
+
+ul 
+{
+	list-style: none;
+}
+
+nav ul li a
+{
+	text-decoration: none;
+	color: inherit;
+}
+
+nav ul li 
+{
+	display: inline-block;
+	border: 1px solid #ccc;
+	padding: 10px;
+}
+
+form 
+{
+	margin-top: 5px;
+	width: 300px;
+}
+
+form .field 
+{
+	margin: 5px 0;
+}
+
+form .field label 
+{
+	display: block;
+	margin-bottom: 5px;
+}
+
+form input[type="submit"]
+{
+	cursor: pointer;
+}
+
+form input[type="text"],
+form input[type="password"],
+form input[type="submit"]
+{
+	border: 2px solid #eee;
+	width: 100%;
+	padding: 5px 0 5px 3px;
+}
+
+
+ul.error,
+ul.success
+{
+	padding: 10px;
+	color: #fff;
+	margin: 10px 0;
+}
+
+ul.error
+{
+  	background: #d46262;
+}
+
+ul.success
+{
+  	background: #62d483;
+}
+
+div.profile
+{
+   border-left: 3px solid #ccc;
+   width: 400px;
+   padding: 5px;
+   margin: 5px 0 0 0;
+}
+
+div.profile h3
+{
+	text-transform: uppercase;
+	margin-bottom: 5px;
+}

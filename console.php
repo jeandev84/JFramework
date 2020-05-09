@@ -16,11 +16,24 @@ $app = require(__DIR__.'/bootstrap/app.php');
 |------------------------------------------------------------------
 */
 
+
+
+# Console
 $console = new \Jan\Component\Console\Console();
 
-$console->addCommands(require __DIR__.'/config/command.php');
+$commands = require __DIR__.'/config/command.php';
 
-$console->handle(
-    $input = new \Jan\Component\Console\Input\Input(),
+$resolved = [];
+foreach ($commands as $commandClass)
+{
+    $resolved[] = $app->make($commandClass);
+}
+
+$console->addCommands($resolved);
+
+$status = $console->handle(
+    $input = new \Jan\Component\Console\Input\Type\ArgvInput(),
     new \Jan\Component\Console\Output\Output()
 );
+
+exit($status);
