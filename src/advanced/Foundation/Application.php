@@ -164,16 +164,16 @@ class Application extends Container
      */
     protected function registerBaseServiceProviders()
     {
-        # Order very important here!!!
-        $this->addServiceProvider(AppServiceProvider::class);
-        $this->addServiceProvider(LoaderServiceProvider::class);
-        #
-        $this->addServiceProvider(RouteServiceProvider::class);
-        $this->addServiceProvider(DatabaseServiceProvider::class);
-        $this->addServiceProvider(MiddlewareServiceProvider::class);
+        # Order registring services very important !!!
+        $this->addServiceProviders([
+            AppServiceProvider::class,
+            LoaderServiceProvider::class,
+            RouteServiceProvider::class,
+            DatabaseServiceProvider::class,
+            MiddlewareServiceProvider::class,
+            ViewServiceProvider::class
+        ]);
 
-        // last to load
-        $this->addServiceProvider(ViewServiceProvider::class);
     }
 
 

@@ -51,7 +51,7 @@ abstract class Kernel implements HttpKernelContract
      * @param RequestInterface $request
      * @return ResponseInterface
      * @throws \Exception
-     */
+    */
     public function handle(RequestInterface $request): ResponseInterface
     {
         try {
@@ -131,6 +131,9 @@ abstract class Kernel implements HttpKernelContract
 
 
     /**
+     * Get stack of middlewares
+     *
+     *
      * @return array
     */
     protected function getMiddlewares()

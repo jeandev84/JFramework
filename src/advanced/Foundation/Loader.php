@@ -28,6 +28,7 @@ class Loader
        'routes/api.php'
     ];
 
+
     /** @var ContainerInterface  */
     private $container;
 
@@ -42,7 +43,6 @@ class Loader
           $this->loadNamespaceAlias();
           $this->container = $container;
     }
-
 
 
     /**
