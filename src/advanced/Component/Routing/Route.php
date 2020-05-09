@@ -287,6 +287,7 @@ class Route
      */
     public static function generate($name, array $params = [])
     {
+        /* $path = self::$namedRoutes[$name] ?? $name; */
         $path = self::$namedRoutes[$name] ?? false;
 
         if($params)

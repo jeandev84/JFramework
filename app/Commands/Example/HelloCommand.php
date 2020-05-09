@@ -3,7 +3,7 @@ namespace Jan\Component\Console\Example;
 
 use Jan\Component\Console\Command\Command;
 use Jan\Component\Console\Input\InputInterface;
-use Jan\Component\Console\Output\OutputInterface;
+use Jan\Component\Console\Output\OutputInterfaceExample;
 
 
 /**
@@ -32,10 +32,10 @@ class HelloCommand extends Command
 
     /**
      * @param InputInterface $input
-     * @param OutputInterface $output
+     * @param OutputInterfaceExample $output
      * @return mixed|void
     */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterfaceExample $output)
     {
          echo __METHOD__."\n";
          $output->write('Hello command executed successfully!')

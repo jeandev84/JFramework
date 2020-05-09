@@ -3,7 +3,7 @@ namespace Jan\Component\Console\Command;
 
 
 use Jan\Component\Console\Input\InputInterface;
-use Jan\Component\Console\Output\OutputInterface;
+use Jan\Component\Console\Output\OutputInterfaceExample;
 
 /**
  * Interface CommandInterface
@@ -14,8 +14,8 @@ interface CommandInterface
     /**
      * Execute command
      * @param InputInterface|null $input
-     * @param OutputInterface|null $output
+     * @param OutputInterfaceExample|null $output
      * @return mixed
     */
-    public function execute(InputInterface $input, OutputInterface $output);
+    public function execute(InputInterface $input, OutputInterfaceExample $output);
 }

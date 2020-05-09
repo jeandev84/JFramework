@@ -1,16 +1,11 @@
 <?php
 namespace Jan\Foundation\Http;
 
-
-use Jan\Component\Database\Contracts\QueryManagerInterface;
 use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
 use Jan\Component\Dotenv\Env;
 use Jan\Component\Http\Message\RequestInterface;
 use Jan\Component\Http\Message\ResponseInterface;
-use Jan\Component\Routing\RouteParam;
-use Jan\Component\Templating\View;
 use Jan\Contracts\Http\Kernel as HttpKernelContract;
-use Jan\Foundation\Loader;
 use Jan\Foundation\RouteDispatcher;
 
 
@@ -18,7 +13,7 @@ use Jan\Foundation\RouteDispatcher;
  * Class Kernel
  * @package Jan\Foundation\Http
  */
-abstract class Kernel implements HttpKernelContract
+class Kernel implements HttpKernelContract
 {
 
     /**
@@ -105,12 +100,14 @@ abstract class Kernel implements HttpKernelContract
      */
     public function terminate(RequestInterface $request, ResponseInterface $response)
     {
-        $query = $this->container->get(QueryManagerInterface::class);
+        /*
+        $query = $this->container->get(\Jan\Component\Database\Contracts\QueryManagerInterface::class);
         if($executed = $query->executedSql())
         {
             echo "From : ". __METHOD__.'<br>';
             dump($executed);
         }
+        */
     }
 
 
