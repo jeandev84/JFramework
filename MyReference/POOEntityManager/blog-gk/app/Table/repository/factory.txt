@@ -1,0 +1,2 @@
+USAGE DE FACTORY POUR GERER LES CLASSES DE TABLE
+==================================================
