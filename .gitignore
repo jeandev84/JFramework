@@ -3,8 +3,5 @@ vendor
 node_modules/*
 .env
 storage/*
-<<<<<<< HEAD
 
-=======
-MyReference
->>>>>>> master
+
