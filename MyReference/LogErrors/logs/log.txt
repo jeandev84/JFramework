@@ -1,2 +1,0 @@
-[10-Apr-2018 10:08:03 Europe/Berlin] PHP Warning:  require(joe.com): failed to open stream: No such file or directory in D:\xampp\htdocs\LogErrors\index.php on line 10
-[10-Apr-2018 10:08:03 Europe/Berlin] PHP Fatal error:  require(): Failed opening required 'joe.com' (include_path='D:\xampp\php\PEAR') in D:\xampp\htdocs\LogErrors\index.php on line 10
