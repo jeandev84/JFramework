@@ -3,15 +3,16 @@ namespace Jan\Foundation\Console;
 
 
 use Jan\Component\Console\Input\InputInterface;
-use Jan\Component\Console\Output\OutputInterface;
+use Jan\Component\Console\Output\OutputInterfaceExample;
 use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
+use Jan\Contracts\Console\Kernel as ConsoleKernelContract;
 
 
 /**
  * Class Kernel
  * @package Jan\Foundation\Console
 */
-abstract class Kernel implements \Jan\Contracts\Console\Kernel
+class Kernel implements ConsoleKernelContract
 {
 
     /**
@@ -27,5 +28,25 @@ abstract class Kernel implements \Jan\Contracts\Console\Kernel
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterfaceExample $output
+     * @return mixed
+    */
+    public function handle(InputInterface $input, OutputInterfaceExample $output)
+    {
+        // TODO: Implement handle() method.
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param $status
+     * @return mixed
+     */
+    public function terminate(InputInterface $input, $status)
+    {
+        // TODO: Implement terminate() method.
     }
 }

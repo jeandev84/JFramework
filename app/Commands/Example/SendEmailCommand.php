@@ -4,7 +4,7 @@ namespace Jan\Component\Console\Example;
 
 use Jan\Component\Console\Command\Command;
 use Jan\Component\Console\Input\InputInterface;
-use Jan\Component\Console\Output\OutputInterface;
+use Jan\Component\Console\Output\OutputInterfaceExample;
 
 /**
  * Class SendEmailCommand
@@ -24,10 +24,10 @@ class SendEmailCommand extends Command
 
     /**
      * @param InputInterface $input
-     * @param OutputInterface $output
+     * @param OutputInterfaceExample $output
      * @return mixed|void
     */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterfaceExample $output)
     {
           $output->write('Message send successfully!');
     }

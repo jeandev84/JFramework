@@ -5,14 +5,28 @@ namespace Jan\Component\Console\Input;
 /**
  * Interface InputInterface
  * @package Jan\Component\Console\Input
- *
- * /TODO more advanced
 */
 interface InputInterface
 {
+
     /**
-     * Get parse argument
-     * @return string
+     * @param string $name
+     * @return mixed
     */
-    public function getArgument();
+    public function getArgument(string $name);
+
+
+    /** @return mixed */
+    public function getArguments();
+
+
+    /**
+     * @param string $name
+     * @return mixed
+    */
+    public function getOption(string $name);
+
+
+    /** @return mixed */
+    public function getOptions();
 }
