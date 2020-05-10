@@ -122,6 +122,15 @@ class InputBag
 
 
      /**
+      * @return array
+     */
+     public function getArguments()
+     {
+         return $this->arguments;
+     }
+
+
+     /**
       * @param InputOption $option
      */
      public function addOption(InputOption $option)

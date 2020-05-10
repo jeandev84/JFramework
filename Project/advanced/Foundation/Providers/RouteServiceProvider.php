@@ -4,7 +4,6 @@ namespace Jan\Foundation\Providers;
 
 use Jan\Component\DependencyInjection\Contracts\BootableServiceProvider;
 use Jan\Component\DependencyInjection\ServiceProvider\AbstractServiceProvider;
-use Jan\Component\FileSystem\FileSystem;
 use Jan\Component\Http\Message\RequestInterface;
 use Jan\Component\Routing\Route;
 use Jan\Component\Routing\RouteParam;
@@ -32,7 +31,7 @@ class RouteServiceProvider extends AbstractServiceProvider implements BootableSe
     */
     public function boot()
     {
-        $this->container[Loader::class]->loadImportanteResources();
+        $this->container[Loader::class]->loadRouteResources();
 
         // router
         $this->container->singleton('router', function () {

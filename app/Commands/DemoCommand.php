@@ -4,7 +4,7 @@ namespace App\Commands;
 
 use Jan\Component\Console\Command\Command;
 use Jan\Component\Console\Input\InputInterface;
-use Jan\Component\Console\Output\OutputInterfaceExample;
+use Jan\Component\Console\Output\OutputInterface;
 
 
 /**
@@ -16,16 +16,16 @@ class DemoCommand extends Command
 
 
     /** @var string  */
-    protected $name = 'demo:check';
+    protected $name = 'demo:command';
 
 
     /**
      * @param InputInterface $input
-     * @param OutputInterfaceExample $output
+     * @param OutputInterface $output
      * @return mixed|void
-     */
-    public function execute(InputInterface $input, OutputInterfaceExample $output)
+    */
+    public function execute(InputInterface $input, OutputInterface $output)
     {
-         return 'Demo::executed!';
+         exit("Demo::executed!\n");
     }
 }

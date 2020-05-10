@@ -32,8 +32,9 @@ foreach ($commands as $commandClass)
 $console->addCommands($resolved);
 
 $status = $console->handle(
-    $input = new \Jan\Component\Console\Input\Type\ArgvInput(),
+    $input = new \Jan\Component\Console\Input\ArgvInput(),
     new \Jan\Component\Console\Output\Output()
 );
+
 
 exit($status);

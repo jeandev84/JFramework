@@ -42,7 +42,7 @@ abstract class Input implements InputInterface
                $this->inputBag = new InputBag();
            }else{
                $this->initialize($inputBag);
-               $this->runValidationHandle();
+               $this->validate();
            }
     }
 
@@ -56,7 +56,7 @@ abstract class Input implements InputInterface
           $this->options = [];
           $this->inputBag = $inputBag;
 
-          $this->parse();
+          $this->process();
     }
 
 
@@ -114,12 +114,39 @@ abstract class Input implements InputInterface
     }
 
 
+
     /**
-     * Validation parses
-     */
-    public function runValidationHandle()
+     * @return mixed
+    */
+    public function validate()
     {
-        //
+        // TODO: Implement validate() method.
+    }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function hasParameterOption(string $name)
+    {
+        // TODO: Implement hasParameterOption() method.
+    }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function getParameterOption(string $name)
+    {
+        // TODO: Implement getParameterOption() method.
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getArguments()
+    {
+         return $this->inputBag->getArguments();
     }
 
 

@@ -11,12 +11,17 @@ use Jan\Component\Console\Output\OutputInterface;
  * @package Jan\Component\Console
  *
  * Invoker
+ *
+ * TODO More advanced
 */
 class Console implements ConsoleInterface
 {
 
       /** @var array  */
       protected $commands = [];
+
+
+      protected $defaultCommand;
 
 
       /**
@@ -28,6 +33,8 @@ class Console implements ConsoleInterface
           {
               exit('Access denied!');
           }
+
+          $this->defaultCommand = 'list';
       }
 
 
@@ -46,7 +53,7 @@ class Console implements ConsoleInterface
       */
       public function addCommand(Command $command)
       {
-             $this->commands[] = $command;
+             $this->commands[$command->getName()] = $command;
 
              return $this;
       }
@@ -68,13 +75,75 @@ class Console implements ConsoleInterface
 
 
       /**
+       * @return array
+      */
+      public function getCommands()
+      {
+          return $this->commands;
+      }
+
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return string
+     * @throws \Exception
+     */
+      public function handle(InputInterface $input = null, OutputInterface $output = null)
+      {
+             $name = $this->getCommandName($input);
+
+             if(! $name)
+             {
+                 $name = $this->defaultCommand;
+             }
+
+             if(\array_key_exists($name, $this->commands))
+             {
+                  return $this->runCommand($name, $input, $output);
+             }
+
+             return "Bad command!\n";
+      }
+
+
+      /**
+        * @param InputInterface $input
+        * @return mixed
+      */
+      protected function getCommandName(InputInterface $input)
+      {
+           return $input->getFirstArgument();
+      }
+
+
+      /**
+       * @param $name
        * @param InputInterface $input
        * @param OutputInterface $output
-       * @return string
+       * @return bool|mixed|void
+       * @throws \Exception
       */
-      public function handle(InputInterface $input, OutputInterface $output)
+      public function runCommand($name, InputInterface $input, OutputInterface $output)
       {
-             dump($input->getTokens());
-             return "End execution!\n";
+            $command = $this->commands[$name];
+
+            if(! $this->isCommand($command))
+            {
+                 //TODO implement message
+                 return false;
+            }
+
+            return $command->execute($input, $output);
+      }
+
+
+      /**
+       * @param $command
+       * @return bool
+     */
+      protected function isCommand($command)
+      {
+          return $command instanceof Command;
       }
 }

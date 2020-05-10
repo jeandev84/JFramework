@@ -1,9 +1,6 @@
 <?php
-namespace Jan\Component\Console\Input\Type;
+namespace Jan\Component\Console\Input;
 
-
-use Jan\Component\Console\Input\Input;
-use Jan\Component\Console\Input\InputBag;
 
 
 /**
@@ -56,6 +53,14 @@ class ArgvInput extends Input
 
 
     /**
+     * Get first argument
+    */
+    public function getFirstArgument()
+    {
+       return $this->getToken(0);
+    }
+
+    /**
      * @return mixed
     */
     public function process()
@@ -67,11 +72,11 @@ class ArgvInput extends Input
 
 
     /**
-     * @param $token
+     * @param string $token
     */
-    protected function parseArgument($token)
+    protected function parseArgument(string $token)
     {
-         $this->arguments['name'] = $token;
+
     }
 
     /**
@@ -99,5 +104,19 @@ class ArgvInput extends Input
     protected function escapeToken(string $token)
     {
         return trim($token);
+    }
+
+    /**
+     * @param $key
+     * @return array|mixed
+    */
+    protected function getToken($key)
+    {
+        if(! isset($this->tokens[$key]))
+        {
+            return '';
+        }
+
+        return $this->escapeToken($this->tokens[$key]);
     }
 }

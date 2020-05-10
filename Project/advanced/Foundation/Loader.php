@@ -62,7 +62,7 @@ class Loader
     /**
      * Load resources
     */
-    public function loadImportanteResources()
+    public function loadRouteResources()
     {
         foreach ($this->resources as $resource)
         {

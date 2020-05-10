@@ -18,10 +18,9 @@ interface ConsoleInterface
 {
 
      /**
-      * @param Command $command
       * @return mixed
      */
-     public function addCommand(Command $command);
+     public function getCommands();
 
 
      /**
@@ -29,5 +28,5 @@ interface ConsoleInterface
       * @param OutputInterface $output
       * @return mixed
      */
-     public function handle(InputInterface $input, OutputInterface $output);
+     public function handle(InputInterface $input = null, OutputInterface $output = null);
 }
