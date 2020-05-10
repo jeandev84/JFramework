@@ -9,6 +9,8 @@ use Jan\Component\Console\Output\OutputInterface;
 /**
  * Interface CommandInterface
  * @package Jan\Component\Console\Command
+ *
+ * Command interface
 */
 interface CommandInterface
 {

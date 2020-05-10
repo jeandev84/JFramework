@@ -18,6 +18,13 @@ interface ConsoleInterface
 {
 
      /**
+      * @param array $commandStuff
+      * @return mixed
+     */
+     public function loadCommands(array $commandStuff);
+
+
+     /**
       * @return mixed
      */
      public function getCommands();

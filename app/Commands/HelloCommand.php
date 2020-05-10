@@ -26,6 +26,6 @@ class HelloCommand extends Command
     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        exit("Hello::executed!\n");
+        $output->write('Command Hello executed successfully!');
     }
 }

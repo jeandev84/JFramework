@@ -2,6 +2,8 @@
 namespace Jan\Component\Console;
 
 use Jan\Component\Console\Command\Command;
+use Jan\Component\Console\Command\Support\HelpCommand;
+use Jan\Component\Console\Command\Support\ListCommand;
 use Jan\Component\Console\Input\InputInterface;
 use Jan\Component\Console\Output\OutputInterface;
 
@@ -47,6 +49,8 @@ class Console implements ConsoleInterface
           return \array_key_exists($name, $this->commands);
       }
 
+
+
       /**
        * @param Command $command
        * @return Console
@@ -63,7 +67,7 @@ class Console implements ConsoleInterface
         * @param array $commandStack
         * @return Console
       */
-      public function addCommands(array $commandStack)
+      public function loadCommands(array $commandStack)
       {
           foreach ($commandStack as $command)
           {
@@ -75,6 +79,7 @@ class Console implements ConsoleInterface
 
 
       /**
+       * Get all stuff command
        * @return array
       */
       public function getCommands()
@@ -83,20 +88,15 @@ class Console implements ConsoleInterface
       }
 
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return string
-     * @throws \Exception
-     */
+      /**
+       * @param InputInterface $input
+       * @param OutputInterface $output
+       * @return string
+       * @throws \Exception
+      */
       public function handle(InputInterface $input = null, OutputInterface $output = null)
       {
              $name = $this->getCommandName($input);
-
-             if(! $name)
-             {
-                 $name = $this->defaultCommand;
-             }
 
              if(\array_key_exists($name, $this->commands))
              {
@@ -141,7 +141,7 @@ class Console implements ConsoleInterface
       /**
        * @param $command
        * @return bool
-     */
+      */
       protected function isCommand($command)
       {
           return $command instanceof Command;

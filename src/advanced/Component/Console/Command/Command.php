@@ -8,15 +8,22 @@ use Jan\Component\Console\Input\InputInterface;
 use Jan\Component\Console\Input\InputOption;
 use Jan\Component\Console\Output\OutputInterface;
 
+
 /**
  * Class Command
  * @package Jan\Component\Console\Command
+ *
+ * Command handle
 */
 abstract class Command implements CommandInterface
 {
 
        /** @var string */
        protected $name;
+
+
+       /** @var string */
+       // protected $command;
 
 
        /** @var string */
@@ -67,6 +74,7 @@ abstract class Command implements CommandInterface
       */
       public function getName()
       {
+           // get resolved name
            return trim($this->name);
       }
 
@@ -74,7 +82,7 @@ abstract class Command implements CommandInterface
     /**
      * @param string $description
      * @return Command
-     */
+    */
     public function setDescription(string $description)
     {
         $this->description = $description;
@@ -151,7 +159,23 @@ abstract class Command implements CommandInterface
       */
       protected function makeSureisValidName($name)
       {
-            //
+         /*
+          Reference to do more sure and advanced
+          $params = [];
+
+          foreach ($argv as $argument)
+          {
+            preg_match('/^-(.+)=(.+)$/', $argument, $matches);
+
+            if (! empty($matches))
+            {
+                $paramName = $matches[1];
+                $paramValue = $matches[2];
+
+                $params[$paramName] = $paramValue;
+            }
+        }
+        */
       }
 
 

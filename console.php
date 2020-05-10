@@ -29,7 +29,7 @@ foreach ($commands as $commandClass)
     $resolved[] = $app->make($commandClass);
 }
 
-$console->addCommands($resolved);
+$console->loadCommands($resolved);
 
 $status = $console->handle(
     $input = new \Jan\Component\Console\Input\ArgvInput(),

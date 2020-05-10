@@ -26,6 +26,6 @@ class DemoCommand extends Command
     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-         exit("Demo::executed!\n");
+         $output->write('Command Demo executed successfully!');
     }
 }

@@ -25,8 +25,8 @@ class Output implements OutputInterface
 
     /**
      * @param string $message
-     * @return OutputInterface
-    */
+     * @return void
+     */
     public function write(string $message)
     {
         // TODO: Implement write() method.
@@ -39,5 +39,22 @@ class Output implements OutputInterface
     public function getMessage()
     {
         // TODO: Implement getMessage() method.
+    }
+
+    /**
+     * @param string $message
+     * @return mixed
+     */
+    public function writeln(string $message)
+    {
+        // TODO: Implement writeln() method.
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFormater()
+    {
+        // TODO: Implement getFormater() method.
     }
 }
