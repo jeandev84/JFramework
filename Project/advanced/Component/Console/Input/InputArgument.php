@@ -5,54 +5,70 @@ namespace Jan\Component\Console\Input;
 /**
  * Class InputArgument
  * @package Jan\Component\Console\Input
+ *
+ * Input argument entity
 */
 class InputArgument
 {
 
-    /**
-     * @var array
-    */
-    protected $arguments = [];
+    /** @var string  */
+    private $name;
+
+
+    /** @var string  */
+    private $description;
+
+
+    /** @var string  */
+    private $default;
 
 
     /**
      * InputArgument constructor.
-     * @param array $arguments
+     * @param string $name
+     * @param string $description
+     * @param string $default
     */
-    public function __construct(array $arguments)
+    public function __construct(string $name, string $description = '', $default = '')
     {
-          $this->arguments = $arguments;
+        $this->name = $name;
+        $this->description = $description;
+        $this->default = $default;
     }
 
 
     /**
-     * @param $name
-     * @param array $params
+     * @return string
     */
-    public function setArgument($name, $params = [])
+    public function getName()
     {
-          $this->arguments[$name] = $params;
+        return $this->name;
     }
 
 
     /**
-     * @param $name
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+
+    /**
      * @return string|null
     */
-    public function getArgument($name)
+    public function getDefault(): ?string
     {
-        return trim($this->arguments[$name]) ?? null;
+        return $this->default;
     }
-
 
     /**
-     * @return array
+     * @param string|null $default
     */
-    public function getArguments()
+    public function setDefault(?string $default = null)
     {
-        return $this->arguments;
+        $this->default = $default;
     }
 
-
-    public function validates() {}
 }

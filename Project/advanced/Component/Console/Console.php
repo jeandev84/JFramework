@@ -74,8 +74,7 @@ class Console implements ConsoleInterface
       */
       public function handle(InputInterface $input, OutputInterface $output)
       {
-
-
+             dump($input->getTokens());
              return "End execution!\n";
       }
 }

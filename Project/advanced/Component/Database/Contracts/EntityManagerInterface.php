@@ -10,6 +10,20 @@ interface EntityManagerInterface
 {
 
     /**
+     * @param object $object
+     * @return mixed
+    */
+    // public function create(object $object);
+
+
+    /**
+     * @param object $object
+     * @return mixed
+    */
+    // public function read(object $object);
+
+
+    /**
      * assignment
      * @param object $object
     */
