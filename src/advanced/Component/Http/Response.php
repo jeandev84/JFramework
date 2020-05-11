@@ -107,7 +107,7 @@ class Response implements ResponseInterface
     */
     public function setHeaders(array $headers)
     {
-        $this->headers = $headers;
+         $this->headers = $headers;
     }
 
 
@@ -142,12 +142,25 @@ class Response implements ResponseInterface
 
 
     /**
-     * @param array $headers
+     * @param $name
+     * @param $value
      * @return Response
     */
-    public function withHeaders(array $headers): Response
+    public function withHeader($name, $value): Response
     {
-        $this->setHeaders($headers);
+        $this->headers[] = [$name => $value];
+        return $this;
+    }
+
+
+    /**
+     * @param $body
+     * @return $this
+    */
+    public function withJson($body)
+    {
+        $this->withHeader('Content-Type', 'application/json');
+        $this->content = json_encode($body);
         return $this;
     }
 

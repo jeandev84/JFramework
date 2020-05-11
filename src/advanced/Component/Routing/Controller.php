@@ -85,13 +85,9 @@ abstract class Controller
       */
       protected function json(array $data, $status = 200)
       {
-          $content = json_encode($data);
-          $response = new Response(
-              json_encode($content),
-              $status,
-              ['Content-Type' => 'application/json']
-          );
-          return $response;
+          $response = $this->container->get(ResponseInterface::class);
+          return $response->withStatus($status)
+                          ->withJson($data);
       }
 
 
