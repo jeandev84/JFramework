@@ -37,6 +37,7 @@ class Router
     private $middlewares = [];
 
 
+
     /**
      * Router constructor.
      *
@@ -145,30 +146,34 @@ class Router
      *     "matches" => []
      *     "pattern" => "#^$#i"
      *  ]
+     *
     */
     public function match(string $requestMethod, string $requestUri)
     {
-          foreach ($this->routes as $route)
+          if(! empty($this->routes))
           {
-               list($methods, $path, $target) = array_values($route);
+              foreach ($this->routes as $route)
+              {
+                  list($methods, $path, $target) = array_values($route);
 
-               if(\in_array($requestMethod, (array) $methods))
-               {
-                   if(preg_match($pattern = $this->compile($path), $this->resolveUrl($requestUri), $matches))
-                   {
-                       $matches = $this->filteredParams($matches);
-                       $middlewares = $this->getMiddleware($path);
+                  if(\in_array($requestMethod, (array) $methods))
+                  {
+                      if(preg_match($pattern = $this->compile($path), $this->resolveUrl($requestUri), $matches))
+                      {
+                          $matches = $this->filteredParams($matches);
+                          $middlewares = $this->getMiddleware($path);
 
-                       return array_merge(
-                           $route,
-                           compact('matches', 'pattern', 'middlewares')
-                       );
-                   }
-               }
+                          return array_merge(
+                              $route,
+                              compact('matches', 'pattern', 'middlewares')
+                          );
+                      }
+                  }
+              }
+
+              throw new RouteException('Route not found!', 404);
+
           }
-
-          throw new RouteException('Route not found!', 404);
-          /* return false; */
     }
 
 

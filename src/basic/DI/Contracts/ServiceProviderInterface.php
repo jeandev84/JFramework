@@ -1,10 +1,10 @@
 <?php
-namespace Jan\Component\DI\Contracts;
+namespace Jan\DI\Contracts;
 
 
 /**
  * Interface ServiceProviderInterface
- * @package Jan\Component\DI\Contracts
+ * @package Jan\DI\Contracts
 */
 interface ServiceProviderInterface
 {

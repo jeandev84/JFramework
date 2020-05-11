@@ -3,8 +3,6 @@ namespace Jan\Foundation\Console;
 
 
 use Jan\Component\Console\Command\Command;
-use Jan\Component\Console\Command\Support\HelpCommand;
-use Jan\Component\Console\Command\Support\ListCommand;
 use Jan\Component\Console\ConsoleInterface;
 use Jan\Component\Console\Input\InputInterface;
 use Jan\Component\Console\Output\OutputInterface;
@@ -33,8 +31,8 @@ class Kernel implements ConsoleKernelContract
      * @var array
     */
     protected $commands = [
-        ListCommand::class,
-        HelpCommand::class
+        \Jan\Foundation\Commands\Generators\MakeCommand::class,
+        \Jan\Foundation\Commands\Generators\MakeControllerCommand::class
     ];
 
 

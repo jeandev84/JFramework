@@ -1,10 +1,10 @@
 <?php
-namespace Jan\Component\DI\Contracts;
+namespace Jan\DI\Contracts;
 
 
 /**
  * Interface BootableServiceProvider
- * @package Jan\Component\DI\Contracts
+ * @package Jan\DI\Contracts
 */
 interface BootableServiceProvider
 {

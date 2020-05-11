@@ -53,7 +53,7 @@ class Env
             /* $environment = trim(str_replace("\r\n", '', $environment)); */
             $environment = trim(str_replace("\n", '', $environment));
 
-            if($this->hasAvailableEnvironment($environment))
+            if($this->isAvailableEnvironment($environment))
             {
                  putenv($environment);
                  list($key, $value) = explode('=', $environment);
@@ -88,7 +88,7 @@ class Env
      * @param $environment
      * @return bool
     */
-    public function hasAvailableEnvironment($environment)
+    public function isAvailableEnvironment($environment)
     {
         return strpos($environment, '=') !== false
             && strpos($environment, '#') === false;

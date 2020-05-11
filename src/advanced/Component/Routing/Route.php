@@ -97,9 +97,9 @@ class Route
      */
     public static function group(array $options, callable $callback)
     {
-        self::appends($options);
+        self::checkOptions($options);
         call_user_func($callback);
-        self::remove();
+        self::removeOptions();
     }
 
 
@@ -412,7 +412,7 @@ class Route
     /**
      * @param array $options
     */
-    public static function appends(array $options)
+    public static function checkOptions(array $options)
     {
         self::$options = $options;
     }
@@ -441,7 +441,7 @@ class Route
     /**
      * @return void
     */
-    private static function remove()
+    private static function removeOptions()
     {
         self::$options = [];
     }

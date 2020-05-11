@@ -120,7 +120,6 @@ class FileSystem
      * $fileSystem = (new FileSystem(__DIR));
      * $fileSystem->make('.env')
      * $fileSystem->make('error.log')
-     * $fileSystem->make('database/migrations/2020120876464_users_table.php')
      * $fileSystem->make('test.txt')
      *
      */

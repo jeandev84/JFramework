@@ -1,9 +1,9 @@
 <?php
-namespace Jan\Component\DI\Exceptions;
+namespace Jan\DI\Exceptions;
 
 
 /**
  * Class InstanceException
- * @package Jan\Component\DI\Exceptions
+ * @package Jan\DI\Exceptions
 */
 class InstanceException extends \Exception {}

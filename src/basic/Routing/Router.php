@@ -90,11 +90,29 @@ class Router
             if(\in_array($requestMethod, $this->resolvedMethods($methods)))
             {
                    // TODO prepare part path and URI
-                  if(preg_match($this->compile($path), $this->resolvedPath($requestUri), $matches))
+                  if($parsed = $this->isMatch($path, $requestUri))
                   {
-                       return $route;
+                       return array_merge($route, (array) $parsed);
                   }
             }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * @param $path
+     * @param $requestUri
+     * @return mixed
+    */
+    public function isMatch($path, $requestUri)
+    {
+        $pattern = $this->compile($path);
+        $uri = $this->resolvedPath($requestUri);
+        if(preg_match($pattern, $uri, $matches))
+        {
+            return compact('matches', 'pattern');
         }
 
         return false;

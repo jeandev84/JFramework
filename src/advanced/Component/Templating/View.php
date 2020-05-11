@@ -31,13 +31,26 @@ class View
       */
       public function __construct(string $basePath)
       {
-          $this->basePath = $basePath;
+          $this->setBasePath($basePath);
       }
 
-     /**
-      * @param array $data
-      * @return View
-     */
+
+      /**
+      * @param string $basePath
+      * @return $this
+      */
+      public function setBasePath(string $basePath)
+      {
+          $this->basePath = $basePath;
+
+          return $this;
+      }
+
+
+      /**
+       * @param array $data
+       * @return View
+      */
       public function setGlobals(array $data)
       {
            $this->data = array_merge($this->data, $data);

@@ -8,6 +8,7 @@ use Jan\Component\Http\Message\RequestInterface;
 use Jan\Component\Routing\Route;
 use Jan\Component\Routing\RouteParam;
 use Jan\Component\Routing\Router;
+use Jan\Foundation\DefaultController;
 use Jan\Foundation\Loader;
 use Jan\Foundation\RouteDispatcher;
 

@@ -9,6 +9,7 @@ use Jan\Contracts\Http\Kernel as HttpKernelContract;
 use Jan\Foundation\RouteDispatcher;
 
 
+
 /**
  * Class Kernel
  * @package Jan\Foundation\Http
@@ -49,6 +50,7 @@ class Kernel implements HttpKernelContract
     */
     public function handle(RequestInterface $request): ResponseInterface
     {
+
         try {
 
             $dispatcher = $this->container->get(RouteDispatcher::class);
@@ -58,18 +60,18 @@ class Kernel implements HttpKernelContract
         } catch (\Exception $e) {
 
              $debug = getenv('APP_DEBUG');
+             $response = $this->container->get(ResponseInterface::class);
 
              # Tres important de comparer au string "true" de la sorte
              if($debug == "true")
              {
-                 $this->displayError($e);
+                 $content = $this->displayError($e);
 
              }else{
 
                  $viewObject = $this->container->get('view');
                  $viewPath = 'errors/'. $e->getCode() . '.php';
                  $template = $viewObject->resourcePath($viewPath);
-                 $response = $this->container->get(ResponseInterface::class);
 
                  if($viewObject->loadIf($template))
                  {
@@ -78,15 +80,15 @@ class Kernel implements HttpKernelContract
                      # templates/errors/400.php
                      # templates/errors/500.php
 
-                     $response->withStatus($e->getCode())
-                              ->withBody($content);
                   } else{
 
                      // throw $e;
-                     $this->displayError($e);
+                     $content = $this->displayError($e);
                  }
              }
 
+            $response->withStatus($e->getCode())
+                     ->withBody($content);
             // Get new instance of error Handler and new ErrorHandler($e)
         }
 
@@ -144,9 +146,12 @@ class Kernel implements HttpKernelContract
 
     /**
      * @param \Exception $e
-    */
+     * @return
+   */
     protected function displayError(\Exception $e)
     {
-         $this->container->get('view')->render('errors/dev.php', compact('e'));
+         $view = $this->container->get('view');
+         $view->setBasePath(__DIR__.'/../Resources/');
+         return $view->render('errors/dev.php', compact('e'));
     }
 }

@@ -1,0 +1,18 @@
+<?php
+namespace ControllerNamespace;
+
+
+use App\Repository\ArticleRepository;
+use Jan\Component\Http\Request;
+use Jan\Component\Http\Response;
+use Jan\Component\Routing\Route;
+
+
+/**
+ * Class ControllerClass
+ * @package ControllerNamespace
+*/
+class ControllerClass extends Controller
+{
+
+}

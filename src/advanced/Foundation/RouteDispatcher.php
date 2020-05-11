@@ -20,6 +20,7 @@ use ReflectionMethod;
 class RouteDispatcher
 {
 
+
      /** @var string  */
      protected $controllerPrefix = 'App\\Controllers\\';
 
@@ -44,6 +45,7 @@ class RouteDispatcher
      {
           $this->route = $route;
      }
+
 
 
      /**
@@ -102,7 +104,13 @@ class RouteDispatcher
          $target = $this->route->getTarget();
          $body = null;
 
-         //TODO Refactoring without Parse
+         //TODO Refactoring
+
+         if(is_null($target))
+         {
+              $controller = $this->container->get(DefaultController::class);
+              $target = call_user_func([$controller, 'index']);
+         }
 
          if($target instanceof \Closure)
          {

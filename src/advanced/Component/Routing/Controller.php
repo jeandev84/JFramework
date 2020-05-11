@@ -23,12 +23,13 @@ abstract class Controller
       protected $layout = 'default';
 
 
-     /**
-      * Controller constructor.
-     */
-      public function __construct()
+      /**
+       * Controller constructor.
+       * @param ContainerInterface $container
+      */
+      public function __construct(ContainerInterface $container)
       {
-
+           $this->container = $container;
       }
 
 
@@ -49,8 +50,8 @@ abstract class Controller
            if($this->layout !== false)
            {
                require $view->resource('layouts/'. $this->layout .'.php');
+               $content = ob_get_clean();
            }
-           $content = ob_get_clean();
 
            $response->withBody($content);
 

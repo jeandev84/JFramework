@@ -1,10 +1,10 @@
 <?php
-namespace Jan\Component\DI\Exceptions;
+namespace Jan\DI\Exceptions;
 
 
 /**
  * Class ResolverDependencyException
- * @package Jan\Component\DI\Exceptions
+ * @package Jan\DI\Exceptions
  */
 class ResolverDependencyException extends \Exception
 {

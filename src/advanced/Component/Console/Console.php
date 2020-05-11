@@ -98,9 +98,40 @@ class Console implements ConsoleInterface
       {
              $name = $this->getCommandName($input);
 
-             if(\array_key_exists($name, $this->commands))
+             if(! $name)
              {
-                  $this->runCommand($name, $input, $output);
+                 // do something (May be show all available list command
+             }
+
+             if(\in_array($name, ['-h', '-help']))
+             {
+                 // may be show the help
+             }
+
+
+             if($this->hasCommand($name))
+             {
+                  $command = $this->commands[$name];
+
+                  /*
+                  TODO implement this logic in the feature
+                  // si le reste de l'input contient ex: --controllers=UserController,
+                  foreach ($input->getArguments() as $argument)
+                  {
+                      if(stripos($argument, '--'))
+                      {
+                          // $command->setOption('--controllers=UserController')
+                          $command->setOption($argument);
+                      }
+
+                      if(stripos($argument, '-'))
+                      {
+                          $command->setShortCut($argument);
+                      }
+                  }
+                  */
+
+                  $command->execute($input, $output);
              }
 
              return $output->send() ."\n";
@@ -116,34 +147,4 @@ class Console implements ConsoleInterface
            return $input->getFirstArgument();
       }
 
-
-      /**
-       * @param $name
-       * @param InputInterface $input
-       * @param OutputInterface $output
-       * @return bool|mixed|void
-       * @throws \Exception
-      */
-      public function runCommand($name, InputInterface $input, OutputInterface $output)
-      {
-            $command = $this->commands[$name];
-
-            if(! $this->isCommand($command))
-            {
-                 //TODO implement message
-                 return false;
-            }
-
-            return $command->execute($input, $output);
-      }
-
-
-      /**
-       * @param $command
-       * @return bool
-      */
-      protected function isCommand($command)
-      {
-          return $command instanceof Command;
-      }
 }

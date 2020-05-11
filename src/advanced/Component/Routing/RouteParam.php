@@ -21,10 +21,10 @@ class RouteParam
      */
       public function __construct($route)
       {
-           if(! $route)
-           {
-               throw new \Exception('Route not found!', 404);
-           }
+//           if(! $route)
+//           {
+//               throw new \Exception('Route not found!', 404);
+//           }
 
            $this->route = $route;
       }
@@ -104,16 +104,17 @@ class RouteParam
       */
       public function getMiddlewares()
       {
-          return $this->getParameter('middlewares');
+          return $this->getParameter('middlewares', []);
       }
 
 
-      /**
-       * @param $key
-       * @return mixed|null
+     /**
+      * @param $key
+      * @param null $default
+      * @return mixed|null
       */
-      public function getParameter($key)
+      public function getParameter($key, $default = null)
       {
-          return $this->route[$key] ?? null;
+          return $this->route[$key] ?? $default;
       }
 }
