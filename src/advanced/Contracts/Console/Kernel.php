@@ -3,7 +3,9 @@ namespace Jan\Contracts\Console;
 
 
 use Jan\Component\Console\Input\InputInterface;
-use Jan\Component\Console\Output\OutputInterfaceExample;
+use Jan\Component\Console\Output\OutputInterface;
+
+
 
 /**
  * Interface Kernel
@@ -13,15 +15,15 @@ interface Kernel
 {
       /**
        * @param InputInterface $input
-       * @param OutputInterfaceExample $output
+       * @param OutputInterface $output
        * @return mixed
       */
-      public function handle(InputInterface $input, OutputInterfaceExample $output);
+      public function handle(InputInterface $input, OutputInterface $output);
 
 
       /**
        * @param InputInterface $input
-       * @param $status
+       * @param mixed $status
        * @return mixed
       */
       public function terminate(InputInterface $input, $status);

@@ -2,10 +2,16 @@
 namespace Jan\Foundation\Console;
 
 
+use Jan\Component\Console\Command\Command;
+use Jan\Component\Console\Command\Support\HelpCommand;
+use Jan\Component\Console\Command\Support\ListCommand;
+use Jan\Component\Console\ConsoleInterface;
 use Jan\Component\Console\Input\InputInterface;
-use Jan\Component\Console\Output\OutputInterfaceExample;
+use Jan\Component\Console\Output\OutputInterface;
 use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
 use Jan\Contracts\Console\Kernel as ConsoleKernelContract;
+use Jan\Foundation\Loader;
+
 
 
 /**
@@ -22,22 +28,40 @@ class Kernel implements ConsoleKernelContract
 
 
     /**
+     * Default commands
+     *
+     * @var array
+    */
+    protected $commands = [
+        ListCommand::class,
+        HelpCommand::class
+    ];
+
+
+
+    /**
      * Kernel constructor.
      * @param ContainerInterface $container
-     */
+    */
     public function __construct(ContainerInterface $container)
     {
-        $this->container = $container;
+         $this->container = $container;
     }
+
 
     /**
      * @param InputInterface $input
-     * @param OutputInterfaceExample $output
+     * @param OutputInterface $output
      * @return mixed
+     * @throws \Exception
     */
-    public function handle(InputInterface $input, OutputInterfaceExample $output)
+    public function handle(InputInterface $input, OutputInterface $output)
     {
-        // TODO: Implement handle() method.
+        $console = $this->container->get(ConsoleInterface::class);
+        $console->loadCommands(
+            $this->getResolvedCommandStuff()
+        );
+        return $console->handle($input, $output);
     }
 
     /**
@@ -48,5 +72,50 @@ class Kernel implements ConsoleKernelContract
     public function terminate(InputInterface $input, $status)
     {
         // TODO: Implement terminate() method.
+    }
+
+
+
+
+    /**
+     * @return array
+    */
+    protected function getResolvedCommandStuff()
+    {
+        $resolved = [];
+
+        foreach ($this->getCommands() as $command)
+        {
+            if($this->isCommand($command))
+            {
+                $resolved[] = $command;
+            }else{
+                $resolved[] = $this->container->get($command);
+            }
+        }
+
+        return $resolved;
+    }
+
+
+    /**
+     * @return array
+    */
+    private function getCommands()
+    {
+        $commands = $this->container
+                         ->get(Loader::class)
+                         ->loadCommands(); // config/command.php
+
+        return array_merge($commands, $this->commands);
+    }
+
+    /**
+     * @param $command
+     * @return bool
+    */
+    private function isCommand($command)
+    {
+        return $command instanceof Command;
     }
 }

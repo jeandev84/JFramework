@@ -3,10 +3,10 @@ namespace Jan\Component\Console\Output;
 
 
 /**
- * Class Output
+ * Class ConsoleOutput
  * @package Jan\Component\Console\Output
 */
-class Output implements OutputInterface
+class ConsoleOutput implements OutputInterface
 {
 
     /**
@@ -25,36 +25,42 @@ class Output implements OutputInterface
 
     /**
      * @param string $message
-     * @return void
+     * @return ConsoleOutput
      */
     public function write(string $message)
     {
-        // TODO: Implement write() method.
+        $this->messages[] = $message;
+
+        return $this;
+    }
+
+
+    /**
+     * @param string $message
+     * @return mixed
+    */
+    public function writeln(string $message)
+    {
+        $this->write($message ."\n");
+
+        return $this;
     }
 
 
     /**
      * @return mixed
     */
-    public function getMessage()
-    {
-        // TODO: Implement getMessage() method.
-    }
-
-    /**
-     * @param string $message
-     * @return mixed
-     */
-    public function writeln(string $message)
-    {
-        // TODO: Implement writeln() method.
-    }
-
-    /**
-     * @return mixed
-     */
     public function getFormater()
     {
-        // TODO: Implement getFormater() method.
+          //
     }
+
+    /**
+     * @return mixed
+    */
+    public function send()
+    {
+        return join("\n", $this->messages);
+    }
+
 }

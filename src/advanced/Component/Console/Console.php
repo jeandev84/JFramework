@@ -100,10 +100,10 @@ class Console implements ConsoleInterface
 
              if(\array_key_exists($name, $this->commands))
              {
-                  return $this->runCommand($name, $input, $output);
+                  $this->runCommand($name, $input, $output);
              }
 
-             return "Bad command!\n";
+             return $output->send() ."\n";
       }
 
 

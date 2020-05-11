@@ -1,5 +1,5 @@
 <?php
-namespace Jan\Foundation;
+namespace Jan\Foundation\Command;
 
 
 use Jan\Component\Console\Command\Command;
@@ -9,7 +9,7 @@ use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
 
 /**
  * Class CommandResolver
- * @package Jan\Foundation
+ * @package Jan\Foundation\Command
 */
 class CommandResolver
 {
@@ -18,19 +18,19 @@ class CommandResolver
      protected $container;
 
 
-
      /**
       * CommandStack constructor.
       * @param ContainerInterface $container
      */
      public function __construct(ContainerInterface $container)
      {
-          $this->container = $container;
+           $this->container = $container;
      }
 
 
      /**
       * @param array $commands
+      * @return array
      */
      public function resolve(array $commands)
      {
@@ -38,11 +38,14 @@ class CommandResolver
 
          foreach ($commands as $command)
          {
-             if($this->resolvedCommand($command))
+             if(! \in_array($command, $resolved))
              {
-                 $resolved[] = $command;
-             }else{
-                 $resolved[] = $this->container->get($command);
+                 if($this->isCommand($command))
+                 {
+                     $resolved[] = $command;
+                 }else{
+                     $resolved[] = $this->container->get($command);
+                 }
              }
          }
 
@@ -54,7 +57,7 @@ class CommandResolver
       * @param $command
       * @return bool
      */
-     protected function resolvedCommand($command)
+     protected function isCommand($command)
      {
           return $command instanceof Command;
      }

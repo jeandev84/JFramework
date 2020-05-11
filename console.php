@@ -16,8 +16,18 @@ $app = require(__DIR__.'/bootstrap/app.php');
 |------------------------------------------------------------------
 */
 
+$kernel = $app->get(Jan\Contracts\Console\Kernel::class);
+
+$status = $kernel->handle(
+    $input = new \Jan\Component\Console\Input\ArgvInput(),
+    new \Jan\Component\Console\Output\ConsoleOutput()
+);
+
+$kernel->terminate($input, $status);
+exit($status);
 
 
+/*
 # Console
 $console = new \Jan\Component\Console\Console();
 
@@ -38,3 +48,5 @@ $status = $console->handle(
 
 
 exit($status);
+
+*/

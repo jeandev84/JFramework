@@ -3,6 +3,7 @@ namespace Jan\Foundation;
 
 
 use Jan\Foundation\Providers\AppServiceProvider;
+use Jan\Foundation\Providers\ConsoleServiceProvider;
 use Jan\Foundation\Providers\DatabaseServiceProvider;
 use Jan\Foundation\Providers\LoaderServiceProvider;
 use Jan\Foundation\Providers\MiddlewareServiceProvider;
@@ -171,6 +172,7 @@ class Application extends Container
             RouteServiceProvider::class,
             DatabaseServiceProvider::class,
             MiddlewareServiceProvider::class,
+            ConsoleServiceProvider::class,
             ViewServiceProvider::class
         ]);
 

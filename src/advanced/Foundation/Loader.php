@@ -5,6 +5,7 @@ namespace Jan\Foundation;
 use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
 use Jan\Component\FileSystem\FileSystem;
 
+
 /**
  * Class Mix
  * @package Jan\Foundation
@@ -82,6 +83,15 @@ class Loader
             $this->container->addServiceProvider($provider);
         }
     }
+
+    /**
+     * Load command stuff
+    */
+    public function loadCommands()
+    {
+        return $this->load('config/command.php');
+    }
+
 
     /**
      * @param string $resource

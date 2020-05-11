@@ -1,27 +1,20 @@
 <?php
-namespace Jan\Component\Console\Command\Support;
-
+namespace Jan\Foundation\Commands;
 
 use Jan\Component\Console\Command\Command;
 use Jan\Component\Console\Input\InputInterface;
 use Jan\Component\Console\Output\OutputInterface;
 
 
-
 /**
- * Class HelpCommand
- * @package Jan\Component\Console\Command\Support
+ * Class MakeControllerCommand
+ * @package Jan\Foundation\Commands
 */
-class HelpCommand extends Command
+class MakeControllerCommand extends Command
 {
 
-     /**
-      * Command configuration
-     */
-     protected function configure()
-     {
-          // Add some configuration
-     }
+     /** @var string  */
+     protected $name = 'make:controller';
 
 
      /**
@@ -31,6 +24,6 @@ class HelpCommand extends Command
      */
      public function execute(InputInterface $input, OutputInterface $output)
      {
-          // Do something
+
      }
 }

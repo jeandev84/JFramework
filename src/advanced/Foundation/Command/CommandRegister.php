@@ -1,12 +1,12 @@
 <?php
-namespace Jan\Foundation;
+namespace Jan\Foundation\Command;
 
 
 use Jan\Component\Console\ConsoleInterface;
 
 /**
  * Class CommandRegister
- * @package Jan\Foundation
+ * @package Jan\Foundation\Command
 */
 class CommandRegister
 {
@@ -21,8 +21,9 @@ class CommandRegister
     */
     public function __construct(ConsoleInterface $console)
     {
-        $this->console = $console;
+         $this->console = $console;
     }
+
 
     /**
      * @param array $commandStuff

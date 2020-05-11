@@ -44,41 +44,6 @@ class FileSystem
     }
 
 
-
-
-    /**
-     * Make File
-     * @param string $path
-     * @return bool
-     * @throws \Exception
-     *
-     * $fileSystem = (new FileSystem(__DIR));
-     * $fileSystem->make('.env')
-     * $fileSystem->make('error.log')
-     * $fileSystem->make('database/migrations/2020120876464_users_table.php')
-     * $fileSystem->make('test.txt')
-     *
-     */
-    public function make(string $path)
-    {
-        $resource = $this->resource($path);
-        $fileDirectory = dirname($resource);
-
-        if(! is_dir($fileDirectory))
-        {
-            if( ! mkdir($fileDirectory, 0777, true))
-            {
-                throw new FileSystemException(
-                    sprintf('Can not create directory (%s)', $fileDirectory)
-                );
-            }
-        }
-
-        return touch($resource) ? $resource : false;
-    }
-
-
-
     /**
      * Require given source
      *
@@ -135,13 +100,47 @@ class FileSystem
      */
      public function mkdir($source)
      {
-         if(! is_dir($directory = $this->resource($source)))
+         $directory = $this->resource($source);
+
+         if(! is_dir($directory))
          {
              mkdir($directory, 0777, true);
          }
 
          return $directory ?? false;
      }
+
+
+    /**
+     * Make File
+     * @param string $path
+     * @return bool
+     * @throws \Exception
+     *
+     * $fileSystem = (new FileSystem(__DIR));
+     * $fileSystem->make('.env')
+     * $fileSystem->make('error.log')
+     * $fileSystem->make('database/migrations/2020120876464_users_table.php')
+     * $fileSystem->make('test.txt')
+     *
+     */
+    public function make(string $path)
+    {
+        $resource = $this->resource($path);
+        $fileDirectory = dirname($resource);
+
+        if(! is_dir($fileDirectory))
+        {
+            if( ! mkdir($fileDirectory, 0777, true))
+            {
+                throw new FileSystemException(
+                    sprintf('Can not create directory (%s)', $fileDirectory)
+                );
+            }
+        }
+
+        return touch($resource) ? $resource : false;
+    }
 
 
     /**

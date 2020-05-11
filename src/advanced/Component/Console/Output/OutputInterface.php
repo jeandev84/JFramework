@@ -23,14 +23,16 @@ interface OutputInterface
     public function writeln(string $message);
 
 
-    /**
-     * @return mixed
-    */
-    public function getMessage();
-
 
     /**
      * @return mixed
     */
     public function getFormater();
+
+
+    /**
+     * Important handle, may be send message or code etc..
+     * @return mixed
+    */
+    public function send();
 }
