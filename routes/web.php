@@ -64,6 +64,15 @@
 //});
 
 
+
+Route::namespace('Api', function () {
+
+    Route::resource('api', 'PostController');
+
+});
+
+
+
 /**
 $options = ['middleware' => [
   'App\Middleware\Authenticate',

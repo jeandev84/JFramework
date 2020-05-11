@@ -12,7 +12,7 @@ trait StatusCode
      * @var string[]
      * phrases (message http response)
     */
-    public $messages = [
+    protected $messages = [
         // INFORMATIONAL CODES
         100 => 'Continue',
         101 => 'Switching Protocols',

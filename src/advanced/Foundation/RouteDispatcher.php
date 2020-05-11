@@ -144,9 +144,9 @@ class RouteDispatcher
      /**
       * @param array $callback
       * @return ResponseInterface
-      * @throws ReflectionException
-     */
-     private function getActionCallback(array $callback): ResponseInterface
+      * @throws ReflectionException|RouteDispatcherException
+      */
+     private function getActionCallback(array $callback)
      {
          list($controllerClass, $action) = $callback;
          $controllerClass = sprintf('%s%s', $this->controllerPrefix, $controllerClass);
@@ -165,7 +165,19 @@ class RouteDispatcher
          {
              $reflectedMethod = new ReflectionMethod($controllerClass, $action);
              $methodParams = $this->resolveActionParams($reflectedMethod);
-             return call_user_func_array([$controllerObjectResolved, $action], $methodParams);
+             $response = call_user_func_array([$controllerObjectResolved, $action], $methodParams);
+
+             if(! $response instanceof ResponseInterface)
+             {
+                 throw new RouteDispatcherException(
+                     sprintf('%s::%s must return instance of ResponseInterface',
+                         $controllerClass,
+                         $action
+                     )
+                 );
+             }
+
+             return $response;
          }
      }
 

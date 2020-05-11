@@ -152,29 +152,25 @@ class Response implements ResponseInterface
 
 
     /**
-     * @return $this
+     * @throws \Exception
     */
     public function send()
     {
-        /*
-        if(! headers_sent())
-        {
-            return $this;
-        }
+        try {
 
-        HTTP/1.0 + 200 + OK = protocol + status + message
-        header(sprintf('%s %s %s',
+            header(sprintf('%s %s %s',
                 $this->protocolVersion,
                 $this->status,
-                self::HTTP_STATUS_MESSAGE[$this->status] ?? '')
-        );
+                $this->codeMessage())
+            );
+            /* http_response_code($this->status); */
+            $this->sendHeaders();
+            $this->sendBody();
 
+        } catch (\Exception $e) {
 
-        http_response_code($this->status);
-        $this->sendHeaders();
-        */
-
-        $this->sendBody();
+            exit('Error sending response : ' . $e->getMessage());
+        }
 
     }
 
@@ -201,4 +197,19 @@ class Response implements ResponseInterface
        }
     }
 
+
+    /**
+     * @return string
+     * @throws \Exception
+    */
+    private function codeMessage()
+    {
+        if(! array_key_exists($this->status, $this->messages))
+        {
+             throw new \Exception(
+                 sprintf('Code %s is not available', $this->status)
+             );
+        }
+        return $this->messages[$this->status];
+    }
 }

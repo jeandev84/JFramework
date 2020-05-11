@@ -129,26 +129,21 @@ class Route
      * @param string $path
      * @param string $controller
      * @return void
-     * Example (path => 'api/', 'controller' => 'Api\Controllers\PostController')
+     * Example (path => 'api/', 'controller' => 'PostController')
+     * @throws RouteException
      */
     public static function resource(string $path, string $controller)
     {
-        // TODO FIX
-        /*
-         Route::group(['prefix' => $path], function () use ($controller, $path) {
+        $namePrefix = str_replace('/', '.', $path);
 
-            $namePrefix = str_replace('/', '.', $path);
+        Route::get($path.'/', $controller.'@index', $namePrefix .'.list');
+        Route::get($path.'/new', $controller.'@new', $namePrefix. '.new');
+        Route::post($path.'/store', $controller.'@store', $namePrefix.'.store');
+        Route::get($path.'/{id}', $controller.'@show', $namePrefix.'.show');
+        Route::map('GET|POST', $path.'/{id}/edit', $controller.'@edit', $namePrefix.'.edit');
+        Route::delete($path.'/{id}/delete', $controller.'@delete', $namePrefix.'.delete');
+        Route::get($path.'/{id}/restore', $controller.'@restore', $namePrefix.'.restore');
 
-            Route::get('/', $controller.'@list', $namePrefix .'.list');
-            Route::get('/new', $controller.'@new', $namePrefix. '.new');
-            Route::post('/store', $controller.'@store', $namePrefix.'.store');
-            Route::get('/{id}', $controller.'@show', $namePrefix.'.show');
-            Route::map('GET|POST', '/{id}/edit', $controller.'@edit', $namePrefix.'.edit');
-            Route::delete('/{id}/delete', $controller.'@delete', $namePrefix.'.delete');
-            Route::get('/{id}/restore', $controller.'@restore', $namePrefix.'.restore');
-
-         });
-        */
     }
 
 

@@ -37,6 +37,9 @@ class Router
     private $middlewares = [];
 
 
+    /** @var array  */
+    private $currentRoute;
+
 
     /**
      * Router constructor.
@@ -128,26 +131,9 @@ class Router
      *
      * @param string $requestMethod
      * @param string $requestUri
-     * @return bool|array
-     * @throws \Exception
-     *
-     * Example :
-     *
-     * $route = $this->match($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI'])
-     *
-     * it' will be return next collection if route founded
-     *
-     * $route =  [
-     *    "methods" => array:1 [
-     *       0 => "GET"
-     *     ]
-     *     "path" => "/"
-     *     "target" => "App\Controllers\HomeController@index"
-     *     "matches" => []
-     *     "pattern" => "#^$#i"
-     *  ]
-     *
-    */
+     * @return array
+     * @throws RouteException
+     */
     public function match(string $requestMethod, string $requestUri)
     {
           if(! empty($this->routes))
@@ -163,10 +149,11 @@ class Router
                           $matches = $this->filteredParams($matches);
                           $middlewares = $this->getMiddleware($path);
 
-                          return array_merge(
+                          return $this->currentRoute = array_merge(
                               $route,
                               compact('matches', 'pattern', 'middlewares')
                           );
+
                       }
                   }
               }
@@ -176,6 +163,14 @@ class Router
           }
     }
 
+
+    /**
+     * @return array
+    */
+    public function getCurrentRoute()
+    {
+          return $this->currentRoute;
+    }
 
 
     /**

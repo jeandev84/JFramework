@@ -32,7 +32,8 @@ class DatabaseServiceProvider extends AbstractServiceProvider implements Bootabl
         $this->container->singleton(Connection::class, function () {
             $filesystem = $this->container->get(FileSystem::class);
             $config = $filesystem->load('config/database.php');
-            return Connection::make($config['mysql']);
+            /* return Connection::make($config['mysql']); */
+            return Connection::make($config[getenv('DB_TYPE')]);
         });
 
         $this->container->singleton(QueryManagerInterface::class, function () {
