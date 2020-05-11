@@ -38,7 +38,13 @@ class Router
 
 
     /** @var array  */
+    private $namedRoutes = [];
+
+
+    /** @var array  */
     private $currentRoute;
+
+
 
 
     /**
@@ -90,6 +96,25 @@ class Router
         return $this;
     }
 
+    /**
+     * @param array $namedRoutes
+     * @return Router
+    */
+    public function addNamedRoutes(array $namedRoutes)
+    {
+        $this->namedRoutes = $namedRoutes;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+    */
+    public function getNamedRoutes()
+    {
+        return $this->namedRoutes;
+    }
+
 
     /**
      * Add stack route middlewares
@@ -126,6 +151,16 @@ class Router
 
 
     /**
+     * @param $path
+     * @return mixed|null
+    */
+    public function getNameOfRoute($path)
+    {
+        return $this->namedRoutes[$path] ?? null;
+    }
+
+
+    /**
      * Return the current matched route if founded
      * otherwise return false
      *
@@ -133,7 +168,7 @@ class Router
      * @param string $requestUri
      * @return array
      * @throws RouteException
-     */
+    */
     public function match(string $requestMethod, string $requestUri)
     {
           if(! empty($this->routes))
@@ -148,7 +183,7 @@ class Router
                       {
                           $matches = $this->filteredParams($matches);
                           $middlewares = $this->getMiddleware($path);
-
+                          $name = '';
                           return $this->currentRoute = array_merge(
                               $route,
                               compact('matches', 'pattern', 'middlewares')

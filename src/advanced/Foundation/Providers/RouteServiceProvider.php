@@ -37,8 +37,9 @@ class RouteServiceProvider extends AbstractServiceProvider implements BootableSe
         // router
         $this->container->singleton('router', function () {
             $router = new Router(Route::collections());
-            $router->addPatterns(Route::patterns());
-            $router->addMiddlewares(Route::middlewares());
+            $router->addPatterns(Route::patterns())
+                   ->addNamedRoutes(Route::namedRoutes())
+                   ->addMiddlewares(Route::middlewares());
             return $router;
         });
     }

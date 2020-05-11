@@ -69,6 +69,7 @@ class Response implements ResponseInterface
         return $this->content;
     }
 
+
     /**
      * @param string|null $content
     */
@@ -156,26 +157,19 @@ class Response implements ResponseInterface
     */
     public function send()
     {
-        try {
-
-            header(sprintf('%s %s %s',
-                $this->protocolVersion,
-                $this->status,
-                $this->codeMessage())
-            );
-            /* http_response_code($this->status); */
-            $this->sendHeaders();
-            $this->sendBody();
-
-        } catch (\Exception $e) {
-
-            exit('Error sending response : ' . $e->getMessage());
+        if(headers_sent())
+        {
+            # look for may be return $this or body like this $this->sendBody()
+            return $this;
         }
 
+        header(sprintf('%s %s %s', $this->protocolVersion, $this->status, $this->codeMessage()));
+        $this->sendHeaders();
+        $this->sendBody();
     }
 
     /**
-     * @return void
+     *
     */
     public function sendBody()
     {
@@ -192,7 +186,7 @@ class Response implements ResponseInterface
        {
            foreach ($this->headers as $name => $value)
            {
-               header(sprintf('%s : %s', $name, $value));
+               header($name.': '. $value);
            }
        }
     }
