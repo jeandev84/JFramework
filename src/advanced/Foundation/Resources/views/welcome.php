@@ -17,7 +17,7 @@
             <?= env('APP_NAME')?> :)
         </a>
     </h1>
-    <p><code>You are ready for bulding your web site ...</code></p>
+    <p>You are ready for bulding your <code>web site ...</code></p>
 </div>
 
 <!-- scripts -->
