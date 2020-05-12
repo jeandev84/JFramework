@@ -15,4 +15,9 @@ class CartController extends AjaxController
      {
          exit('Cart::add');
      }
+
+     public function remove()
+     {
+
+     }
 }

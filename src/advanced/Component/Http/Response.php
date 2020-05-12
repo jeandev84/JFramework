@@ -134,10 +134,15 @@ class Response implements ResponseInterface
 
     /**
      * @param bool $http
+     * @return Response
     */
     public function redirect($http = false)
     {
-
+        if($http)
+        {
+            $this->withHeader('Location', $http);
+        }
+        return $this;
     }
 
 
@@ -148,7 +153,7 @@ class Response implements ResponseInterface
     */
     public function withHeader($name, $value): Response
     {
-        $this->headers[] = [$name => $value];
+        $this->headers = array_merge($this->headers, [$name => $value]);
         return $this;
     }
 

@@ -6,7 +6,9 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use Exception;
 use Jan\Component\Database\ORM\EntityManager;
+use Jan\Component\Http\Message\ResponseInterface;
 use Jan\Component\Http\Response;
+use Jan\Component\Templating\Exceptions\ViewException;
 
 
 /**
@@ -43,10 +45,24 @@ class SiteController extends BaseController
     /**
      * Action contact
      * @return Response
-     */
+     * @throws ViewException
+    */
     public function contact()
     {
         return $this->render('site/contact.php');
     }
 
+    /**
+     * @param UserRepository $userRepository
+     * @return Response
+    */
+    public function send(UserRepository $userRepository): Response
+    {
+        $response = $this->container->get(ResponseInterface::class);
+
+        if(! $users = $userRepository->findAll())
+        {
+            return $response->redirect('/contact');
+        }
+    }
 }
