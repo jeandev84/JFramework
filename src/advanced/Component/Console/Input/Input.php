@@ -31,6 +31,10 @@ abstract class Input implements InputInterface
     protected $options = [];
 
 
+    /** @var array  */
+    // protected $shortcuts = [];
+
+
     /**
      * Input constructor.
      * @param InputBag|null $inputBag

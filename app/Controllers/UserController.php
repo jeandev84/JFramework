@@ -1,5 +1,5 @@
 <?php
-namespace ControllerNamespace;
+namespace App\Controllers;
 
 
 use Jan\Component\Http\Request;
@@ -8,10 +8,10 @@ use Jan\Component\Routing\Controller;
 
 
 /**
- * Class ControllerClass
- * @package ControllerNamespace
+ * Class UserController
+ * @package App\Controllers
 */
-class ControllerClass extends Controller
+class UserController extends Controller
 {
 
      /**

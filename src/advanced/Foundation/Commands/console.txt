@@ -1,0 +1,13 @@
+$ php console.php [name] [argument] | [options]
+$ php console.php make:controller UserController [argument] | [no-options]
+$ php console.php make:controller -h [ shortcut ]
+$ php console.php make:controller -controller=UserController [shortOption]
+$ php console.php make:controller --controller=UserController [longOption]
+
+======================================================================================
+ini_set('max_execution_time', 1200);
+set_time_limit(int $seconds);
+
+OR/
+
+ini_set('max_execution_time', 0);

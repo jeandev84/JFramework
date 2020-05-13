@@ -6,11 +6,10 @@ use Jan\Component\DependencyInjection\Container;
 if(! function_exists('app'))
 {
 
-     /**
-      * @param null $abstract
-      * @param array $parameters
-      * @return object
-      * @throws ReflectionException
+    /**
+     * @param null $abstract
+     * @param array $parameters
+     * @return void
      */
      function app($abstract = null, array $parameters = [])
      {

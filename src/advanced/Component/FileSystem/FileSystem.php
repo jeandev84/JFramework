@@ -143,10 +143,30 @@ class FileSystem
 
 
     /**
+     * @param $path
+     * @return false|string
+    */
+    public function read($path)
+    {
+        return file_get_contents($this->resource($path));
+    }
+
+
+    /**
+     * @param $path
+     * @param $data
+    */
+    public function write($path, $data)
+    {
+        file_put_contents($this->resource($path), $data);
+    }
+
+
+    /**
      * Path resolver
      * @param string $source
      * @return string
-     */
+    */
     protected function resolvedPath(string $source = null)
     {
         if($source)

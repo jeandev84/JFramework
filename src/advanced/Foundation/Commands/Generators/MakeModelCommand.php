@@ -8,20 +8,20 @@ use Jan\Component\FileSystem\FileSystem;
 
 
 /**
- * Class MakeControllerCommand
+ * Class MakeModelCommand
  * @package Jan\Foundation\Commands
- *
- * TODO Refactoring
 */
-class MakeControllerCommand extends Command
+class MakeModelCommand extends Command
 {
 
 
      /** @var string  */
-     protected $name = 'make:controller';
+     protected $name = 'make:model';
+
 
      /** @var FileSystem */
      protected $fileSystem;
+
 
      /**
       * MakeControllerCommand constructor.
@@ -41,23 +41,23 @@ class MakeControllerCommand extends Command
      */
      public function execute(InputInterface $input, OutputInterface $output)
      {
-         $content = file_get_contents(__DIR__.'/../stubs/controller.stub');
-         $controllerName = $input->getToken(1);
+         $content = file_get_contents(__DIR__.'/../stubs/model.stub');
+         $modelName = $input->getToken(1);
 
          $content = str_replace(
-             ['ControllerNamespace', 'ControllerClass'],
-             ['App\\Controllers', $controllerName],
+             ['ModelNamespace', 'ModelClass'],
+             ['App\\Entity', $modelName],
              $content
          );
 
-         $filename = 'app/Controllers/'. $controllerName .'.php';
+         $filename = 'app/Models/'. $modelName .'.php';
 
          if(! $this->fileSystem->exists($filename))
          {
              $this->fileSystem->write($filename, $content);
-             $output->write('Controller '. $filename .' created successfully!');
+             $output->write('Model '. $filename .' created successfully!');
          }else {
-             $output->write('Controller ' . $filename . ' already exist');
+             $output->write('Model ' . $filename . ' already exist');
          }
      }
 }

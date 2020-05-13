@@ -2,13 +2,6 @@
 namespace Jan\Foundation;
 
 
-use Jan\Foundation\Providers\AppServiceProvider;
-use Jan\Foundation\Providers\ConsoleServiceProvider;
-use Jan\Foundation\Providers\DatabaseServiceProvider;
-use Jan\Foundation\Providers\LoaderServiceProvider;
-use Jan\Foundation\Providers\MiddlewareServiceProvider;
-use Jan\Foundation\Providers\RouteServiceProvider;
-use Jan\Foundation\Providers\ViewServiceProvider;
 use Jan\Component\DependencyInjection\Container;
 
 
@@ -110,7 +103,6 @@ class Application extends Container
     /**
      * Throw an HttpException with the given data.
      *
-     *
      * @param int $code
      * @param string $message
      * @param array $headers
@@ -165,17 +157,7 @@ class Application extends Container
      */
     protected function registerBaseServiceProviders()
     {
-        # Order registring services very important !!!
-        $this->addServiceProviders([
-            AppServiceProvider::class,
-            LoaderServiceProvider::class,
-            RouteServiceProvider::class,
-            DatabaseServiceProvider::class,
-            MiddlewareServiceProvider::class,
-            ConsoleServiceProvider::class,
-            ViewServiceProvider::class
-        ]);
-
+        $this->addServiceProviders($this->baseStuffProviders());
     }
 
 
@@ -187,6 +169,23 @@ class Application extends Container
     protected function registerCoreContainerAliases()
     {
         //
+    }
+
+
+    /**
+     * @return string[]
+    */
+    private function baseStuffProviders()
+    {
+        return [
+            'Jan\Foundation\Providers\AppServiceProvider',
+            'Jan\Foundation\Providers\LoaderServiceProvider',
+            'Jan\Foundation\Providers\RouteServiceProvider',
+            'Jan\Foundation\Providers\DatabaseServiceProvider',
+            'Jan\Foundation\Providers\MiddlewareServiceProvider',
+            'Jan\Foundation\Providers\ConsoleServiceProvider',
+            'Jan\Foundation\Providers\ViewServiceProvider'
+        ];
     }
 
 }

@@ -15,11 +15,6 @@ class ArgvInput extends Input
     protected $tokens;
 
 
-    /**
-     * @var array
-    */
-    protected $shortcuts = [];
-
 
     /**
      * Input constructor.
@@ -76,7 +71,7 @@ class ArgvInput extends Input
     */
     protected function parseArgument(string $token)
     {
-
+         // $this->arguments[] = $token;
     }
 
     /**
@@ -110,7 +105,7 @@ class ArgvInput extends Input
      * @param $key
      * @return array|mixed
     */
-    protected function getToken($key)
+    public function getToken($key)
     {
         if(! isset($this->tokens[$key]))
         {

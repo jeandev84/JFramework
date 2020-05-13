@@ -33,9 +33,6 @@ $app->singleton(Jan\Contracts\Debug\ExceptionHandler::class, function ($app) {
 
 
 
-
-
-
 /*
 |-------------------------------------------------------------------
 |    Return instance of application
