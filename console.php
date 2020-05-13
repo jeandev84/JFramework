@@ -5,7 +5,8 @@
 |   Framework console
 |   Ex: $ php console --help or -h
 |   Ex: $ php console make:controller HomeController
-|   Ex: $ php console make:model User
+|   Ex: $ php console make:entity Cart [ will be generated entity and repository]
+|   Ex: $ php console make:model User [ will be generated only model as entity ]
 |   Ex: $ php console server [ Run server ]
 |------------------------------------------------------------------
 */

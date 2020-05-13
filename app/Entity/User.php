@@ -3,6 +3,7 @@ namespace App\Entity;
 
 
 use Jan\Component\Database\ORM\Model;
+use Jan\Component\Helpers\Collections\ArrayCollection;
 
 
 /**
@@ -42,8 +43,13 @@ class User
     private $role;
 
 
+    /** @var array  */
+    private $posts = [];
+
+
     /** @var  */
     private $deleted_at = null;
+
 
 
     /**
@@ -54,7 +60,10 @@ class User
         // instance collections data
         // always it will setted 0
         $this->deleted_at = 0;
+
+        /* $this->posts = new ArrayCollection(); */
     }
+
 
     /**
      * @return null|int
@@ -63,6 +72,7 @@ class User
     {
         return $this->id;
     }
+
 
     // just for testing something
     // in realtime we don't need to set id
@@ -77,7 +87,7 @@ class User
 
     /**
      * @return string
-     */
+    */
     public function getName(): string
     {
         return $this->name;
@@ -96,11 +106,12 @@ class User
 
     /**
      * @return string
-     */
+    */
     public function getPassword(): string
     {
         return $this->password;
     }
+
 
     /**
      * @param string $password
@@ -121,6 +132,7 @@ class User
         return $this->email;
     }
 
+
     /**
      * @param string $email
      * @return User
@@ -131,6 +143,7 @@ class User
         return $this;
     }
 
+
     /**
      * @return string
     */
@@ -138,6 +151,7 @@ class User
     {
         return $this->address;
     }
+
 
     /**
      * @param string $address
@@ -149,6 +163,7 @@ class User
         return $this;
     }
 
+
     /**
      * @return string
     */
@@ -156,6 +171,7 @@ class User
     {
         return $this->role;
     }
+
 
     /**
      * @param string $role
@@ -167,6 +183,10 @@ class User
         return $this;
     }
 
+
+    /**
+     * @return string
+    */
     public function tableName()
     {
         return 'users';
@@ -176,7 +196,7 @@ class User
     /**
      * @param $deletedAt
      * @return $this
-     */
+    */
     public function setDeletedAt($deletedAt)
     {
         $this->deleted_at = $deletedAt;
@@ -191,5 +211,39 @@ class User
     public function getDeletedAt()
     {
         return $this->deleted_at;
+    }
+
+
+    /**
+     * @param Post $post
+     * @return User
+    */
+    public function addPost(Post $post)
+    {
+         if(! \in_array($post, $this->posts))
+         {
+             $this->posts[] = $post;
+             $post->addUser($this);
+         }
+
+         return $this;
+
+         /*
+         if(! $this->posts->contains($post))
+         {
+             $this->posts[] = $post;
+             $post->addUser($this);
+         }
+         return $this;
+        */
+    }
+
+
+    /**
+     * @return array
+    */
+    public function getPosts()
+    {
+        return $this->posts;
     }
 }

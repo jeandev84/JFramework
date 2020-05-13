@@ -11,6 +11,7 @@ use Jan\Component\Http\Response;
 use Jan\Component\Templating\Exceptions\ViewException;
 
 
+
 /**
  * Class SiteController
  * @package App\Controllers
@@ -27,6 +28,7 @@ class SiteController extends BaseController
     */
     public function index(UserRepository $userRepository): Response
     {
+        $users = $userRepository->findAll();
         return $this->render('site/home.php', compact('users'));
     }
 

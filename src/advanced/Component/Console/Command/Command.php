@@ -2,6 +2,7 @@
 namespace Jan\Component\Console\Command;
 
 
+use InvalidArgumentException;
 use Jan\Component\Console\Input\InputArgument;
 use Jan\Component\Console\Input\InputBag;
 use Jan\Component\Console\Input\InputInterface;
@@ -62,7 +63,7 @@ abstract class Command implements CommandInterface
        */
        public function setName(string $name)
        {
-           $this->makeSureisValidName($name);
+           $this->makeSureValidName($name);
            $this->name = $name;
 
            return $this;
@@ -155,9 +156,14 @@ abstract class Command implements CommandInterface
 
 
       /**
-       * @param $name
+       * Make sure has valid command name.
+       *
+       * It must be non-empty and parts can optionally be separated by ":".
+       *
+       * @param string $name
+       * @throws InvalidArgumentException When the name is invalid
       */
-      protected function makeSureisValidName($name)
+      protected function makeSureValidName(string $name)
       {
          /*
           Reference to do more sure and advanced
@@ -175,7 +181,15 @@ abstract class Command implements CommandInterface
                 $params[$paramName] = $paramValue;
             }
         }
-        */
+
+        if (!preg_match('/^[^\:]++(\:[^\:]++)*$/', $name))
+        {
+            throw new InvalidArgumentException(
+               sprintf('Command name "%s" is invalid.', $name)
+            );
+        }
+       */
+
       }
 
 

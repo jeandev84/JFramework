@@ -2,6 +2,7 @@
 namespace Jan\Foundation\Providers;
 
 
+use Jan\Component\Config\Config;
 use Jan\Component\DependencyInjection\Contracts\BootableServiceProvider;
 use Jan\Component\DependencyInjection\ServiceProvider\AbstractServiceProvider;
 
@@ -13,12 +14,16 @@ use Jan\Component\DependencyInjection\ServiceProvider\AbstractServiceProvider;
 class ConfigurationServiceProvider extends AbstractServiceProvider implements BootableServiceProvider
 {
 
+    /** @var array  */
+    private $config = [];
+
+
     /**
      * @return mixed
     */
     public function boot()
     {
-        // TODO: Implement boot() method.
+
     }
 
 
@@ -27,6 +32,8 @@ class ConfigurationServiceProvider extends AbstractServiceProvider implements Bo
     */
     public function register()
     {
-        // TODO: Implement register() method.
+        $this->container->singleton(Config::class, function () {
+             $config = new Config();
+        });
     }
 }

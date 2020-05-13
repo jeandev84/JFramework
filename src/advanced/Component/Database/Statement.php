@@ -86,6 +86,7 @@ class Statement implements QueryManagerInterface
          return $this->stmt;
      }
 
+     /* Implementations methods : toArray(), toObject(), fromEntity() ... */
 
      /**
       * @param $sql

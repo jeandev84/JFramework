@@ -1,8 +1,8 @@
 <?php
 namespace Jan\Component\Http;
 
-use Jan\Component\Http\Message\RequestInterface;
 
+use Jan\Component\Http\Message\RequestInterface;
 
 
 /**

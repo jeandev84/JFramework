@@ -2,8 +2,8 @@
 namespace Jan\Component\Database;
 
 
-
 use Exception;
+
 
 /**
  * Class Connection
@@ -31,7 +31,7 @@ class Connection
 
           if(is_null(self::$instance))
           {
-              self::$instance = call_user_func([$driverManager , 'getConnection']);
+              self::$instance = call_user_func([$driverManager, 'getConnection']);
           }
 
           return self::$instance;

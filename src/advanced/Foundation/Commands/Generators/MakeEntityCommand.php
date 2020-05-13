@@ -43,28 +43,52 @@ class MakeEntityCommand extends Command
      */
      public function execute(InputInterface $input, OutputInterface $output)
      {
-         $content = file_get_contents(__DIR__.'/../stubs/entity.stub');
-         $modelName = $input->getToken(1);
+         //TODO Refactoring
 
-         if($modelName === '')
+         $entityName = $input->getToken(1);
+
+         if($entityName === '')
          {
              return;
          }
 
-         $content = str_replace(
+         # Generate Entity
+         $entity = file_get_contents(__DIR__.'/../stubs/entity.stub');
+
+         $entity = str_replace(
              ['EntityNamespace', 'EntityClass'],
-             ['App\\Entity', $modelName],
-             $content
+             ['App\\Entity', $entityName],
+             $entity
          );
 
-         $filename = 'app/Entity/'. $modelName .'.php';
+         $entityFilename = 'app/Entity/'. $entityName .'.php';
 
-         if(! $this->fileSystem->exists($filename))
+         if(! $this->fileSystem->exists($entityFilename))
          {
-             $this->fileSystem->write($filename, $content);
-             $output->write('Entity '. $filename .' created successfully!');
+             $this->fileSystem->write($entityFilename, $entity);
+             $output->write('Entity '. $entityFilename.' created successfully!');
          }else {
-             $output->write('Entity ' . $filename . ' already exist');
+             $output->write('Entity ' . $entityFilename . ' already exist');
+         }
+
+         # Generate Repository
+         $repository = file_get_contents(__DIR__.'/../stubs/repository.stub');
+         $repositoryName = $entityName.'Repository';
+
+         $repository = str_replace(
+             ['EntityRepositoryNamespace', 'EntityRepositoryClass', 'EntityClass'],
+             ['App\\Repository', $repositoryName, $entityName],
+             $repository
+         );
+
+         $repositoryFilename = 'app/Repository/'. $repositoryName .'.php';
+
+         if(! $this->fileSystem->exists($repositoryFilename))
+         {
+             $this->fileSystem->write($repositoryFilename, $repository);
+             $output->writeln('Repository '. $repositoryFilename.' created successfully!');
+         }else {
+             $output->write('Repository' . $repositoryFilename . ' already exist');
          }
      }
 }

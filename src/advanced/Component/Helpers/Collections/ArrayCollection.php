@@ -32,6 +32,17 @@ class ArrayCollection implements \ArrayAccess, \Iterator
          $this->items[$key] = $value;
     }
 
+
+    /**
+     * Determine if has given param in items
+     * @param $key
+     * @return bool
+    */
+    public function contains($key)
+    {
+        return \in_array($key, $this->items);
+    }
+
     public function current()
     {
         // TODO: Implement current() method.
