@@ -147,6 +147,17 @@ class Response implements ResponseInterface
 
 
     /**
+     * @param array $headers
+     * @return Response
+    */
+    public function withHeaders(array $headers)
+    {
+         $this->headers = array_merge($this->headers, $headers);
+         return $this;
+    }
+
+
+    /**
      * @param $name
      * @param $value
      * @return Response

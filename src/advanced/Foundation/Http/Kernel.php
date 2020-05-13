@@ -59,6 +59,7 @@ class Kernel implements HttpKernelContract
 
         } catch (\Exception $e) {
 
+             // TODO Refactoring
              $debug = getenv('APP_DEBUG');
              $response = $this->container->get(ResponseInterface::class);
 

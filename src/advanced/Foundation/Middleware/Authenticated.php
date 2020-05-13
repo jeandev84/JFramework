@@ -10,6 +10,9 @@ use Jan\Component\Http\Middleware\MiddlewareInterface;
 /**
  * Class Authenticated
  * @package Jan\Foundation\Middlewares
+ *
+ * TODO Refactoring
+ * This middleware must be globally for all authentication system
  */
 class Authenticated implements MiddlewareInterface
 {
@@ -24,6 +27,7 @@ class Authenticated implements MiddlewareInterface
             session_start();
         }
 
+        // For moment
         if(isset($_SESSION['auth']))
         {
             header('Location: /dashboard');
@@ -40,6 +44,7 @@ class Authenticated implements MiddlewareInterface
      */
     public function __invoke(RequestInterface $request, ResponseInterface $response, callable $next)
     {
+        // For moment
         if(! isset($_SESSION['auth']))
         {
             header('Location: /');

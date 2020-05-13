@@ -1,0 +1,19 @@
+<?php
+namespace EntityNamespace;
+
+
+use Jan\Component\Database\ORM\Model;
+
+
+/**
+ * Class EntityClass
+ * @package EntityNamespace
+*/
+class EntityClass extends Model
+{
+     protected $fillable = [];
+
+     protected $hidden = [];
+
+     // protected $guard = ['id'];
+}

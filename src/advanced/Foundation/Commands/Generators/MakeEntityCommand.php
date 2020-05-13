@@ -8,15 +8,17 @@ use Jan\Component\FileSystem\FileSystem;
 
 
 /**
- * Class MakeModelCommand
+ * Class MakeEntityCommand
  * @package Jan\Foundation\Commands
+ *
+ * TODO Refactoring
 */
-class MakeModelCommand extends Command
+class MakeEntityCommand extends Command
 {
 
 
      /** @var string  */
-     protected $name = 'make:model';
+     protected $name = 'make:entity';
 
 
      /** @var FileSystem */
@@ -24,7 +26,7 @@ class MakeModelCommand extends Command
 
 
      /**
-      * MakeControllerCommand constructor.
+      * MakeEntityCommand constructor.
       * @param FileSystem $fileSystem
      */
      public function __construct(FileSystem $fileSystem)
@@ -41,23 +43,28 @@ class MakeModelCommand extends Command
      */
      public function execute(InputInterface $input, OutputInterface $output)
      {
-         $content = file_get_contents(__DIR__.'/../stubs/model.stub');
+         $content = file_get_contents(__DIR__.'/../stubs/entity.stub');
          $modelName = $input->getToken(1);
 
+         if($modelName === '')
+         {
+             return;
+         }
+
          $content = str_replace(
-             ['ModelNamespace', 'ModelClass'],
+             ['EntityNamespace', 'EntityClass'],
              ['App\\Entity', $modelName],
              $content
          );
 
-         $filename = 'app/Models/'. $modelName .'.php';
+         $filename = 'app/Entity/'. $modelName .'.php';
 
          if(! $this->fileSystem->exists($filename))
          {
              $this->fileSystem->write($filename, $content);
-             $output->write('Model '. $filename .' created successfully!');
+             $output->write('Entity '. $filename .' created successfully!');
          }else {
-             $output->write('Model ' . $filename . ' already exist');
+             $output->write('Entity ' . $filename . ' already exist');
          }
      }
 }

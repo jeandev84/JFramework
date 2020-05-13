@@ -44,6 +44,11 @@ class MakeControllerCommand extends Command
          $content = file_get_contents(__DIR__.'/../stubs/controller.stub');
          $controllerName = $input->getToken(1);
 
+         if($controllerName === '')
+         {
+             return;
+         }
+
          $content = str_replace(
              ['ControllerNamespace', 'ControllerClass'],
              ['App\\Controllers', $controllerName],

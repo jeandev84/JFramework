@@ -32,7 +32,8 @@ class Kernel implements ConsoleKernelContract
     */
     protected $commands = [
         \Jan\Foundation\Commands\Generators\MakeCommand::class,
-        \Jan\Foundation\Commands\Generators\MakeControllerCommand::class
+        \Jan\Foundation\Commands\Generators\MakeControllerCommand::class,
+        \Jan\Foundation\Commands\Generators\MakeEntityCommand::class,
     ];
 
 
