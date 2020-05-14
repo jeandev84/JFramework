@@ -121,10 +121,9 @@ class RouteDispatcher
         {
             return $body;
 
-        } else{
-
-            $response->withBody((string) $body);
         }
+
+        $response->withBody((string) $body);
 
         return $response;
     }
