@@ -25,7 +25,7 @@ class Loader
      * @var array
     */
     private $resources = [
-       'routes/app.php'
+       'routes/web.php'
     ];
 
 

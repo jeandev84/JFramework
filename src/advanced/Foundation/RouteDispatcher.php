@@ -88,12 +88,12 @@ class RouteDispatcher
 
      /**
       * @return ResponseInterface
-      * @throws ReflectionException
-     */
+      * @throws ReflectionException|RouteDispatcherException
+      */
      public function callAction(): ResponseInterface
      {
-         // Run all stack middlewares of application
-         $response = $this->runStackRouteMiddlewares();
+         // Run all middlewares of application
+         $response = $this->runMiddlewareStack();
 
          // Get Response
          if(! $response instanceof ResponseInterface)
@@ -130,7 +130,7 @@ class RouteDispatcher
       * @param array $callback
       * @return ResponseInterface
       * @throws ReflectionException|RouteDispatcherException
-      */
+     */
      private function getActionCallback(array $callback)
      {
          list($controllerClass, $action) = $callback;
@@ -163,6 +163,12 @@ class RouteDispatcher
              }
 
              return $response;
+
+         }else{
+
+             throw new RouteDispatcherException(
+                 sprintf('Method %s does not exist in Controller %s', $action, $controllerClass)
+             );
          }
      }
 
@@ -213,7 +219,7 @@ class RouteDispatcher
      /**
        * @return mixed
      */
-     private function runStackRouteMiddlewares()
+     private function runMiddlewareStack()
      {
          $middlewareStack = $this->container->get('middleware');
          if($middlewares = $this->middlewareStorage)
