@@ -7,11 +7,7 @@
 */
 
 
-Route::get('/', 'SiteController@index', 'app.home')
-->middleware([
-    App\Middlewares\DemoMiddleware::class,
-    App\Middlewares\PageNotFoundMiddleware::class
-]);
+Route::get('/', 'SiteController@index', 'app.home');
 
 Route::get('/about', 'SiteController@about', 'app.about');
 Route::map('GET|POST', '/contact', 'SiteController@contact', 'app.contact');
@@ -42,15 +38,13 @@ Route::map('GET|POST', '/auth/register', 'Auth\\RegisterController@index', 'auth
 
 
 
-Route::get('/user/profile', 'ProfileController@index', 'user.profile');
-
 
 # Example
 $options = [
   'prefix' => '',
   'namespace' => 'Ajax',
   'middleware' => [
-      App\Middlewares\isAjax::class
+      App\Middlewares\ajax::class
   ]
 ];
 
@@ -64,38 +58,13 @@ Route::group($options, function () {
 });
 
 
+Route::get('/demo', function () {
 
-Route::namespace('Api', function () {
-
-    Route::resource('api', 'PostController');
-
+    return [
+        'message' => 'data from posts.',
+        'status' => 'OK'
+    ];
 });
 
 
-/**
-$options = ['middleware' => [
-  'App\Middleware\Authenticate',
-  'App\Middleware\NotValidCredentials'
-  ]
-];
-
-Route::group($options , function () {
-
-    Route::get('/auth', function () {
-
-        echo 'Auth::run';
-
-    }, 'auth');
-
-});
-
-
-Route::get('/api', function () {
-
-    return 'Api::run';
-
-}, 'api')->middleware([
-    'App\Middleware\NoValidKey'
-]);
-
-*/
+//dd(Route::collections());

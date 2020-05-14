@@ -22,6 +22,6 @@ class DemoController extends Controller
      */
      public function index(Request $request): Response
      {
-            //
+            return $this->render('demo/index.php');
      }
 }

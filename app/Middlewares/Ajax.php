@@ -8,10 +8,10 @@ use Jan\Component\Http\Middleware\MiddlewareInterface;
 
 
 /**
- * Class isAjax
+ * Class Ajax
  * @package App\Middlewares
 */
-class isAjax implements MiddlewareInterface
+class Ajax implements MiddlewareInterface
 {
 
     /**
@@ -19,7 +19,7 @@ class isAjax implements MiddlewareInterface
      * @param ResponseInterface $response
      * @param callable $next
      * @return mixed
-     */
+    */
     public function __invoke(RequestInterface $request, ResponseInterface $response, callable $next)
     {
         if(! $request->isAjax())

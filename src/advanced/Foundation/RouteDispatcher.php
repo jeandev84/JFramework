@@ -101,44 +101,33 @@ class RouteDispatcher
              $response = $this->getResponse();
          }
 
-         $target = $this->route->getTarget();
-         $body = null;
-
-         //TODO Refactoring
-
-         if(is_null($target))
-         {
-              $controller = $this->container->get(DefaultController::class);
-              $target = call_user_func([$controller, 'index']);
-         }
-
-         if($target instanceof \Closure)
-         {
-             $body = call_user_func($target, $this->route->getMatches());
-         }
-
-         if(is_array($target) && ($callback = $this->route->getControllerAndAction()))
-         {
-             $body = $this->getActionCallback($callback);
-         }
-
-         if(is_string($body))
-         {
-             $response->withBody($body);
-         }
-
-         if(is_array($body))
-         {
-             $response->withBody(json_encode($body));
-         }
-
-         if($body instanceof ResponseInterface)
-         {
-             return $body;
-         }
-
-         return $response;
+         return $this->resolveBody($response, $this->getBody());
      }
+
+
+    /**
+     * @param ResponseInterface $response
+     * @param $body
+     * @return ResponseInterface
+    */
+    public function resolveBody(ResponseInterface $response, $body): ResponseInterface
+    {
+        if(is_array($body))
+        {
+            $body = json_encode($body);
+        }
+
+        if($body instanceof ResponseInterface)
+        {
+            return $body;
+
+        } else{
+
+            $response->withBody((string) $body);
+        }
+
+        return $response;
+    }
 
 
      /**
@@ -196,6 +185,36 @@ class RouteDispatcher
 
 
      /**
+      * Get current body
+      * @throws ReflectionException
+      * @throws RouteDispatcherException
+     */
+     private function getBody()
+     {
+         $body = null;
+         $target = $this->route->getTarget();
+
+         if(is_null($target))
+         {
+             $controller = $this->container->get(DefaultController::class);
+             $target = call_user_func([$controller, 'index']);
+         }
+
+         if($target instanceof \Closure)
+         {
+             $body = call_user_func($target, $this->route->getMatches());
+         }
+
+         if(is_array($target) && ($callback = $this->route->getControllerAndAction()))
+         {
+             $body = $this->getActionCallback($callback);
+         }
+
+         return $body;
+     }
+
+
+     /**
        * @return mixed
      */
      protected function runStackRouteMiddlewares()
@@ -231,4 +250,5 @@ class RouteDispatcher
     {
         return $this->container->get(ResponseInterface::class);
     }
+
 }
