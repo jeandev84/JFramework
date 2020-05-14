@@ -5,8 +5,8 @@ namespace Jan\Foundation\Providers;
 use Jan\Component\Database\Connection;
 use Jan\Component\Database\Contracts\QueryManagerInterface;
 use Jan\Component\Database\Statement;
-use Jan\Component\DependencyInjection\Contracts\BootableServiceProvider;
-use Jan\Component\DependencyInjection\ServiceProvider\AbstractServiceProvider;
+use Jan\Component\DI\Contracts\BootableServiceProvider;
+use Jan\Component\DI\ServiceProvider\AbstractServiceProvider;
 use Jan\Component\FileSystem\FileSystem;
 
 /**
@@ -30,10 +30,13 @@ class DatabaseServiceProvider extends AbstractServiceProvider implements Bootabl
     public function register()
     {
         $this->container->singleton(Connection::class, function () {
-            $filesystem = $this->container->get(FileSystem::class);
-            $config = $filesystem->load('config/database.php');
-            /* return Connection::make($config['mysql']); */
-            return Connection::make($config[getenv('DB_TYPE')]);
+            $config = $this->container->get('config');
+            $configParams = $config->get('database.'. getenv('DB_CONNECTION'));
+            return Connection::make($configParams);
+        });
+
+        $this->container->bind('connection.status', function () {
+            return Connection::getStatus() == true ? 'Connected ' : 'Disconnected';
         });
 
         $this->container->singleton(QueryManagerInterface::class, function () {

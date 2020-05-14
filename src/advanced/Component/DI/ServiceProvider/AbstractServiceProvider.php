@@ -1,13 +1,13 @@
 <?php
-namespace Jan\Component\DependencyInjection\ServiceProvider;
+namespace Jan\Component\DI\ServiceProvider;
 
 
-use Jan\Component\DependencyInjection\Contracts\ServiceProviderInterface;
+use Jan\Component\DI\Contracts\ServiceProviderInterface;
 
 
 /**
  * Class AbstractServiceProvider
- * @package Jan\Component\DependencyInjection\ServiceProvider
+ * @package Jan\Component\DI\ServiceProvider
 */
 abstract class AbstractServiceProvider implements ServiceProviderInterface
 {

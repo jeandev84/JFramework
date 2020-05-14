@@ -3,7 +3,7 @@ namespace Jan\Component\Routing;
 
 
 use Jan\Component\Database\Contracts\QueryManagerInterface;
-use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
+use Jan\Component\DI\Contracts\ContainerInterface;
 use Jan\Component\Http\Message\ResponseInterface;
 use Jan\Component\Http\Response;
 use Jan\Component\Templating\Exceptions\ViewException;

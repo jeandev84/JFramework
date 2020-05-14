@@ -1,7 +1,8 @@
 <?php
 namespace Jan\Foundation\Http;
 
-use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
+
+use Jan\Component\DI\Contracts\ContainerInterface;
 use Jan\Component\Dotenv\Env;
 use Jan\Component\Http\Message\RequestInterface;
 use Jan\Component\Http\Message\ResponseInterface;

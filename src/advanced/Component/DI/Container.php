@@ -1,20 +1,20 @@
 <?php
-namespace Jan\Component\DependencyInjection;
+namespace Jan\Component\DI;
 
 
 use Closure;
-use Jan\Component\DependencyInjection\Contracts\BootableServiceProvider;
-use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
-use Jan\Component\DependencyInjection\Exceptions\InstanceException;
-use Jan\Component\DependencyInjection\Exceptions\ResolverDependencyException;
-use Jan\Component\DependencyInjection\ServiceProvider\AbstractServiceProvider;
+use Jan\Component\DI\Contracts\BootableServiceProvider;
+use Jan\Component\DI\Contracts\ContainerInterface;
+use Jan\Component\DI\Exceptions\InstanceException;
+use Jan\Component\DI\Exceptions\ResolverDependencyException;
+use Jan\Component\DI\ServiceProvider\AbstractServiceProvider;
 use ReflectionClass;
 use ReflectionException;
 
 
 /**
  * Class Container
- * @package Jan\Component\DependencyInjection
+ * @package Jan\Component\DI
 */
 class Container implements \ArrayAccess, ContainerInterface
 {

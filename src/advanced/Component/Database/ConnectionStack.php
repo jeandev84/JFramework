@@ -2,10 +2,11 @@
 namespace Jan\Component\Database;
 
 
-use Jan\Component\Database\Extensions\PDO\Drivers\Mysql;
-use Jan\Component\Database\Extensions\PDO\Drivers\Oracle;
-use Jan\Component\Database\Extensions\PDO\Drivers\Pgsql;
-use Jan\Component\Database\Extensions\PDO\Drivers\Sqlite;
+use Jan\Component\Database\Connectors\PDO\Drivers\MysqlDriver;
+use Jan\Component\Database\Connectors\PDO\Drivers\OracleDriver;
+use Jan\Component\Database\Connectors\PDO\Drivers\PgsqlDriver;
+use Jan\Component\Database\Connectors\PDO\Drivers\SqliteDriver;
+
 
 /**
  * Class ConnectionStack
@@ -19,13 +20,13 @@ class ConnectionStack
       * @return array
       * @throws \Exception
      */
-     public static function storage($config)
+     public static function collections($config)
      {
          return [
-             new Mysql($config),
-             new Sqlite($config),
-             new Pgsql($config),
-             new Oracle($config)
+             new MysqlDriver($config),
+             new SqliteDriver($config),
+             new PgsqlDriver($config),
+             new OracleDriver($config)
          ];
      }
 

@@ -2,7 +2,7 @@
 namespace Jan\Foundation;
 
 
-use Jan\Component\DependencyInjection\Container;
+use Jan\Component\DI\Container;
 
 
 /**
@@ -179,6 +179,8 @@ class Application extends Container
     {
         return [
             'Jan\Foundation\Providers\AppServiceProvider',
+            'Jan\Foundation\Providers\FileSystemServiceProvider',
+            'Jan\Foundation\Providers\ConfigServiceProvider',
             'Jan\Foundation\Providers\LoaderServiceProvider',
             'Jan\Foundation\Providers\RouteServiceProvider',
             'Jan\Foundation\Providers\DatabaseServiceProvider',

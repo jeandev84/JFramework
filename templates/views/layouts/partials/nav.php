@@ -21,6 +21,11 @@
                     Github <i class="fa fa-github"></i>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="#" class="badge alert-success nav-link" style="margin-top: 10px;">
+                    <?= \Jan\Utils\Status::isConnectedToDb() ?>
+                </a>
+            </li>
         </ul>
         <ul class="navbar-nav"">
 

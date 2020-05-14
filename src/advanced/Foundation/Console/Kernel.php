@@ -6,7 +6,7 @@ use Jan\Component\Console\Command\Command;
 use Jan\Component\Console\ConsoleInterface;
 use Jan\Component\Console\Input\InputInterface;
 use Jan\Component\Console\Output\OutputInterface;
-use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
+use Jan\Component\DI\Contracts\ContainerInterface;
 use Jan\Contracts\Console\Kernel as ConsoleKernelContract;
 use Jan\Foundation\Loader;
 

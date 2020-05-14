@@ -4,7 +4,7 @@ namespace Jan\Foundation\Providers;
 
 use Jan\Component\Console\Console;
 use Jan\Component\Console\ConsoleInterface;
-use Jan\Component\DependencyInjection\ServiceProvider\AbstractServiceProvider;
+use Jan\Component\DI\ServiceProvider\AbstractServiceProvider;
 
 
 

@@ -2,11 +2,9 @@
 namespace Jan\Foundation\Providers;
 
 
-use Jan\Component\DependencyInjection\Container;
-use Jan\Component\DependencyInjection\Contracts\BootableServiceProvider;
-use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
-use Jan\Component\DependencyInjection\ServiceProvider\AbstractServiceProvider;
-use Jan\Component\FileSystem\FileSystem;
+use Jan\Component\DI\Contracts\BootableServiceProvider;
+use Jan\Component\DI\Contracts\ContainerInterface;
+use Jan\Component\DI\ServiceProvider\AbstractServiceProvider;
 use Jan\Component\Http\Message\RequestInterface;
 use Jan\Component\Http\Message\ResponseInterface;
 use Jan\Component\Http\Request;
@@ -35,11 +33,6 @@ class AppServiceProvider extends AbstractServiceProvider implements BootableServ
     {
         $this->container->singleton(ContainerInterface::class, function () {
             return $this->container;
-        });
-
-        // File System
-        $this->container->singleton(FileSystem::class, function () {
-            return new FileSystem($this->container->get('base.path'));
         });
 
 

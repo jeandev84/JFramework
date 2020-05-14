@@ -2,8 +2,8 @@
 namespace Jan\Foundation\Providers;
 
 
-use Jan\Component\DependencyInjection\Contracts\BootableServiceProvider;
-use Jan\Component\DependencyInjection\ServiceProvider\AbstractServiceProvider;
+use Jan\Component\DI\Contracts\BootableServiceProvider;
+use Jan\Component\DI\ServiceProvider\AbstractServiceProvider;
 use Jan\Component\Http\Message\RequestInterface;
 use Jan\Component\Routing\Route;
 use Jan\Component\Routing\RouteParam;

@@ -1,12 +1,13 @@
 <?php
-namespace Jan\Component\DependencyInjection\ServiceProvider;
+namespace Jan\Component\DI\ServiceProvider;
 
 
-use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
+use Jan\Component\DI\Contracts\ContainerInterface;
+
 
 /**
  * Trait ServiceProviderTrait
- * @package Jan\Component\DependencyInjection\ServiceProvider
+ * @package Jan\Component\DI\ServiceProvider
 */
 trait ServiceProviderTrait
 {

@@ -18,6 +18,11 @@ class Connection
      private static $instance;
 
 
+     /** @var bool */
+     private static $status = false;
+
+
+
      /**
       * @param array $config
       * @return mixed
@@ -25,16 +30,38 @@ class Connection
      */
      public static function make(array $config)
      {
-          $config = new Configuration($config);
-          $driverManager = new DriverManager($config->driver());
-          $driverManager->addConnections(ConnectionStack::storage($config));
+          try {
 
-          if(is_null(self::$instance))
-          {
-              self::$instance = call_user_func([$driverManager, 'getConnection']);
+              $config = new Configuration($config);
+              $driverManager = new DriverManager($config->driver());
+              $driverManager->addConnections(ConnectionStack::collections($config));
+
+              if(is_null(self::$instance))
+              {
+                  self::$instance = call_user_func([$driverManager, 'getConnection']);
+              }
+
+              if(! is_null(self::$instance))
+              {
+                  self::$status = true;
+              }
+
+          } catch (Exception $e) {
+
+              throw $e;
           }
 
           return self::$instance;
+      }
+
+
+      /**
+       * Get connection status
+       * @return mixed
+      */
+      public static function getStatus()
+      {
+          return self::$status;
       }
 
 }

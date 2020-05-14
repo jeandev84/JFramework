@@ -2,7 +2,7 @@
 namespace App\Services;
 
 
-use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
+use Jan\Component\DI\Contracts\ContainerInterface;
 
 /**
  * Class FileUploader

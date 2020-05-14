@@ -2,7 +2,7 @@
 namespace Jan\Foundation;
 
 
-use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
+use Jan\Component\DI\Contracts\ContainerInterface;
 use Jan\Component\FileSystem\FileSystem;
 
 

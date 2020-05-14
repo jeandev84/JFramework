@@ -2,7 +2,7 @@
 namespace Jan\Foundation\Providers;
 
 
-use Jan\Component\DependencyInjection\ServiceProvider\AbstractServiceProvider;
+use Jan\Component\DI\ServiceProvider\AbstractServiceProvider;
 use Jan\Foundation\Loader;
 
 /**

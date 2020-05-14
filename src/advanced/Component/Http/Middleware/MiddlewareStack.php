@@ -2,7 +2,7 @@
 namespace Jan\Component\Http\Middleware;
 
 
-use Jan\Component\DependencyInjection\Contracts\ContainerInterface;
+use Jan\Component\DI\Contracts\ContainerInterface;
 use Jan\Component\Http\Message\RequestInterface;
 use Jan\Component\Http\Message\ResponseInterface;
 

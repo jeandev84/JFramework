@@ -92,6 +92,16 @@ return [
 
     'providers' => [
       // example: \App\Providers\FileSystemServiceProvider::class
+    ],
+
+    /*
+    |------------------------------------------------------------------
+    |  Add middlewares
+    |------------------------------------------------------------------
+    */
+
+    'middlewares' => [
+        // App\Middlewares\AjaxMiddleware::class
     ]
 
 

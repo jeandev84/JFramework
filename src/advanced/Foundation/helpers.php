@@ -1,6 +1,6 @@
 <?php
 
-use Jan\Component\DependencyInjection\Container;
+use Jan\Component\DI\Container;
 
 
 if(! function_exists('app'))

@@ -4,6 +4,7 @@ namespace Jan\Component\FileSystem;
 
 use Jan\Component\FileSystem\Exception\FileSystemException;
 
+
 /**
  * Class FileSystem
  * @package Jan\Component\FileSystem
@@ -74,24 +75,16 @@ class FileSystem
 
 
     /**
-     * @param $filename
-     * @param $to
+     * @param string $source
+     * @return array|false
+     *
+     * $this->resources('routes/*')
+     * $this->resources('routes/*.php')
     */
-     public function move($filename, $to)
-     {
-         //
-     }
-
-
-
-     /**
-      * @param $origin
-      * @param $destination
-     */
-     public function copy($origin, $destination)
-     {
-          //
-     }
+    public function resources(string $source)
+    {
+        return glob($this->resource($source));
+    }
 
 
      /**
@@ -143,6 +136,64 @@ class FileSystem
 
 
     /**
+     * @param string $filename
+     * @param string|null $key
+     * @return string|string[]
+     */
+    public function getFileDetails(string $filename, string $key = null)
+    {
+        $details = pathinfo($this->resource($filename));
+
+        if(!is_null($key))
+        {
+            return $details[$key] ?? null;
+        }
+
+        return $details;
+    }
+
+
+    /**
+     * @param $filename
+     * @return string|string[]
+    */
+    public function getDirectoryName($filename)
+    {
+        return $this->getFileDetails($filename, 'dirname');
+    }
+
+
+    /**
+     * @param $filename
+     * @return string|string[]
+    */
+    public function getBaseName($filename)
+    {
+        return $this->getFileDetails($filename, 'basename');
+    }
+
+
+    /**
+     * @param $filename
+     * @return string|string[]
+    */
+    public function getFileExtension($filename)
+    {
+        return $this->getFileDetails($filename, 'extension');
+    }
+
+
+    /**
+     * @param $filename
+     * @return string|string[]
+     */
+    public function getFileName($filename)
+    {
+        return $this->getFileDetails($filename, 'filename');
+    }
+
+
+    /**
      * @param $path
      * @return false|string
     */
@@ -183,6 +234,28 @@ class FileSystem
     protected function resolvedBasePath()
     {
         return rtrim($this->resource, '\/');
+    }
+
+
+
+    /**
+     * @param $filename
+     * @param $to
+     */
+    public function move($filename, $to)
+    {
+        //
+    }
+
+
+
+    /**
+     * @param $origin
+     * @param $destination
+     */
+    public function copy($origin, $destination)
+    {
+        //
     }
 
 }
