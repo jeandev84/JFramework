@@ -101,7 +101,7 @@ class RouteDispatcher
              $response = $this->getResponse();
          }
 
-         return $this->resolveBody($response, $this->getBody());
+         return $this->getResponseWithBody($response, $this->getBody());
      }
 
 
@@ -110,7 +110,7 @@ class RouteDispatcher
      * @param $body
      * @return ResponseInterface
     */
-    private function resolveBody(ResponseInterface $response, $body): ResponseInterface
+    private function getResponseWithBody(ResponseInterface $response, $body): ResponseInterface
     {
         if($body instanceof ResponseInterface)
         {
