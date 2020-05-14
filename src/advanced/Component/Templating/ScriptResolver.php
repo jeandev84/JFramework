@@ -4,11 +4,12 @@ namespace Jan\Component\Templating;
 
 use Jan\Component\Templating\Exceptions\ViewException;
 
+
 /**
- * Class Format
+ * Class ScriptResolver
  * @package Jan\Component\Templating
 */
-class Format
+class ScriptResolver
 {
 
     /** @var array  */
@@ -20,9 +21,9 @@ class Format
      * @param $content
      * @return string|string[]|null
      *
-     * $content = $this->resolveScript(ob_get_clean());
+     * $content = $this->resolve(ob_get_clean());
      */
-    public function resolveScript($content)
+    public function resolve($content)
     {
         $pattern = "#<script.*?>.*?</script>#si";
 
@@ -53,7 +54,7 @@ class Format
      */
     public function renderWithScript($template, $data = [])
     {
-        $content = $this->resolveScript(
+        $content = $this->resolve(
             $this->render($template, $data)
         );
 
