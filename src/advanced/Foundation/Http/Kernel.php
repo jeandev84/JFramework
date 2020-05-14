@@ -41,6 +41,7 @@ class Kernel implements HttpKernelContract
     public function __construct(ContainerInterface $container)
     {
           $this->container = $container;
+          $this->loadHelpers();
           $this->loadEnvironments();
     }
 
@@ -149,11 +150,20 @@ class Kernel implements HttpKernelContract
     /**
      * @param \Exception $e
      * @return
-   */
+    */
     protected function displayError(\Exception $e)
     {
          $view = $this->container->get('view');
          $view->setBasePath(__DIR__.'/../Resources/');
          return $view->render('errors/dev.php', compact('e'));
+    }
+
+
+    /**
+     * Load helpers
+    */
+    protected function loadHelpers()
+    {
+         require __DIR__.'/../helpers.php';
     }
 }

@@ -12,6 +12,7 @@ use Jan\Component\FileSystem\FileSystem;
 */
 class Loader
 {
+
     /**
      * @var array
     */
@@ -24,9 +25,7 @@ class Loader
      * @var array
     */
     private $resources = [
-       'routes/web.php',
-       'routes/console.php',
-       'routes/api.php'
+       'routes/app.php'
     ];
 
 
@@ -41,7 +40,6 @@ class Loader
     */
     public function __construct(ContainerInterface $container)
     {
-          $this->loadNamespaceAlias();
           $this->container = $container;
     }
 
@@ -49,7 +47,7 @@ class Loader
     /**
      *  Load namespace aliases
     */
-    protected function loadNamespaceAlias()
+    public function loadNamespaceAlias()
     {
         foreach ($this->aliases as $alias => $original)
         {
@@ -83,6 +81,7 @@ class Loader
             $this->container->addServiceProvider($provider);
         }
     }
+
 
     /**
      * Load command stuff

@@ -1,6 +1,6 @@
 <?php
-
 use Jan\Component\DI\Container;
+use Jan\Component\DI\Exceptions\InstanceException;
 
 
 if(! function_exists('app'))
@@ -9,15 +9,16 @@ if(! function_exists('app'))
     /**
      * @param null $abstract
      * @param array $parameters
-     * @return void
+     * @return Container|object
+     * @throws ReflectionException
      */
      function app($abstract = null, array $parameters = [])
      {
-//         if(is_null($abstract))
-//         {
-//             return Container::getInstance();
-//         }
-//         return Container::getInstance()->make($abstract, $parameters);
+         if(is_null($abstract))
+         {
+             return Container::getInstance();
+         }
+         return Container::getInstance()->make($abstract, $parameters);
      }
 }
 
@@ -28,13 +29,15 @@ if(! function_exists('base_path'))
      * Base Path
      * @param string $path
      * @return string
+     * @throws ReflectionException
+     * @throws InstanceException
      */
     function base_path($path = '')
     {
-        return __DIR__.'/..//'. ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        //return __DIR__.'/..//'. ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        // return app()->get('base.path');
     }
 }
-
 
 
 

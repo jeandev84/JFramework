@@ -17,6 +17,9 @@
                 <a class="nav-link" href="<?= route('app.contact')?>">Contact</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="<?= route('article.list') ?>">Articles</a>
+            </li>
+            <li class="nav-item">
                 <a href="https://github.com/jeandev84/JFramework" class="nav-link" target="_blank">
                     Github <i class="fa fa-github"></i>
                 </a>

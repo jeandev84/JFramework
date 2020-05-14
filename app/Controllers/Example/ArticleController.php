@@ -1,12 +1,12 @@
 <?php
-namespace App\Controllers;
+namespace App\Controllers\Example;
 
 
-
+use App\Controllers\BaseController;
 use App\Repository\ArticleRepository;
 use Jan\Component\Http\Request;
 use Jan\Component\Http\Response;
-
+use Jan\Component\Routing\Route;
 
 
 /**

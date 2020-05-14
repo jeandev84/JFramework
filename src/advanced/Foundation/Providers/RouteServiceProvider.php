@@ -32,7 +32,7 @@ class RouteServiceProvider extends AbstractServiceProvider implements BootableSe
     */
     public function boot()
     {
-        $this->container[Loader::class]->loadRouteResources();
+        $this->container->get('loader')->loadRouteResources();
 
         // router
         $this->container->singleton('router', function () {

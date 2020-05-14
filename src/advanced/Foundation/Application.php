@@ -43,7 +43,6 @@ class Application extends Container
             $this->setBasePath($basePath);
         }
 
-        $this->loadHelpers();
         $this->registerBaseBindings();
         $this->registerBaseServiceProviders();
         $this->registerCoreContainerAliases();
@@ -130,11 +129,13 @@ class Application extends Container
 
     /**
      * @return void
-     */
+    */
+    /*
     protected function loadHelpers()
     {
         require_once __DIR__ . '/helpers.php';
     }
+    */
 
 
     /**

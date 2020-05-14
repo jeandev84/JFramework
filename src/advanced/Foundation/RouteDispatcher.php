@@ -5,12 +5,11 @@ namespace Jan\Foundation;
 use Jan\Component\DI\Contracts\ContainerInterface;
 use Jan\Component\Http\Message\RequestInterface;
 use Jan\Component\Http\Message\ResponseInterface;
-use Jan\Component\Http\Middleware\MiddlewareStack;
-use Jan\Component\Routing\Route;
 use Jan\Component\Routing\RouteParam;
 use Jan\Foundation\Exceptions\RouteDispatcherException;
 use ReflectionException;
 use ReflectionMethod;
+
 
 
 /**
@@ -59,6 +58,7 @@ class RouteDispatcher
           return $this;
      }
 
+
      /**
       * @param ContainerInterface $container
       * @return RouteDispatcher
@@ -98,7 +98,7 @@ class RouteDispatcher
          // Get Response
          if(! $response instanceof ResponseInterface)
          {
-             $response = $this->container->get(ResponseInterface::class);
+             $response = $this->getResponse();
          }
 
          $target = $this->route->getTarget();
@@ -210,10 +210,25 @@ class RouteDispatcher
              }
          }
 
-         $request = $this->container->get(RequestInterface::class);
-         $response = $this->container->get(ResponseInterface::class);
-
-         return $middlewareStack->handle($request, $response);
+         return $middlewareStack->handle($this->getRequest(), $this->getResponse());
      }
 
+
+     /**
+      * Get request
+      * @return mixed
+     */
+     private function getRequest()
+     {
+         return $this->container->get(RequestInterface::class);
+     }
+
+    /**
+     * Get response
+     * @return mixed
+    */
+    private function getResponse()
+    {
+        return $this->container->get(ResponseInterface::class);
+    }
 }

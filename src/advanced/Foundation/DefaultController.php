@@ -7,12 +7,14 @@ use Jan\Component\Routing\Controller;
 use Jan\Component\Templating\View;
 
 
+
 /**
  * Class DefaultController
  * @package Jan\Foundation
 */
 class DefaultController extends  Controller
 {
+
 
      /** @var View */
      protected $view;
