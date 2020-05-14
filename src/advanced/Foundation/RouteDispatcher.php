@@ -112,20 +112,17 @@ class RouteDispatcher
     */
     public function resolveBody(ResponseInterface $response, $body): ResponseInterface
     {
-        if(is_array($body))
-        {
-            $body = json_encode($body);
-        }
-
         if($body instanceof ResponseInterface)
         {
             return $body;
-
         }
 
-        $response->withBody((string) $body);
+        if(is_array($body))
+        {
+            return $response->withJson($body);
+        }
 
-        return $response;
+        return $response->withBody((string)$body);
     }
 
 
