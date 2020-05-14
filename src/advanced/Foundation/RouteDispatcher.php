@@ -89,7 +89,7 @@ class RouteDispatcher
      /**
       * @return ResponseInterface
       * @throws ReflectionException|RouteDispatcherException
-      */
+     */
      public function callAction(): ResponseInterface
      {
          // Run all middlewares of application
@@ -101,17 +101,20 @@ class RouteDispatcher
              $response = $this->getResponse();
          }
 
-         return $this->getResponseWithBody($response, $this->getBody());
+         return $this->getResponseWithBody($response);
      }
 
 
     /**
      * @param ResponseInterface $response
-     * @param $body
      * @return ResponseInterface
+     * @throws ReflectionException
+     * @throws RouteDispatcherException
     */
-    private function getResponseWithBody(ResponseInterface $response, $body): ResponseInterface
+    private function getResponseWithBody(ResponseInterface $response): ResponseInterface
     {
+        $body = $this->getBody();
+
         if($body instanceof ResponseInterface)
         {
             return $body;

@@ -61,9 +61,12 @@ Route::group($options, function () {
 Route::get('/demo', function () {
 
     return [
-        'message' => 'data from posts.',
+        'message' => 'data from array to json.',
         'status' => 'OK'
     ];
+
+    // return null;
+    // return 'Привет! как настроение ?';
 });
 
 
