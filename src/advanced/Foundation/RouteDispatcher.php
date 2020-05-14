@@ -110,7 +110,7 @@ class RouteDispatcher
      * @param $body
      * @return ResponseInterface
     */
-    public function resolveBody(ResponseInterface $response, $body): ResponseInterface
+    private function resolveBody(ResponseInterface $response, $body): ResponseInterface
     {
         if($body instanceof ResponseInterface)
         {
@@ -171,7 +171,7 @@ class RouteDispatcher
       * @param ReflectionMethod $reflectionMethod
       * @return mixed
      */
-     protected function resolveActionParams(ReflectionMethod $reflectionMethod)
+     private function resolveActionParams(ReflectionMethod $reflectionMethod)
      {
          return $this->container->resolveMethodDependencies(
              $reflectionMethod,
@@ -213,7 +213,7 @@ class RouteDispatcher
      /**
        * @return mixed
      */
-     protected function runStackRouteMiddlewares()
+     private function runStackRouteMiddlewares()
      {
          $middlewareStack = $this->container->get('middleware');
          if($middlewares = $this->middlewareStorage)
