@@ -1,10 +1,10 @@
 <?php
-namespace Jan\Component\Database\ORM;
+namespace Jan\Component\Database\ORM\Relation;
 
 
 /**
  * Class Record
- * @package Jan\Component\Database\ORM
+ * @package Jan\Component\Database\ORM\Relation
  *
  * PDO Record
  *

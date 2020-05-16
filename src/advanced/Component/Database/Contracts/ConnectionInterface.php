@@ -3,28 +3,29 @@ namespace Jan\Component\Database\Contracts;
 
 
 /**
- * Interface DatabaseInterface
+ * Interface ConnectionInterface
  * @package Jan\Component\Database\Contracts
 */
-interface DatabaseInterface
+interface ConnectionInterface
 {
 
     /**
+     * Get driver name or type database
      * @return string
     */
     public function getDriver(): string ;
 
 
     /**
-     * Connection to Database
+     * Get connection or connect to database
      * @return mixed
     */
     public function connect();
 
 
     /**
-     * Disconnect
-     * @return mixed
+     * Disconnect to database
+     * @return void
     */
     public function disconnect();
 }

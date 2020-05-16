@@ -3,6 +3,8 @@ namespace Jan\Foundation\Providers;
 
 
 use Jan\Component\Database\Connection;
+use Jan\Component\Database\Connectors\PDO\QueryManager;
+use Jan\Component\Database\Contracts\ManagerInterface;
 use Jan\Component\Database\Contracts\QueryManagerInterface;
 use Jan\Component\Database\Statement;
 use Jan\Component\DI\Contracts\BootableServiceProvider;
@@ -29,18 +31,14 @@ class DatabaseServiceProvider extends AbstractServiceProvider implements Bootabl
     */
     public function register()
     {
-        $this->container->singleton(Connection::class, function () {
+        $this->container->singleton('connection', function () {
             $config = $this->container->get('config');
             $configParams = $config->get('database.'. getenv('DB_CONNECTION'));
             return Connection::make($configParams);
         });
 
-        $this->container->bind('connection.status', function () {
-            return Connection::getStatus() == true ? 'Connected ' : 'Disconnected';
-        });
-
-        $this->container->singleton(QueryManagerInterface::class, function () {
-            return new Statement($this->container->get(Connection::class));
+        $this->container->singleton(ManagerInterface::class, function () {
+            return new QueryManager($this->container->get('connection'));
         });
     }
 

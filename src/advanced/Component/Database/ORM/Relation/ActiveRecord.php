@@ -1,5 +1,5 @@
 <?php
-namespace Jan\Component\Database\ORM;
+namespace Jan\Component\Database\ORM\Relation;
 
 
 use Exception;
@@ -11,7 +11,7 @@ use PDO;
 
 /**
  * trait ActiveRecord
- * @package Jan\Component\Database\ORM
+ * @package Jan\Component\Database\ORM\Relation
  *
  * TODO Refactoring
  * May be this class don't needed

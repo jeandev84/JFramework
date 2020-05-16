@@ -76,6 +76,7 @@ class Request implements RequestInterface
 
 
     /**
+     * Determine if the request is xhr()
      * @return bool
      */
     public function isAjax()

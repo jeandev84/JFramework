@@ -9,7 +9,7 @@ return [
     |------------------------------------------------------------------
     */
 
-    'connection' => 'mysql', // drivers [ mysql, sqlite, ...] // default connection
+    'connection' => env('DB_CONNECTION', 'mysql'),
     'sqlite' => [
         'driver'   => 'sqlite',
         'database' => '../example.sqlite',
@@ -27,7 +27,8 @@ return [
         'collation' => 'utf8_unicode_ci',
         'options'   => [],
         'prefix'    => '',
-        'engine'    => 'innoDB'
+        'engine'    => 'innoDB',
+        'somekey'   => 'ddd'
     ]
 ];
 

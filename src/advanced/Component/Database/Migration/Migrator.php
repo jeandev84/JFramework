@@ -9,6 +9,7 @@ namespace Jan\Component\Database\Migration;
 class Migrator
 {
 
+
       /** @var \PDO  */
       protected $connection;
 

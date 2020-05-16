@@ -2,17 +2,17 @@
 namespace Jan\Component\Database\Connectors\PDO;
 
 
-use Jan\Component\Database\Configuration;
-use Jan\Component\Database\Contracts\DatabaseInterface;
+use Jan\Component\Database\Config;
+use Jan\Component\Database\Contracts\ConnectionInterface;
 use PDO;
 
 
 
 /**
- * Class PdoConnection
+ * Class Connection
  * @package Jan\Component\Database\Connectors\PDO
 */
-abstract class PdoConnection implements DatabaseInterface
+abstract class Connection implements ConnectionInterface
 {
 
     /**
@@ -27,18 +27,18 @@ abstract class PdoConnection implements DatabaseInterface
     ];
 
 
-    /** @var  Configuration */
+    /** @var  Config */
     protected $config;
 
 
     /**
      * AbstractPdoConnection constructor.
-     * @param Configuration $config
+     * @param Config $config
      * @throws \Exception
      */
-    public function __construct(Configuration $config)
+    public function __construct(Config $config)
     {
-        if(! \in_array($driver = $config->driver(), PDO::getAvailableDrivers()))
+        if(! \in_array($driver = $config['driver'], PDO::getAvailableDrivers()))
         {
             throw new \Exception(
                 sprintf('This driver (%s) is not available or unenabled!', $driver)
@@ -99,20 +99,20 @@ abstract class PdoConnection implements DatabaseInterface
     {
         return sprintf('%s:host=%s;port=%s;dbname=%s;charset=%s;',
             $this->getDriver(),
-            $this->config->host(),
-            $this->config->port(),
-            $this->config->database(),
-            $this->config->charset()
+            $this->config['host'],
+            $this->config['port'],
+            $this->config['database'],
+            $this->config['charset']
         );
     }
 
 
     /**
      * @return mixed
-     */
+    */
     protected function getUsername()
     {
-        return $this->config->username();
+        return $this->config['username'];
     }
 
     /**
@@ -120,7 +120,7 @@ abstract class PdoConnection implements DatabaseInterface
      */
     protected function getPassword()
     {
-        return $this->config->password();
+        return $this->config['password'];
     }
 
 
@@ -129,7 +129,7 @@ abstract class PdoConnection implements DatabaseInterface
      */
     protected function getOptions()
     {
-        return $this->config->options();
+        return $this->config['options'];
     }
 
 }

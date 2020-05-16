@@ -3,7 +3,7 @@ namespace App\Repository;
 
 
 use App\Entity\User;
-use Jan\Component\Database\Contracts\QueryManagerInterface;
+use Jan\Component\Database\Contracts\ManagerInterface;
 use Jan\Component\Database\ORM\EntityRepository;
 
 
@@ -16,9 +16,9 @@ class UserRepository extends EntityRepository
 
     /**
      * UserRepository constructor.
-     * @param QueryManagerInterface $manager
-     */
-    public function __construct(QueryManagerInterface $manager)
+     * @param ManagerInterface $manager
+    */
+    public function __construct(ManagerInterface $manager)
     {
         parent::__construct($manager, User::class);
     }

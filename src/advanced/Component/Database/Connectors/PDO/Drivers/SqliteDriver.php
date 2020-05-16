@@ -2,7 +2,7 @@
 namespace Jan\Component\Database\Connectors\PDO\Drivers;
 
 
-use Jan\Component\Database\Connectors\PDO\PdoConnection;
+use Jan\Component\Database\Connectors\PDO\Connection;
 
 
 /**
@@ -11,7 +11,7 @@ use Jan\Component\Database\Connectors\PDO\PdoConnection;
  *
  * SQLite connection via PDO
 */
-class SqliteDriver extends PdoConnection
+class SqliteDriver extends Connection
 {
 
     /**
@@ -30,9 +30,10 @@ class SqliteDriver extends PdoConnection
     {
         return sprintf('%s:%s',
           $this->getDriver(),
-          $this->config->database()
+          $this->config['database']
         );
     }
+
 
     /**
      * @return mixed|null

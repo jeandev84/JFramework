@@ -9,14 +9,4 @@ namespace Jan\Component\Database\ORM;
 class QueryBuilder
 {
 
-      /** @var array  */
-      private $sqlParts = [
-          'select' => [],
-          'from'   => [],
-          'where'  => [],
-          'limit'  => [],
-          'join'   => [],
-          'insert' => [],
-          'update' => []
-      ];
 }

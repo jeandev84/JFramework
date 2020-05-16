@@ -223,16 +223,9 @@ class Response implements ResponseInterface
 
     /**
      * @return string
-     * @throws \Exception
     */
     private function codeMessage()
     {
-        if(! array_key_exists($this->status, $this->messages))
-        {
-             throw new \Exception(
-                 sprintf('Code %s is not available', $this->status)
-             );
-        }
-        return $this->messages[$this->status];
+        return $this->messages[$this->status] ?? '';
     }
 }

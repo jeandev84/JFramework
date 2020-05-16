@@ -27,11 +27,15 @@ class Route
     private static $currentRoute;
     private static $middlewares = [];
     private static $patterns = [
+        'id'   => '[0-9]+',
+        'slug' => '[a-z\-0-9]+'
+    ];
+
+    # not availables params
+    private static $shortPatterns = [
         'int'  => '\d+',
         'text' => '\w+',
-        'id'   => '[0-9]+',
-        'slug' => '[a-z\-0-9]+',
-        'any'  => '.*', // any
+        'any'  => '.*'
     ];
 
     /**

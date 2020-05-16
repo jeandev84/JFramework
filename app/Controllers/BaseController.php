@@ -17,7 +17,7 @@ class BaseController extends Controller
      public function __construct(ContainerInterface $container)
      {
          parent::__construct($container);
-         // start session here just for testing something
+         # Start session here just for testing something
          Session::start();
      }
 }

@@ -1,7 +1,8 @@
 <?php
-namespace Jan\Component\Database;
+namespace Jan\Component\Database\Connectors;
 
 
+use Jan\Component\Database\Config;
 use Jan\Component\Database\Connectors\PDO\Drivers\MysqlDriver;
 use Jan\Component\Database\Connectors\PDO\Drivers\OracleDriver;
 use Jan\Component\Database\Connectors\PDO\Drivers\PgsqlDriver;
@@ -16,11 +17,11 @@ class ConnectionStack
 {
 
      /**
-      * @param $config
+      * @param Config $config
       * @return array
       * @throws \Exception
      */
-     public static function collections($config)
+     public static function storage(Config $config)
      {
          return [
              new MysqlDriver($config),

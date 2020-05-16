@@ -2,7 +2,7 @@
 namespace Jan\Component\Database\Connectors\PDO\Drivers;
 
 
-use Jan\Component\Database\Connectors\PDO\PdoConnection;
+use Jan\Component\Database\Connectors\PDO\Connection;
 
 
 /**
@@ -11,7 +11,7 @@ use Jan\Component\Database\Connectors\PDO\PdoConnection;
  *
  * Oracle connection via PDO
 */
-class OracleDriver extends PdoConnection
+class OracleDriver extends Connection
 {
 
     public function getDriver(): string

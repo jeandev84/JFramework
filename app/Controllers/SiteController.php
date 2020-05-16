@@ -2,10 +2,8 @@
 namespace App\Controllers;
 
 
-use App\Entity\User;
 use App\Repository\UserRepository;
 use Exception;
-use Jan\Component\Database\ORM\EntityManager;
 use Jan\Component\Http\Message\ResponseInterface;
 use Jan\Component\Http\Request;
 use Jan\Component\Http\Response;
@@ -22,19 +20,24 @@ class SiteController extends BaseController
 
     /**
      * action index
+     * @param Request $request
      * @param UserRepository $userRepository
      * @return Response
      *
-     * @throws Exception
-    */
+     * @throws ViewException
+     */
     public function index(Request $request, UserRepository $userRepository): Response
     {
+        $users = [];
         if($request->isAjax())
         {
+            /*
             $users = $userRepository->findAll();
             print_r($users);
             exit;
+            */
         }
+
         return $this->render('site/home.php', compact('users'));
     }
 
@@ -73,4 +76,5 @@ class SiteController extends BaseController
             return $response->redirect('/contact');
         }
     }
+
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Jan\Component\Database\Connectors\PDO\Drivers;
 
-use Jan\Component\Database\Connectors\PDO\PdoConnection;
+use Jan\Component\Database\Connectors\PDO\Connection;
 
 
 /**
@@ -10,7 +10,7 @@ use Jan\Component\Database\Connectors\PDO\PdoConnection;
  *
  * MysqlDriver connection via PDO
 */
-class MysqlDriver extends PdoConnection
+class MysqlDriver extends Connection
 {
 
     /**
