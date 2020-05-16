@@ -20,9 +20,7 @@
                 <a class="nav-link" href="<?= route('article.list') ?>">Articles</a>
             </li>
             <li class="nav-item">
-                <a href="https://github.com/jeandev84/JFramework" class="nav-link" target="_blank">
-                    Github <i class="fa fa-github"></i>
-                </a>
+                <a href="<?= route('gk.service.form') ?>" class="nav-link">Form</a>
             </li>
             <li class="nav-item">
                 <a href="#" class="badge alert-success nav-link" style="margin-top: 10px;">
@@ -46,6 +44,11 @@
 
             <!-- if ! user does not login -->
            <?php if(! isset($_SESSION['auth'])): ?>
+               <li class="nav-item">
+                   <a href="https://github.com/jeandev84/JFramework" class="nav-link" target="_blank">
+                       Github <i class="fa fa-github"></i>
+                   </a>
+               </li>
                <li class="nav-item">
                    <a class="nav-link" href="<?= route('auth.login')?>">Login</a>
                </li>

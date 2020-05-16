@@ -96,7 +96,6 @@ if(! function_exists('asset'))
      */
     function asset($path)
     {
-        // for moment
         return "/$path";
     }
 }

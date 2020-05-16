@@ -13,14 +13,13 @@
 <?php include('partials/nav.php') ?>
 <div class="container mt-4">
     <?= $content ?>
-    <div style="text-align: center;">
-        <code><small>layout default</small></code>
-    </div>
 </div>
 
 <!-- scripts -->
-<script src="<?= asset("assets/bootstrap/js/jquery-3.4.1.slim.min.js")?>"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!--<script src="--><?//= asset("assets/bootstrap/js/jquery-3.4.1.slim.min.js")?><!--"></script>-->
 <script src="<?= asset("assets/bootstrap/js/bootstrap.min.js") ?>"></script>
 <script src="<?= asset("assets/bootstrap/js/popper.min.js")?>"></script>
+<script src="<?= asset("assets/app.js")?>"></script>
 </body>
 </html>

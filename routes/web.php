@@ -7,7 +7,8 @@
 */
 
 
-Route::get('/', 'SiteController@index', 'app.home');
+# Route::get('/', 'SiteController@index', 'app.home');
+Route::map('GET|POST', '/', 'SiteController@index', 'app.home');
 
 Route::get('/about', 'SiteController@about', 'app.about');
 Route::map('GET|POST', '/contact', 'SiteController@contact', 'app.contact');
@@ -70,4 +71,4 @@ Route::get('/demo', function () {
 });
 
 
-//dd(Route::collections());
+Route::map('GET|POST', '/form', 'Form\\FormController@index', 'gk.service.form');

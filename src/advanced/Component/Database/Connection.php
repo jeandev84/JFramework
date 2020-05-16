@@ -56,6 +56,18 @@ class Connection
 
 
       /**
+       * Get instance of current connection
+       * @return mixed
+      */
+      /*
+      public static function instance()
+      {
+          return self::$instance;
+      }
+      */
+
+
+      /**
        * Get connection status
        * @return mixed
       */

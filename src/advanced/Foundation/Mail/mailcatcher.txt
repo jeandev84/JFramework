@@ -1,0 +1,21 @@
+https://mailcatcher.me/
+
+How
+gem install mailcatcher
+mailcatcher
+Go to http://localhost:1080/
+Send mail through smtp://localhost:1025
+Use mailcatcher --help to see the command line options. The brave can get the source from the GitHub repository.
+
+PHP
+For projects using PHP, or PHP frameworks and application platforms like Drupal, you can set PHP's mail configuration in your php.ini to send via MailCatcher with:
+
+sendmail_path = /usr/bin/env catchmail -f some@from.address
+You can do this in your Apache configuration like so:
+
+php_admin_value sendmail_path "/usr/bin/env catchmail -f some@from.address"
+If you've installed via RVM this probably won't work unless you've manually added your RVM bin paths to your system environment's PATH. In that case, run which catchmail and put that path into the sendmail_path directive above instead of /usr/bin/env catchmail.
+
+If starting mailcatcher on alternative SMTP IP and/or port with parameters like --smtp-ip 192.168.0.1 --smtp-port 10025, add the same parameters to your catchmail command:
+
+sendmail_path = /usr/bin/env catchmail --smtp-ip 192.160.0.1 --smtp-port 10025 -f some@from.address

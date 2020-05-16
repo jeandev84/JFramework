@@ -7,6 +7,7 @@ use App\Repository\UserRepository;
 use Exception;
 use Jan\Component\Database\ORM\EntityManager;
 use Jan\Component\Http\Message\ResponseInterface;
+use Jan\Component\Http\Request;
 use Jan\Component\Http\Response;
 use Jan\Component\Templating\Exceptions\ViewException;
 
@@ -26,9 +27,14 @@ class SiteController extends BaseController
      *
      * @throws Exception
     */
-    public function index(UserRepository $userRepository): Response
+    public function index(Request $request, UserRepository $userRepository): Response
     {
-        $users = $userRepository->findAll();
+        if($request->isAjax())
+        {
+            $users = $userRepository->findAll();
+            print_r($users);
+            exit;
+        }
         return $this->render('site/home.php', compact('users'));
     }
 

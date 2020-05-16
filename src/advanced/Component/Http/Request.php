@@ -94,29 +94,44 @@ class Request implements RequestInterface
     /**
      * @param string $key
      * @return mixed|null
-     */
-    public function post(string $key)
+    */
+    public function post(string $key = null)
     {
-        return $_POST[$key] ?? null;
+        return $this->getParameter($key, $_POST);
     }
 
     /**
      * @param string $key
      * @return mixed|null
      */
-    public function get(string $key)
+    public function get(string $key = null)
     {
-        return $_GET[$key] ?? null;
+        return $this->getParameter($key, $_GET);
     }
 
 
     /**
      * @param string $key
+     * @return mixed|null
+     */
+    public function server(string $key = null)
+    {
+        return $this->getParameter($key, $_SERVER);
+    }
+
+
+    /**
+     * @param string|null $key
+     * @param array $data
      * @param null $default
-     * @return mixed|null
-     */
-    public function server(string $key, $default = null)
+     * @return array|mixed|null
+    */
+    protected function getParameter(string $key = null, array $data = [], $default = null)
     {
-        return $_SERVER[$key] ?? $default;
+        if(is_null($key))
+        {
+            return $data;
+        }
+        return $data[$key] ?? $default;
     }
 }
