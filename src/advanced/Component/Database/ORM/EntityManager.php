@@ -3,7 +3,6 @@ namespace Jan\Component\Database\ORM;
 
 
 use Exception;
-use Jan\Component\Database\Contracts\object;
 use Jan\Component\Database\Contracts\ManagerInterface;
 use Jan\Component\Database\ORM\Traits\SoftDeletes;
 use ReflectionObject;
