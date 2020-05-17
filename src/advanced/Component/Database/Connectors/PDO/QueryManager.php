@@ -45,17 +45,18 @@ class QueryManager implements ManagerInterface
      public function __construct(PDO $connection, string $classMap = null)
      {
           $this->connection = $connection;
-          $this->classMap = $classMap;
+          $this->classMap($classMap);
      }
 
 
      /**
-      * @param string $classname
+      * Entity class to map
+      * @param string|null $classMap
       * @return QueryManager
      */
-     public function withEntityClass(string $classname)
+     public function classMap(?string $classMap)
      {
-         $this->classMap = $classname;
+         $this->classMap = $classMap;
 
          return $this;
      }
@@ -70,12 +71,13 @@ class QueryManager implements ManagerInterface
      }
 
 
-     /**
-      * @param string $sql
-      * @param array $params
-      * @return bool|PDOStatement
+    /**
+     * @param string $sql
+     * @param array $params
+     * @param bool $statement
+     * @return QueryManager|PDOStatement
      */
-     public function execute(string $sql, array $params = [])
+     public function execute(string $sql, array $params = [], $statement = false)
      {
          try {
 
@@ -84,12 +86,16 @@ class QueryManager implements ManagerInterface
              if($this->statement->execute($params))
              {
                  $this->records['execute'][] = compact('sql', 'params');
-                 $this->statement->closeCursor();
              }
 
          } catch (PDOException $e) {
 
              throw $e;
+         }
+
+         if(! $statement)
+         {
+             return $this;
          }
 
          return $this->statement;
@@ -236,7 +242,7 @@ class QueryManager implements ManagerInterface
      *
      * @return PDOStatement
      * @throws StatementException
-     */
+    */
     private function getStatement()
     {
         if(! $this->statement instanceof PDOStatement)
@@ -253,7 +259,9 @@ class QueryManager implements ManagerInterface
     /**
      * Destructor
     */
-    public function __destruct() {}
-
+    public function __destruct()
+    {
+        /* $this->closeCursor(); */
+    }
 }
 

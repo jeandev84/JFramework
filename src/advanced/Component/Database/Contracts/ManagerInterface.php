@@ -17,10 +17,10 @@ interface ManagerInterface
 
      /**
       * Entity class to map
-      * @param string $classname
+      * @param string|null $classname
       * @return mixed
      */
-     public function withEntityClass(string $classname);
+     public function classMap(?string $classname);
 
 
 
@@ -48,6 +48,7 @@ interface ManagerInterface
       * @return mixed
      */
      public function exec(string $sql);
+
 
 
      /**

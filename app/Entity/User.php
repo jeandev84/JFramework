@@ -48,8 +48,7 @@ class User
 
 
     /** @var  */
-    private $deleted_at = null;
-
+    private $deleted_at;
 
 
     /**

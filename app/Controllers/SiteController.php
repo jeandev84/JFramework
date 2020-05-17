@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Exception;
 use Jan\Component\Http\Message\ResponseInterface;
@@ -28,16 +29,15 @@ class SiteController extends BaseController
      */
     public function index(Request $request, UserRepository $userRepository): Response
     {
-        $users = [];
+        $users = $userRepository->findAll();
+
         if($request->isAjax())
         {
-            /*
-            $users = $userRepository->findAll();
             print_r($users);
             exit;
-            */
         }
 
+        // dd($users);
         return $this->render('site/home.php', compact('users'));
     }
 
