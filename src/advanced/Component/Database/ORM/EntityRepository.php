@@ -6,7 +6,7 @@ use Jan\Component\Database\Contracts\EntityRepositoryInterface;
 use Jan\Component\Database\Contracts\ManagerInterface;
 use Jan\Component\Database\ORM\Traits\SoftDeletes;
 use ReflectionClass;
-
+use ReflectionException;
 
 
 /**
@@ -75,7 +75,7 @@ class EntityRepository implements EntityRepositoryInterface
 
     /**
      * Find all
-     * @throws \ReflectionException
+     * @throws ReflectionException
     */
     public function findAll()
     {
@@ -84,14 +84,27 @@ class EntityRepository implements EntityRepositoryInterface
     }
 
 
-
     /**
      * @param array $criteria
      * @return mixed
+     * @throws ReflectionException
     */
     public function find(array $criteria)
     {
-        //
+        $sql = 'SELECT * FROM '. $this->getTable() .' WHERE ';
+
+        // AND WHERE
+        foreach ($criteria as $column => $value)
+        {
+            $sql .= $column .' = :'. $column;
+            if(next($criteria))
+            {
+                $sql .= ' AND ';
+            }
+        }
+
+        $sql = $this->resolveSql($sql, false);
+        return $this->manager->execute($sql, $criteria)->fetchAll();
     }
 
 
@@ -149,7 +162,7 @@ class EntityRepository implements EntityRepositoryInterface
 
     /**
       * @return string
-      * @throws \ReflectionException
+      * @throws ReflectionException
     */
     public function getTable()
     {

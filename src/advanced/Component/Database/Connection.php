@@ -17,8 +17,8 @@ use Jan\Component\Database\Exceptions\ConnectionException;
 class Connection
 {
 
-     /** @var array */
-     protected static $instance = [];
+     /** @var mixed */
+     protected static $instance;
 
 
 
@@ -48,13 +48,7 @@ class Connection
               {
                   if(self::isActiveDriver($connection, $driver))
                   {
-                      if(! isset(self::$instance[$driver]))
-                      {
-                          if(self::$instance[$driver] = $connection->connect())
-                          {
-                              self::$status = true;
-                          }
-                      }
+                      self::setConnectionInstance($connection);
                       break;
                   }
               }
@@ -64,8 +58,9 @@ class Connection
               throw $e;
           }
 
-          return self::$instance[$driver];
+          return self::$instance;
       }
+
 
 
      /**
@@ -124,6 +119,21 @@ class Connection
     public static function close()
     {
         self::$connection = null;
+    }
+
+
+    /**
+     * @param $connection
+     */
+    private static function setConnectionInstance($connection)
+    {
+        if(is_null(self::$instance))
+        {
+            if(self::$instance = $connection->connect())
+            {
+                self::$status = true;
+            }
+        }
     }
 }
 

@@ -6,8 +6,13 @@ namespace Jan\Component\Database\Contracts;
  * Interface EntityRepositoryInterface
  * @package Jan\Component\Database\Contracts
 */
-interface EntityRepositoryInterface extends EntityInterface
+interface EntityRepositoryInterface
 {
+
+
+    /** @return string */
+    public function getTable();
+
 
     /**
      * Register entity class

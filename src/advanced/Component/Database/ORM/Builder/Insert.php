@@ -2,11 +2,13 @@
 namespace Jan\Component\Database\ORM\Builder;
 
 
+use Jan\Component\Database\ORM\Builder\Contract\SqlBuilder;
+
 /**
  * Class Insert
  * @package Jan\Component\Database\ORM\Builder
 */
-class Insert
+class Insert extends SqlBuilder
 {
 
 }

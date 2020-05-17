@@ -11,7 +11,7 @@ use Jan\Component\Database\Contracts\ManagerInterface;
  * Class Model
  * @package Jan\Component\Database\ORM
 */
-class Model implements \ArrayAccess, EntityInterface
+class Model implements \ArrayAccess
 {
 
      /** @var string */
