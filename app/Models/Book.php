@@ -7,10 +7,10 @@ use Jan\Component\Database\ORM\Model;
 
 
 /**
- * Class User
+ * Class Book
  * @package App\Models
 */
-class User extends Model
+class Book extends Model
 {
 
 }

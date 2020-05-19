@@ -16,7 +16,7 @@ return [
     |------------------------------------------------------------------
     */
 
-    'name' => env('APP_NAME', 'JFramework'),
+    'name' => getenv('APP_NAME'), //env('APP_NAME', 'JFramework'),
 
 
     /*
@@ -25,7 +25,7 @@ return [
     |------------------------------------------------------------------
     */
 
-    'mode' => env('APP_ENV', 'dev'),
+    'mode' => getenv('APP_DEBUG'), // env('APP_ENV', 'dev'),
 
 
 

@@ -3,6 +3,8 @@ namespace App\Controllers;
 
 
 use App\Entity\User;
+use App\Entity\Post;
+use App\Models\Book;
 use App\Repository\UserRepository;
 use App\Services\EncoderPassword;
 use Exception;
@@ -50,23 +52,10 @@ class SiteController extends BaseController
      * @param EncoderPassword $encoder
      * @return Response
      * @throws ViewException
-     */
+    */
     public function about(EncoderPassword $encoder): Response
     {
-        for ($i = 1; $i <= 5; $i++)
-        {
-            $user = new User();
-            $name = 'user'. $i;
-            $user->setName($name)
-                ->setEmail($name.'@gmail.com')
-                ->setAddress('Kurgan, ulitsa volodarskovo dom '. $i)
-                ->setPassword($encoder->encode($name));
-
-            $this->entityManager->persist($user);
-        }
-
-        $this->entityManager->flush();
-
+        dd(Book::get());
         return $this->render('site/about.php');
     }
 
@@ -98,19 +87,4 @@ class SiteController extends BaseController
         }
     }
 
-
-    /*
-    public function saveOneUser(EncoderPassword $encoder): Response
-    {
-        $user = new User();
-        $user->setName('Jean-Claude')
-            ->setEmail('jeanyao@ymail.com')
-            ->setPassword($encoder->encode('secret123'));
-
-        // dump($user);
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-        return;
-    }
-    */
 }

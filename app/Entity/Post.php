@@ -20,11 +20,8 @@ class Post
 
 
      /** @var string */
-     private $content;
+     private $body;
 
-
-     /** @var array  */
-     private $users = [];
 
 
      /**
@@ -63,44 +60,23 @@ class Post
         return $this;
      }
 
-
-     /**
-      * @return string
+    /**
+     * @return null|string
      */
-     public function getContent(): string
-     {
-        return $this->content;
-     }
+    public function getBody(): ?string
+    {
+        return $this->body;
+    }
 
-
-     /**
-      * @param string $content
-      * @return Post
+    /**
+     * @param string $body
+     * @return Post
      */
-     public function setContent(string $content): Post
-     {
-        $this->content = $content;
+    public function setBody(?string $body): Post
+    {
+        $this->body = $body;
         return $this;
-     }
-
-     /**
-      * @param User $user
-     */
-     public function addUser(User $user)
-     {
-         if(! \in_array($user, $this->users))
-         {
-             $this->users[] = $user;
-             $user->addPost($this);
-         }
-     }
+    }
 
 
-     /**
-      * @return array
-     */
-     public function getUsers()
-     {
-         return $this->users;
-     }
 }

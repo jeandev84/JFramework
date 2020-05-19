@@ -24,9 +24,9 @@ class User
 
     /**
      * @param int $id
-     * @return User
+     * @return Book
      */
-    public function setId(int $id): User
+    public function setId(int $id): Book
     {
         $this->id = $id;
         return $this;
@@ -42,9 +42,9 @@ class User
 
     /**
      * @param string $email
-     * @return User
+     * @return Book
     */
-    public function setEmail(?string $email): User
+    public function setEmail(?string $email): Book
     {
         $this->email = $email;
         return $this;

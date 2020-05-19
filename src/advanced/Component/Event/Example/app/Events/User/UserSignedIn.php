@@ -3,7 +3,7 @@ namespace App\Events\User;
 
 
 use App\Core\Events\Event;
-use App\Models\User;
+use App\Models\Book;
 
 /**
  * Class UserSignedIn
@@ -12,22 +12,22 @@ use App\Models\User;
 class UserSignedIn extends Event
 {
 
-    /** @var User  */
+    /** @var Book  */
     private $user;
 
 
     /**
      * UserSignedIn constructor.
-     * @param User $user
+     * @param Book $user
     */
-    public function __construct(User $user)
+    public function __construct(Book $user)
     {
          $this->user = $user;
     }
 
 
     /**
-     * @return User
+     * @return Book
     */
     public function getUser()
     {

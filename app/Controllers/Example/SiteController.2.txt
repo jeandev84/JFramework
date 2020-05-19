@@ -1,0 +1,166 @@
+<?php
+namespace App\Controllers;
+
+
+use App\Entity\User;
+use App\Entity\Post;
+use App\Repository\UserRepository;
+use App\Services\EncoderPassword;
+use Exception;
+use Jan\Component\Http\Message\ResponseInterface;
+use Jan\Component\Http\Request;
+use Jan\Component\Http\Response;
+use Jan\Component\Templating\Exceptions\ViewException;
+
+
+
+/**
+ * Class SiteController
+ * @package App\Controllers
+*/
+class SiteController extends BaseController
+{
+
+    /**
+     * action index
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @return Response
+     *
+     * @throws ViewException
+     */
+    public function index(Request $request, UserRepository $userRepository): Response
+    {
+        /* $users = $userRepository->findAll(); */
+
+        $users = [];
+        if($request->isAjax())
+        {
+            print_r($users);
+            exit;
+        }
+
+        // dd($users);
+        return $this->render('site/home.php', compact('users'));
+    }
+
+
+    /**
+     * Action about
+     *
+     * @param EncoderPassword $encoder
+     * @return Response
+     * @throws ViewException
+    */
+    public function about(EncoderPassword $encoder): Response
+    {
+        for ($i = 1; $i <= 5; $i++)
+        {
+            $user = new User();
+            $name = 'user'. $i;
+            $user->setName($name)
+                ->setEmail($name.'@gmail.com')
+                ->setAddress('Kurgan, ulitsa volodarskovo dom '. $i)
+                ->setPassword($encoder->encode($name));
+
+
+            $this->entityManager->persist($user);
+
+            $post = new Post();
+            $post->setTitle('post-'. $i)
+                 ->setBody('lorem ipsum some content from post -'. $i);
+            $this->entityManager->persist($post);
+        }
+
+        $this->entityManager->flush();
+
+        return $this->render('site/about.php');
+    }
+
+
+    /**
+     * Action contact
+     * @return Response
+     * @throws ViewException
+    */
+    public function contact()
+    {
+        return $this->render('site/contact.php');
+    }
+
+
+
+    /**
+     * @param UserRepository $userRepository
+     * @return Response
+     * @throws \ReflectionException
+    */
+    public function send(UserRepository $userRepository): Response
+    {
+        $response = $this->container->get(ResponseInterface::class);
+
+        if(! $users = $userRepository->findAll())
+        {
+            return $response->redirect('/contact');
+        }
+    }
+
+
+    /*
+    public function generateFakeUsersAndPosts(EncoderPassword $encoder): Response
+    {
+        for ($i = 1; $i <= 5; $i++)
+        {
+            $user = new User();
+            $name = 'user'. $i;
+            $user->setName($name)
+                ->setEmail($name.'@gmail.com')
+                ->setAddress('Kurgan, ulitsa volodarskovo dom '. $i)
+                ->setPassword($encoder->encode($name));
+
+
+            $this->entityManager->persist($user);
+
+            $post = new Post();
+            $post->setTitle('post-'. $i)
+                 ->setBody('lorem ipsum some content from post -'. $i);
+            $this->entityManager->persist($post);
+        }
+
+        $this->entityManager->flush();
+        return;
+    }
+
+     public function createUsers(EncoderPassword $encoder): Response
+     {
+        // Fake User data
+        for ($i = 1; $i <= 5; $i++)
+        {
+            $user = new User();
+            $name = 'user'. $i;
+            $user->setName($name)
+                ->setEmail($name.'@gmail.com')
+                ->setAddress('Kurgan, ulitsa volodarskovo dom '. $i)
+                ->setPassword($encoder->encode($name));
+
+            $this->entityManager->persist($user);
+        }
+
+        $this->entityManager->flush();
+        return;
+    }
+
+    public function createOneUser(EncoderPassword $encoder): Response
+    {
+        $user = new User();
+        $user->setName('Jean-Claude')
+            ->setEmail('jeanyao@ymail.com')
+            ->setPassword($encoder->encode('secret123'));
+
+        // dump($user);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+        return;
+    }
+    */
+}

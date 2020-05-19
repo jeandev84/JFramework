@@ -9,7 +9,7 @@ return [
     |------------------------------------------------------------------
     */
 
-    'connection' => env('DB_CONNECTION', 'mysql'),
+    'connection' => getenv('DB_CONNECTION'),
     'sqlite' => [
         'driver'   => 'sqlite',
         'database' => '../example.sqlite',

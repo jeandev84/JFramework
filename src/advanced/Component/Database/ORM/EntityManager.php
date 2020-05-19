@@ -48,13 +48,17 @@ class EntityManager
      protected $recordType;
 
 
+     /** @var string */
+     protected $table;
+
+
      /**
       * EntityManager constructor.
       * @param ManagerInterface $manager
      */
      public function __construct(ManagerInterface $manager)
      {
-         $this->manager = $manager;
+          $this->manager = $manager;
      }
 
 
@@ -63,9 +67,9 @@ class EntityManager
     /**
      * @return ManagerInterface
      *
-     * $lastId = $this->getManager()->lastId();
+     * $lastId = $this->getQuery()->lastId();
     */
-    public function getManager()
+    public function getQuery()
     {
         return $this->manager;
     }
@@ -88,7 +92,7 @@ class EntityManager
                 $propertyName = $property->getName();
                 $properties[$propertyName] = $property->getValue($classMapInstance);
             }
-
+            
             $attributes = array_filter($properties, function ($key) {
                 return  $key != 'id';
             }, ARRAY_FILTER_USE_KEY);
@@ -150,39 +154,40 @@ class EntityManager
     */
     protected function registerClassMap(string $recordType, object $classMapInstance)
     {
-        $this->objectStorage[$recordType][] = $classMapInstance;
-        $this->recordType = $recordType;
+        $this->objectStorage[$this->recordType = $recordType][] = $classMapInstance;
     }
 
 
     /**
-      * @throws Exception
-     */
-     protected function recordProcess()
-     {
-           if(isset($this->objectStorage[$this->recordType]))
-           {
-                 $classMapInstances = $this->objectStorage[$this->recordType];
+     * @throws Exception
+    */
+    protected function recordProcess()
+    {
+         if(isset($this->objectStorage[$this->recordType]))
+         {
+             $classMapInstances = $this->objectStorage[$this->recordType];
+    
+             foreach ($classMapInstances as $classMapInstance)
+             {
+                 list($id, $attributes) = $this->registerClassMapProperties($classMapInstance);
+                 $this->mapEntityTableName($classMapInstance);
 
-                 foreach ($classMapInstances as $classMapInstance)
+                 if($this->isPersist())
                  {
-                     $this->classMapInstance = $classMapInstance;
-
-                     list($id, $attributes) = $this->registerClassMapProperties();
-
-                     if($this->isPersist())
+                     if(is_null($id))
                      {
-                         $this->store($attributes, $id);
-                         echo 'Persist<br>';
-                     }
-
-                     if($this->isDelete())
-                     {
-                         $this->remove($id);
-                         echo 'Delete<br>';
+                         $this->insert($attributes);
+                     }else{
+                         $this->update($attributes, $id);
                      }
                  }
-           }
+
+                 if($this->isDelete())
+                 {
+                     $this->remove($id);
+                 }
+             }
+         }
      }
 
 
@@ -191,8 +196,7 @@ class EntityManager
      *
      * @param array $attributes
      * @return void
-     * @throws \ReflectionException
-    */
+     */
     public function insert(array $attributes)
     {
         $sql = sprintf('INSERT INTO `%s`(%s) VALUES (%s)',
@@ -202,7 +206,6 @@ class EntityManager
         );
 
         $this->manager->execute($sql, array_values($attributes));
-        echo 'Inserted! <br>';
     }
 
 
@@ -212,7 +215,6 @@ class EntityManager
      * @param array $attributes
      * @param int $id
      * @return mixed
-     * @throws \ReflectionException
     */
     public function update(array $attributes, int $id)
     {
@@ -223,24 +225,8 @@ class EntityManager
 
         $values = array_merge(array_values($attributes), compact('id'));
         $this->manager->execute($sql, $values);
-        echo 'Updated! <br>';
     }
-
-
-    /**
-     * @param array $attributes
-     * @param int|null $id
-     * @throws \ReflectionException
-    */
-    public function store(array $attributes, int $id = null)
-    {
-        if(is_null($id))
-        {
-            $this->insert($attributes);
-        }else{
-            $this->update($attributes, $id);
-        }
-    }
+    
 
 
     /**
@@ -320,16 +306,10 @@ class EntityManager
 
     /**
      * @return string
-     * @throws \ReflectionException
      */
     protected function getTableName()
     {
-        if($this->classMapInstance instanceof AbstractEntity)
-        {
-             return $this->classMapInstance->getTable();
-        }
-
-        return $this->generateNameOfEntityTable($this->classMapInstance);
+       return $this->table;
     }
 
 
@@ -349,4 +329,40 @@ class EntityManager
     {
         return $this->recordType === self::TYPE_DELETE;
     }
+
+
+    /**
+     * @param $classMapInstance
+     * @throws \ReflectionException
+    */
+    public function mapEntityTableName($classMapInstance)
+    {
+        $this->table = $this->generateTableNameOfEntity($classMapInstance);
+
+        if($classMapInstance instanceof AbstractEntity)
+        {
+            $this->table = $classMapInstance->getTable();
+        }
+    }
 }
+
+/* 
+dump($properties);
+dd(array_filter($properties));
+^ array:7 [▼
+  "id" => null
+  "name" => "user1"
+  "password" => "$2y$10$Zeh5TEt/Tm5fMAKDmRSSwe4Hs7BXSs.mk4jWf1p5Bxcky3jDqdtrm"
+  "email" => "user1@gmail.com"
+  "address" => "Kurgan, ulitsa volodarskovo dom 1"
+  "role" => "user"
+  "deleted_at" => 0
+]
+^ array:5 [▼
+  "name" => "user1"
+  "password" => "$2y$10$Zeh5TEt/Tm5fMAKDmRSSwe4Hs7BXSs.mk4jWf1p5Bxcky3jDqdtrm"
+  "email" => "user1@gmail.com"
+  "address" => "Kurgan, ulitsa volodarskovo dom 1"
+  "role" => "user"
+]
+*/

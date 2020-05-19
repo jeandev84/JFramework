@@ -1,5 +1,5 @@
 <?php
-namespace Jan\Component\Templating;
+namespace Jan\Component\Templating\Resolver;
 
 
 use Jan\Component\Templating\Exceptions\ViewException;
@@ -7,7 +7,7 @@ use Jan\Component\Templating\Exceptions\ViewException;
 
 /**
  * Class ScriptResolver
- * @package Jan\Component\Templating
+ * @package Jan\Component\Templating\Resolver
 */
 class ScriptResolver
 {

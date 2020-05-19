@@ -15,6 +15,17 @@ interface ManagerInterface
      public function getConnection();
 
 
+    /**
+     * @param string $sql
+     * @return mixed
+     */
+     //public function addSql(string $sql);
+
+
+
+     //public function addParams(array $params);
+
+
      /**
       * Entity class to map
       * @param string|null $classname

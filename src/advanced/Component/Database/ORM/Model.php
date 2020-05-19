@@ -8,6 +8,8 @@ use Jan\Component\Database\Contracts\EntityManagerInterface;
 use Jan\Component\Database\Contracts\EntityRepositoryInterface;
 use Jan\Component\Database\Contracts\ManagerInterface;
 
+
+
 /**
  * Class Model
  * @package Jan\Component\Database\ORM
@@ -41,35 +43,13 @@ class Model extends AbstractEntity implements \ArrayAccess
      /**
       * Model constructor.
       * @param EntityManagerInterface $entityManager
+      * @param EntityRepositoryInterface $repository
      */
-     public function __construct(EntityManagerInterface $entityManager)
+     public function __construct(EntityManagerInterface $entityManager, EntityRepositoryInterface $repository)
      {
           $this->entityManager = $entityManager;
-          self::$repository = $this->entityManager->getRepository();
-     }
-
-
-     /**
-      * @param EntityManagerInterface $entityManager
-      * @return Model
-     */
-     public function addEntityManager(EntityManagerInterface $entityManager)
-     {
-         $repository = $entityManager->getRepository();
-         $repository->registerClassMap(static::class);
-         $repository->registerTable($this->table);
-         self::$repository = $repository;
-
-         return $this;
-     }
-
-
-     /**
-      * @return string
-     */
-     public function getTable()
-     {
-         return $this->table;
+          $repository->registerClassMap(static::class);
+          self::$repository = $repository;
      }
 
 
@@ -77,8 +57,9 @@ class Model extends AbstractEntity implements \ArrayAccess
       * Get all record
       * @return mixed
      */
-     public function get()
+     public static function get()
      {
+          dd(static::class);
           return self::getRepository()->findAll();
      }
 

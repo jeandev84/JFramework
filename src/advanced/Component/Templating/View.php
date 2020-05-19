@@ -25,9 +25,6 @@ class View
       protected $data = [];
 
 
-      /** @var array  */
-      protected $scripts = [];
-
 
       /**
        * View constructor.
@@ -40,8 +37,8 @@ class View
 
 
       /**
-      * @param string $basePath
-      * @return $this
+       * @param string $basePath
+       * @return $this
       */
       public function setBasePath(string $basePath)
       {
@@ -80,8 +77,9 @@ class View
       */
       public function addExtension(ViewExtension $extension)
       {
-          //todo implements
+          //TODO implements
       }
+
 
       /**
        * Render view template and optional data
@@ -101,14 +99,13 @@ class View
       /**
        * Factory render method
        * @param string $template
-       * @param array $data
+       * @param array $vars
        * @return false|string
        * @throws ViewException
-     */
-      public function render(string $template, array $data = [])
+      */
+      public function render(string $template, array $vars = [])
       {
-           return $this->setGlobals($data)
-                       ->renderTemplate($template);
+           return $this->setGlobals($vars)->renderTemplate($template);
       }
 
 
@@ -146,77 +143,21 @@ class View
 
 
       /**
-       * @param $path
+       * @param string $template
        * @return bool
       */
-      public function loadIf($template)
+      public function loadIf(string $template)
       {
           return file_exists($template);
       }
 
 
       /**
-       * Show script js only for content part
-       * @param $content
-       * @return string|string[]|null
-       *
-       * $content = $this->getScript(ob_get_clean());
-      */
-      public function getScript($content)
-      {
-          $pattern = "#<script.*?>.*?</script>#si";
-
-          preg_match_all($pattern, $content, $this->scripts);
-
-          if(! empty($this->scripts))
-          {
-             $content = preg_replace($pattern, '', $content);
-          }
-
-          return $content;
-      }
-
-
-      /**
-       * @return array
-      */
-      public function getScripts()
-      {
-          return $this->scripts;
-      }
-
-
-      /**
-       * @param $template
-       * @param array $data
-       * @throws ViewException
-      */
-      public function renderWithScript($template, $data = [])
-      {
-          $content = $this->render($template, $data);
-          $scripts = [];
-
-          if(! empty($this->scripts[0]))
-          {
-              $scripts = $this->scripts[0];
-          }
-
-
-          // in  template
-          echo '<script src="/bootstrap/js/bootstrap.min.js"></script>';
-          foreach ($scripts as $script)
-          {
-              echo $script ."\n";
-          }
-      }
-
-
-      /**
        * Path resolver
-       * @param $path
+       * @param string $path
        * @return string
       */
-      protected function resolvedPath($path)
+      protected function resolvedPath(string $path)
       {
           return str_replace(['\\', '/'], DIRECTORY_SEPARATOR, trim($path, '\/'));
       }

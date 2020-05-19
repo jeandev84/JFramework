@@ -16,7 +16,7 @@ trait Generator
      * @return string
      * @throws \ReflectionException
     */
-    public function generateNameOfEntityTable($entityClass)
+    public function generateTableNameOfEntity($entityClass)
     {
         if(! $entityClass)
         {

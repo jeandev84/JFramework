@@ -8,17 +8,26 @@ namespace Jan\Component\Database\ORM\Builder\Contract;
 */
 abstract class SqlBuilder
 {
-      /** @var array  */
+
+      /** @var array */
       protected $arguments = [];
 
 
-     /**
-       * SqlBuilder constructor.
+      /**
        * @param array $arguments
       */
       public function __construct(array $arguments)
       {
           $this->arguments = $arguments;
+      }
+
+
+      /**
+       * @return array
+      */
+      public function getArguments()
+      {
+          return $this->arguments;
       }
 
 
@@ -30,4 +39,13 @@ abstract class SqlBuilder
       {
           return $this->arguments[$key] ?? null;
       }
+
+
+      /** @return string */
+      abstract public function getType();
+
+
+      /** @return string */
+      abstract public function getSql();
+
 }

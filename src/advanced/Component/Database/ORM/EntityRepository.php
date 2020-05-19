@@ -56,21 +56,34 @@ class EntityRepository implements EntityRepositoryInterface
 
 
      /**
-      * @param string $table
+      * @param null $alias
+      * @return QueryBuilder
+      * @throws ReflectionException
      */
-     public function registerTable(string $table)
-     {
+      public function createQueryBuilder($alias = null)
+      {
+          $queryBuilder = new QueryBuilder();
+          $queryBuilder->select()->from($this->getTable(), $alias);
+          return $queryBuilder;
+      }
+
+
+      /**
+       * @param string $table
+      */
+      public function registerTable(string $table)
+      {
           $this->table = $table;
-     }
+      }
 
 
-     /**
+      /**
        * @return mixed
-     */
-     public function getConnection()
-     {
+      */
+      public function getConnection()
+      {
          return $this->manager->getConnection();
-     }
+      }
 
 
     /**
@@ -166,6 +179,6 @@ class EntityRepository implements EntityRepositoryInterface
     */
     public function getTable()
     {
-        return $this->generateNameOfEntityTable($this->entityClass);
+        return $this->generateTableNameOfEntity($this->entityClass);
     }
 }

@@ -3,16 +3,16 @@ namespace Jan\Foundation\Providers;
 
 
 use Jan\Component\Database\Connection;
-use Jan\Component\Database\Connectors\PDO\QueryManager;
+use Jan\Component\Database\Connectors\PDO\Query;
 use Jan\Component\Database\Contracts\EntityManagerInterface;
+use Jan\Component\Database\Contracts\EntityRepositoryInterface;
 use Jan\Component\Database\Contracts\ManagerInterface;
-use Jan\Component\Database\Contracts\QueryManagerInterface;
 use Jan\Component\Database\ORM\EntityManager;
 use Jan\Component\Database\ORM\EntityRepository;
-use Jan\Component\Database\Statement;
+use Jan\Component\Database\ORM\Model;
 use Jan\Component\DI\Contracts\BootableServiceProvider;
 use Jan\Component\DI\ServiceProvider\AbstractServiceProvider;
-use Jan\Component\FileSystem\FileSystem;
+
 
 /**
  * Class DatabaseServiceProvider
@@ -34,24 +34,32 @@ class DatabaseServiceProvider extends AbstractServiceProvider implements Bootabl
     */
     public function register()
     {
-        $this->container->singleton('connection', function () {
+        $this->container->singleton(Connection::class, function () {
             $config = $this->container->get('config');
             $configParams = $config->get('database.'. getenv('DB_CONNECTION'));
             return Connection::make($configParams);
         });
 
         $this->container->singleton(ManagerInterface::class, function () {
-            return new QueryManager($this->container->get('connection'));
+            return new Query($this->container->get(Connection::class));
+        });
+
+
+        $this->container->singleton(EntityRepositoryInterface::class, function () {
+            $manager = $this->container->get(ManagerInterface::class);
+            return new EntityRepository($manager);
         });
 
 
         $this->container->singleton(EntityManagerInterface::class, function () {
             $manager = $this->container->get(ManagerInterface::class);
-            //$repository = new EntityRepository();
-            $entityManager = new EntityManager($manager);
-
-            return $entityManager;
+            return new EntityManager($manager);
         });
+
+
+        //$entityManager = $this->container->get(EntityManagerInterface::class);
+        //$repository = $this->container->get(EntityRepositoryInterface::class);
+        //$model = new Model($entityManager, $repository);
     }
 
 }

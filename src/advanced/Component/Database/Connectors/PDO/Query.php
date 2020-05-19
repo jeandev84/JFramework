@@ -17,7 +17,7 @@ use PDOStatement;
  *
  * Execute query
 */
-class QueryManager implements ManagerInterface
+class Query implements ManagerInterface
 {
 
     /** @var PDO  */
@@ -52,7 +52,7 @@ class QueryManager implements ManagerInterface
      /**
       * Entity class to map
       * @param string|null $classMap
-      * @return QueryManager
+      * @return Query
      */
      public function classMap(?string $classMap)
      {
@@ -75,7 +75,7 @@ class QueryManager implements ManagerInterface
      * @param string $sql
      * @param array $params
      * @param bool $statement
-     * @return QueryManager|PDOStatement
+     * @return Query|PDOStatement
      */
      public function execute(string $sql, array $params = [], $statement = false)
      {

@@ -2,7 +2,11 @@
 namespace Jan\Component\Database\ORM;
 
 
+use Jan\Component\Database\Contracts\ManagerInterface;
 use Jan\Component\Database\Contracts\QueryBuilderInterface;
+use Jan\Component\Database\ORM\Builder\Contract\SqlBuilder;
+use Jan\Component\Database\ORM\Builder\From;
+use Jan\Component\Database\ORM\Builder\Select;
 
 /**
  * Class QueryBuilder
@@ -12,28 +16,80 @@ class QueryBuilder implements QueryBuilderInterface
 {
 
     /** @var array  */
-    private $sqlParts = [
-        'select' => [],
-        'from'   => [],
-        'where'  => [],
-        //'and'    => [],
-        //'in'     => [],
-        'limit'  => [],
-        'join'   => [],
-        'insert' => [],
-        'update' => []
-    ];
+    private $sqlParts = [];
+
+
+
+    /** @var ManagerInterface */
+    private $manager;
 
 
     /**
-     * @param string $type
-     * @param $expr
+     * QueryBuilder constructor.
+    */
+    public function __construct()
+    {
+         // $this->reset();
+    }
+
+
+    /**
+     * @param null $selects
      * @return $this
     */
-    public function addSql(string $type, $expr)
+    public function select($selects = null)
     {
-        $this->sqlParts[$type] = $expr;
+        return $this->addSql(new Select($selects));
+    }
+
+
+    /**
+     * @param $table
+     * @param null $alias
+     * @return $this
+    */
+    public function from($table, $alias = null)
+    {
+        return $this->addSql(new From(compact('table', 'alias')));
+    }
+
+
+    /**
+     * @param SqlBuilder $builder
+     * @param bool $remove
+     * @return $this
+    */
+    public function addSql(SqlBuilder $builder = null, bool $remove = false)
+    {
+        if($remove === true)
+        {
+            $this->reset();
+        }
+
+        if(! $builder)
+        {
+            return $this;
+        }
+
+        $this->sqlParts[$builder->getType()] = $builder;
+
         return $this;
+    }
+
+
+    public function getSql()
+    {
+        return '';
+    }
+
+
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return '';
     }
 
 
@@ -63,10 +119,39 @@ class QueryBuilder implements QueryBuilderInterface
 
 
     /**
-     * @return string
+     * @param ManagerInterface $manager
     */
-    public function __toString()
+//    public function addQuery(ManagerInterface $manager)
+//    {
+//        $this->manager = $manager;
+//    }
+//
+//
+//    public function getQuery(ManagerInterface $manager)
+//    {
+//        $this->manager->registerSql($this->getSql());
+//        return $this->manager;
+//    }
+
+
+    /**
+     * @return void
+    */
+    protected function reset()
     {
-        return '';
+        $this->sqlParts = [];
     }
 }
+
+
+/*
+private $sqlParts = [
+'select'      => [],
+'from'        => [],
+'conditions'  => [],
+'limit'       => [],
+'join'        => [],
+'insert'      => [],
+'update'      => []
+];
+*/
