@@ -55,7 +55,7 @@ class SiteController extends BaseController
     */
     public function about(EncoderPassword $encoder): Response
     {
-        dd(Book::get());
+        dd(Book::where('id = ?', 2)->get());
         return $this->render('site/about.php');
     }
 

@@ -6,6 +6,7 @@ use Jan\Component\Database\Contracts\EntityInterface;
 use Jan\Component\Database\Contracts\EntityManagerInterface;
 use Jan\Component\Database\Contracts\EntityRepositoryInterface;
 use Jan\Component\Database\Contracts\ManagerInterface;
+use Jan\Component\Database\Exceptions\ConnectionException;
 use Jan\Component\Database\ORM\Traits\SoftDeletes;
 use ReflectionClass;
 use ReflectionException;
@@ -33,47 +34,35 @@ class EntityRepository implements EntityRepositoryInterface
       protected $entityManager;
 
 
-      /**
-       * EntityRepository constructor.
-       * @param ManagerInterface $manager
-       * @param string|null $entityClass
-      */
+      /** @var string */
+      private $table;
+
+
+     /**
+      * EntityRepository constructor.
+      * @param ManagerInterface $manager
+      * @param string|null $entityClass
+      * @throws ReflectionException
+     */
       public function __construct(ManagerInterface $manager, $entityClass = null)
       {
           $this->manager = $manager;
           $this->manager->classMap($entityClass);
-          $this->registerClassMap($entityClass);
+          $this->table = $this->generateTableNameOfEntity($entityClass);
       }
+
 
 
       /**
-       * @param string $entityClass
+       * @param null $alias
+       * @return QueryBuilder
+       * @throws ReflectionException
       */
-      public function registerClassMap(string $entityClass)
-      {
-           $this->entityClass = $entityClass;
-      }
-
-
-     /**
-      * @param null $alias
-      * @return QueryBuilder
-      * @throws ReflectionException
-     */
       public function createQueryBuilder($alias = null)
       {
           $queryBuilder = new QueryBuilder();
           $queryBuilder->select()->from($this->getTable(), $alias);
           return $queryBuilder;
-      }
-
-
-      /**
-       * @param string $table
-      */
-      public function registerTable(string $table)
-      {
-          $this->table = $table;
       }
 
 
@@ -87,14 +76,28 @@ class EntityRepository implements EntityRepositoryInterface
 
 
     /**
-     * Find all
+     * @param string $condition
+     * @param $value
+     * @return string
      * @throws ReflectionException
+    */
+    public function where(string $condition, $value)
+    {
+        $sql = 'SELECT * FROM '. $this->getTable() .' WHERE '. $condition;
+        return $this->manager->execute($sql, [$value]);
+    }
+
+
+    /**
+      * Find all
+      * @throws ReflectionException
     */
     public function findAll()
     {
-        $sql = $this->resolveSql('SELECT * FROM '. $this->getTable());
-        return $this->manager->execute($sql)->fetchAll();
+         $sql = $this->resolveSql('SELECT * FROM '. $this->getTable());
+         return $this->manager->execute($sql)->get();
     }
+
 
 
     /**
@@ -117,7 +120,7 @@ class EntityRepository implements EntityRepositoryInterface
         }
 
         $sql = $this->resolveSql($sql, false);
-        return $this->manager->execute($sql, $criteria)->fetchAll();
+        return $this->manager->execute($sql, $criteria)->get();
     }
 
 
@@ -179,6 +182,6 @@ class EntityRepository implements EntityRepositoryInterface
     */
     public function getTable()
     {
-        return $this->generateTableNameOfEntity($this->entityClass);
+        return $this->table;
     }
 }

@@ -15,17 +15,6 @@ interface ManagerInterface
      public function getConnection();
 
 
-    /**
-     * @param string $sql
-     * @return mixed
-     */
-     //public function addSql(string $sql);
-
-
-
-     //public function addParams(array $params);
-
-
      /**
       * Entity class to map
       * @param string|null $classname
@@ -66,7 +55,7 @@ interface ManagerInterface
       * Fetch all record
       * @return array
      */
-     public function fetchAll();
+     public function get();
 
 
 
@@ -74,7 +63,7 @@ interface ManagerInterface
       * Find first record
       * @return mixed
      */
-     public function fetchOne();
+     public function one();
 
 
 

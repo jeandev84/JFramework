@@ -41,8 +41,6 @@ class Kernel implements HttpKernelContract
     public function __construct(ContainerInterface $container)
     {
           $this->container = $container;
-          $this->loadHelpers();
-          $this->loadEnvironments();
     }
 
     /**
@@ -117,22 +115,6 @@ class Kernel implements HttpKernelContract
 
 
     /**
-     * Load environment variables
-    */
-    protected function loadEnvironments()
-    {
-        try {
-
-            $dotenv = (new Env($this->container->get('base.path')))
-                      ->load();
-
-        } catch (\Exception $e) {
-            exit($e->getMessage());
-        }
-    }
-
-
-    /**
      * Get stack of middlewares
      *
      *
@@ -158,12 +140,4 @@ class Kernel implements HttpKernelContract
          return $view->render('errors/dev.php', compact('e'));
     }
 
-
-    /**
-     * Load helpers
-    */
-    protected function loadHelpers()
-    {
-         require __DIR__.'/../helpers.php';
-    }
 }

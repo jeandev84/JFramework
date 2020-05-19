@@ -122,11 +122,12 @@ class Query implements ManagerInterface
 
 
     /**
+     * Fetch all record
      * @param int $fetchStyle
      * @return array
      * @throws StatementException
     */
-    public function fetchAll($fetchStyle = PDO::FETCH_OBJ)
+    public function get($fetchStyle = PDO::FETCH_OBJ)
     {
         if($this->classMap)
         {
@@ -138,13 +139,14 @@ class Query implements ManagerInterface
 
 
     /**
+     * Fetch one record
      * @param int $fetchStyle
      * @return array|mixed
      * @throws StatementException
     */
-    public function fetchOne($fetchStyle = PDO::FETCH_OBJ)
+    public function one($fetchStyle = PDO::FETCH_OBJ)
     {
-        return $this->fetchAll($fetchStyle)[0] ?? [];
+        return $this->get($fetchStyle)[0] ?? [];
     }
 
 

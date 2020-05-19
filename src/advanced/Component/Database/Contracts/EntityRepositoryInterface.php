@@ -10,24 +10,6 @@ interface EntityRepositoryInterface
 {
 
     /**
-     * Register entity class
-     *
-     * @param string $entityClass
-     * @return mixed
-    */
-    public function registerClassMap(string $entityClass);
-
-
-
-    /**
-     * @param string $table
-     * @return mixed
-    */
-    public function registerTable(string $table);
-
-
-
-    /**
      * Find all record
      * @return array
     */

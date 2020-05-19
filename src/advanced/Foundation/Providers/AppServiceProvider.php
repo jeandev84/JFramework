@@ -5,6 +5,7 @@ namespace Jan\Foundation\Providers;
 use Jan\Component\DI\Contracts\BootableServiceProvider;
 use Jan\Component\DI\Contracts\ContainerInterface;
 use Jan\Component\DI\ServiceProvider\AbstractServiceProvider;
+use Jan\Component\Dotenv\Env;
 use Jan\Component\Http\Message\RequestInterface;
 use Jan\Component\Http\Message\ResponseInterface;
 use Jan\Component\Http\Request;
@@ -22,7 +23,8 @@ class AppServiceProvider extends AbstractServiceProvider implements BootableServ
     */
     public function boot()
     {
-        //
+        $this->loadHelpers();
+        $this->loadEnvironments();
     }
 
 
@@ -45,6 +47,32 @@ class AppServiceProvider extends AbstractServiceProvider implements BootableServ
         $this->container->singleton(ResponseInterface::class, function () {
             return new Response();
         });
+    }
+
+
+
+    /**
+     * Load environment variables
+     */
+    protected function loadEnvironments()
+    {
+        try {
+
+            $dotenv = (new Env($this->container->get('base.path')))
+                ->load();
+
+        } catch (\Exception $e) {
+            exit($e->getMessage());
+        }
+    }
+
+
+    /**
+     * Load helpers
+     */
+    protected function loadHelpers()
+    {
+        require __DIR__.'/../helpers.php';
     }
 
 }

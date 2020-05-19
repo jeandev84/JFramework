@@ -2,12 +2,13 @@
 namespace Jan\Component\Database\ORM;
 
 
-use Illuminate\Support\Manager;
+use Jan\Component\Database\Connection;
+use Jan\Component\Database\Connectors\PDO\Query;
 use Jan\Component\Database\Contracts\EntityInterface;
 use Jan\Component\Database\Contracts\EntityManagerInterface;
 use Jan\Component\Database\Contracts\EntityRepositoryInterface;
 use Jan\Component\Database\Contracts\ManagerInterface;
-
+use Jan\Component\Database\Exceptions\ConnectionException;
 
 
 /**
@@ -33,57 +34,58 @@ class Model extends AbstractEntity implements \ArrayAccess
      protected $hidden = [];
 
 
-     /** @var EntityManagerInterface */
-     private $entityManager;
-
-
-     private static $repository;
+     /**
+      * @return EntityManager
+      * @throws ConnectionException
+     */
+     public function getManager()
+     {
+         return new EntityManager(Connection::instance());
+     }
 
 
      /**
-      * Model constructor.
-      * @param EntityManagerInterface $entityManager
-      * @param EntityRepositoryInterface $repository
-     */
-     public function __construct(EntityManagerInterface $entityManager, EntityRepositoryInterface $repository)
+      * @return EntityRepository
+      * @throws ConnectionException|\ReflectionException
+      */
+     public static function getRepository()
      {
-          $this->entityManager = $entityManager;
-          $repository->registerClassMap(static::class);
-          self::$repository = $repository;
+         return new EntityRepository(self::getQuery(), static::class);
      }
+
+
+     /**
+      * @return Query
+      * @throws ConnectionException
+     */
+     public static function getQuery()
+     {
+         return new Query(Connection::instance());
+     }
+
+
+     /**
+      * @param string $condition
+      * @param $value
+      * @return string
+      * @throws ConnectionException|\ReflectionException
+      */
+     public static function where($condition, $value)
+     {
+         return self::getRepository()->where($condition, $value);
+     }
+
 
 
      /**
       * Get all record
       * @return mixed
+      * @throws \ReflectionException
+      * @throws ConnectionException
      */
      public static function get()
      {
-          dd(static::class);
-          return self::getRepository()->findAll();
-     }
 
-
-
-     /**
-      * @param $column
-      * @param $operator
-      * @param $value
-      * @return Model
-     */
-     public static function where($column, $operator, $value)
-     {
-
-         return new static;
-     }
-
-
-     /**
-      * Get entity repository
-     */
-     public static function getRepository()
-     {
-          return self::$repository;
      }
 
 

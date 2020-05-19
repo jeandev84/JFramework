@@ -21,14 +21,13 @@ class Connection
      protected static $instance;
 
 
+     /** @var mixed */
+     protected static $connection;
+
+
 
      /** @var bool */
      protected static $status = false;
-
-
-
-     /** @var mixed */
-     protected static $connection;
 
 
 
@@ -84,32 +83,32 @@ class Connection
      }
 
 
-    /**
-     * @param array $config
-     * @throws \Exception
-    */
-    public static function open(array $config)
-    {
-        if(! self::$connection)
-        {
-            self::$connection = self::make($config);
-        }
-    }
+     /**
+      * @param array $config
+      * @throws Exception
+     */
+     public static function open(array $config)
+     {
+          if(is_null(self::$connection))
+          {
+              self::$connection = static::make($config);
+          }
+     }
 
 
-    /**
-     * @return mixed
-     * @throws ConnectionException
-    */
-    public static function instance()
-    {
-        if(is_null(self::$connection))
-        {
-            throw new ConnectionException('Can not get connection!');
-        }
+     /**
+      * @return mixed
+      * @throws ConnectionException
+     */
+     public static function instance()
+     {
+         if(is_null(self::$connection))
+         {
+             throw new ConnectionException('Connection is not opened');
+         }
 
-        return self::$connection;
-    }
+         return self::$connection;
+     }
 
 
     /**
@@ -124,7 +123,7 @@ class Connection
 
     /**
      * @param $connection
-     */
+    */
     private static function setConnectionInstance($connection)
     {
         if(is_null(self::$instance))
@@ -154,7 +153,7 @@ $connection = \Jan\Component\Database\Connection::make([
 
 * First Connect to database like this:
 
-Connection::connect([
+Connection::open([
    'driver'    => 'mysql',
    'database'  => 'default',
    'host'      => '127.0.0.1',
