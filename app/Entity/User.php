@@ -44,7 +44,7 @@ class User
 
 
     /** @var array  */
-    private $posts = [];
+    // private $posts = [];
 
 
     /** @var  */
@@ -59,6 +59,7 @@ class User
         // instance collections data
         // always it will setted 0
         $this->deleted_at = 0;
+        $this->role = 'user';
 
         /* $this->posts = new ArrayCollection(); */
     }
@@ -184,15 +185,6 @@ class User
 
 
     /**
-     * @return string
-    */
-    public function tableName()
-    {
-        return 'users';
-    }
-
-
-    /**
      * @param $deletedAt
      * @return $this
     */
@@ -217,32 +209,34 @@ class User
      * @param Post $post
      * @return User
     */
-    public function addPost(Post $post)
-    {
-         if(! \in_array($post, $this->posts))
-         {
-             $this->posts[] = $post;
-             $post->addUser($this);
-         }
+//    public function addPost(Post $post)
+//    {
+//         if(! \in_array($post, $this->posts))
+//         {
+//             $this->posts[] = $post;
+//             $post->addUser($this);
+//         }
+//
+//         return $this;
+//
+//         /*
+//         if(! $this->posts->contains($post))
+//         {
+//             $this->posts[] = $post;
+//             $post->addUser($this);
+//         }
+//         return $this;
+//        */
+//    }
+//
+//
+//    /**
+//     * @return array
+//    */
+//    public function getPosts()
+//    {
+//        return $this->posts;
+//    }
 
-         return $this;
 
-         /*
-         if(! $this->posts->contains($post))
-         {
-             $this->posts[] = $post;
-             $post->addUser($this);
-         }
-         return $this;
-        */
-    }
-
-
-    /**
-     * @return array
-    */
-    public function getPosts()
-    {
-        return $this->posts;
-    }
 }

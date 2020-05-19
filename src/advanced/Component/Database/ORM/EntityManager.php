@@ -3,6 +3,9 @@ namespace Jan\Component\Database\ORM;
 
 
 use Exception;
+use Jan\Component\Database\Contracts\EntityInterface;
+use Jan\Component\Database\Contracts\EntityManagerInterface;
+use Jan\Component\Database\Contracts\EntityRepositoryInterface;
 use Jan\Component\Database\Contracts\ManagerInterface;
 use Jan\Component\Database\ORM\Traits\SoftDeletes;
 use ReflectionObject;
@@ -17,7 +20,11 @@ class EntityManager
 {
 
 
-     use SoftDeletes;
+     use Generator, SoftDeletes;
+
+
+     const TYPE_PERSIST = 'PERSIST';
+     const TYPE_DELETE  = 'DELETE';
 
 
      /** @var ManagerInterface  */
@@ -29,11 +36,16 @@ class EntityManager
 
 
      /** @var array  */
-     protected $records = [];
+     protected $objectStorage = [];
+
+
+
+     /** @var object */
+     protected $classMapInstance;
 
 
      /** @var string */
-     protected $table;
+     protected $recordType;
 
 
      /**
@@ -42,39 +54,54 @@ class EntityManager
      */
      public function __construct(ManagerInterface $manager)
      {
-          $this->manager = $manager;
+         $this->manager = $manager;
      }
 
 
+
+
     /**
-     * @param object $classMapInstance
-     * @return mixed
-     * @throws Exception
+     * @return ManagerInterface
+     *
+     * $lastId = $this->getManager()->lastId();
     */
-    public function mapClassProperties(object $classMapInstance)
+    public function getManager()
     {
-        $reflectedObject = new ReflectionObject($classMapInstance);
-        $properties = [];
-        foreach($reflectedObject->getProperties() as $property)
-        {
-            $property->setAccessible(true);
-            $propertyName = $property->getName();
-            $properties[$propertyName] = $property->getValue($classMapInstance);
-        }
-
-        $attributes = array_filter($properties, function ($key) {
-            return  $key != 'id';
-        }, ARRAY_FILTER_USE_KEY);
-
-        if(! \array_key_exists('id', $properties))
-        {
-            throw new Exception(
-                'Must to define (id) for entity ('. get_class($classMapInstance)
-            );
-        }
-
-        return [$properties['id'], $attributes];
+        return $this->manager;
     }
+
+
+     /**
+      * @param object $classMapInstance
+      * @return mixed
+      * @throws Exception
+     */
+     public function registerClassMapProperties(object $classMapInstance = null)
+     {
+            $classMapInstance = $classMapInstance ?? $this->classMapInstance;
+            $reflectedObject = new ReflectionObject($classMapInstance);
+
+            $properties = [];
+            foreach($reflectedObject->getProperties() as $property)
+            {
+                $property->setAccessible(true);
+                $propertyName = $property->getName();
+                $properties[$propertyName] = $property->getValue($classMapInstance);
+            }
+
+            $attributes = array_filter($properties, function ($key) {
+                return  $key != 'id';
+            }, ARRAY_FILTER_USE_KEY);
+
+            if(! \array_key_exists('id', $properties))
+            {
+                throw new Exception(
+                    'Must to define (id) for entity ('. get_class($classMapInstance)
+                );
+            }
+
+            return [$id = $properties['id'], $attributes];
+      }
 
 
      /**
@@ -82,7 +109,7 @@ class EntityManager
      */
      public function persist(object $classMapInstance)
      {
-          $this->registerRecord('PERSIST', $classMapInstance);
+          $this->registerClassMap(self::TYPE_PERSIST, $classMapInstance);
      }
 
 
@@ -91,7 +118,7 @@ class EntityManager
      */
      public function delete(object $classMapInstance)
      {
-         $this->registerRecord('DELETE', $classMapInstance);
+         $this->registerClassMap(self::TYPE_DELETE, $classMapInstance);
      }
 
 
@@ -104,25 +131,7 @@ class EntityManager
          try {
 
              $this->manager->beginTransaction();
-
-             foreach($this->records as $recordType => $classMapInstances)
-             {
-                   foreach($classMapInstances as $classMapInstance)
-                   {
-                        list($id, $attributes) = $this->mapClassProperties($classMapInstance);
-
-                        if($recordType === 'PERSIST')
-                        {
-                             $this->store($attributes, $id);
-                        }
-
-                        if($recordType === 'DELETE')
-                        {
-                            $this->remove($id);
-                        }
-                   }
-             }
-
+             $this->recordProcess();
              $this->manager->commit();
 
          } catch (Exception $e) {
@@ -134,22 +143,66 @@ class EntityManager
 
 
 
+
+    /**
+     * @param string $recordType
+     * @param object $classMapInstance
+    */
+    protected function registerClassMap(string $recordType, object $classMapInstance)
+    {
+        $this->objectStorage[$recordType][] = $classMapInstance;
+        $this->recordType = $recordType;
+    }
+
+
+    /**
+      * @throws Exception
+     */
+     protected function recordProcess()
+     {
+           if(isset($this->objectStorage[$this->recordType]))
+           {
+                 $classMapInstances = $this->objectStorage[$this->recordType];
+
+                 foreach ($classMapInstances as $classMapInstance)
+                 {
+                     $this->classMapInstance = $classMapInstance;
+
+                     list($id, $attributes) = $this->registerClassMapProperties();
+
+                     if($this->isPersist())
+                     {
+                         $this->store($attributes, $id);
+                         echo 'Persist<br>';
+                     }
+
+                     if($this->isDelete())
+                     {
+                         $this->remove($id);
+                         echo 'Delete<br>';
+                     }
+                 }
+           }
+     }
+
+
     /**
      * Insert data to the database
      *
      * @param array $attributes
-     * @return int
-     */
+     * @return void
+     * @throws \ReflectionException
+    */
     public function insert(array $attributes)
     {
         $sql = sprintf('INSERT INTO `%s`(%s) VALUES (%s)',
-            $this->table,
+            $this->getTableName(),
             $this->formatInsertFields($attributes),
             $this->formatInsertBinds($attributes)
         );
 
         $this->manager->execute($sql, array_values($attributes));
-        return $this->manager->lastId();
+        echo 'Inserted! <br>';
     }
 
 
@@ -159,24 +212,27 @@ class EntityManager
      * @param array $attributes
      * @param int $id
      * @return mixed
+     * @throws \ReflectionException
     */
     public function update(array $attributes, int $id)
     {
         $sql = sprintf('UPDATE %s SET %s WHERE id = ?',
-            $this->table,
+            $this->getTableName(),
             $this->assignColumn($attributes)
         );
 
         $values = array_merge(array_values($attributes), compact('id'));
         $this->manager->execute($sql, $values);
+        echo 'Updated! <br>';
     }
 
 
     /**
      * @param array $attributes
-     * @param int $id
+     * @param int|null $id
+     * @throws \ReflectionException
     */
-    public function store(array $attributes, int $id)
+    public function store(array $attributes, int $id = null)
     {
         if(is_null($id))
         {
@@ -208,10 +264,11 @@ class EntityManager
      *
      * @param int $id
      * @return mixed
-    */
+     * @throws \ReflectionException
+     */
     public function remove(int $id)
     {
-        $sql = 'DELETE FROM '. $this->table .' WHERE id = :id';
+        $sql = 'DELETE FROM '. $this->getTableName() .' WHERE id = :id';
 
         if($this->isSoftDeleted())
         {
@@ -226,7 +283,8 @@ class EntityManager
     /**
      * @param int $id
      * @return mixed
-     */
+     * @throws \ReflectionException
+    */
     public function restore(int $id)
     {
         if($this->isSoftDeleted())
@@ -261,23 +319,34 @@ class EntityManager
 
 
     /**
-     * @param string $recordType
-     * @param object $classMapInstance
-    */
-    protected function registerRecord(string $recordType, object $classMapInstance)
+     * @return string
+     * @throws \ReflectionException
+     */
+    protected function getTableName()
     {
-          $this->records[$recordType][] = $classMapInstance;
-          $this->table = $classMapInstance->getTable();
+        if($this->classMapInstance instanceof AbstractEntity)
+        {
+             return $this->classMapInstance->getTable();
+        }
+
+        return $this->generateNameOfEntityTable($this->classMapInstance);
     }
 
 
     /**
-     * @param $properties
-     * @param $item
      * @return bool
     */
-    private function getProperty($properties, $item)
+    private function isPersist()
     {
-        return $properties[$item] ?? null;
+        return $this->recordType === self::TYPE_PERSIST;
+    }
+
+
+    /**
+     * @return bool
+    */
+    private function isDelete()
+    {
+        return $this->recordType === self::TYPE_DELETE;
     }
 }

@@ -2,6 +2,8 @@
 namespace Jan\Component\Database\ORM;
 
 
+use Jan\Component\Database\Contracts\EntityInterface;
+use Jan\Component\Database\Contracts\EntityManagerInterface;
 use Jan\Component\Database\Contracts\EntityRepositoryInterface;
 use Jan\Component\Database\Contracts\ManagerInterface;
 use Jan\Component\Database\ORM\Traits\SoftDeletes;
@@ -16,20 +18,19 @@ use ReflectionException;
 class EntityRepository implements EntityRepositoryInterface
 {
 
-      use SoftDeletes;
+      use Generator, SoftDeletes;
 
 
       /** @var ManagerInterface */
       protected $manager;
 
 
-      /** @var string */
-      protected $table;
-
-
       /** @var  string */
       protected $entityClass;
 
+
+      /** @var EntityManagerInterface */
+      protected $entityManager;
 
 
       /**
@@ -52,7 +53,6 @@ class EntityRepository implements EntityRepositoryInterface
       {
            $this->entityClass = $entityClass;
       }
-
 
 
      /**
@@ -166,12 +166,6 @@ class EntityRepository implements EntityRepositoryInterface
     */
     public function getTable()
     {
-         if($this->table)
-         {
-             return $this->table;
-         }
-
-         $reflectedClass = new ReflectionClass($this->entityClass);
-         return mb_strtolower($reflectedClass->getShortName()).'s';
+        return $this->generateNameOfEntityTable($this->entityClass);
     }
 }

@@ -21,10 +21,12 @@ class RouteParam
      */
       public function __construct($route)
       {
-//           if(! $route)
-//           {
-//               throw new \Exception('Route not found!', 404);
-//           }
+           /*
+           if(! $route)
+           {
+               throw new \Exception('Route not found!', 404);
+           }
+           */
 
            $this->route = $route;
       }

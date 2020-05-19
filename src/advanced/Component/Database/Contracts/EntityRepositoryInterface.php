@@ -9,11 +9,6 @@ namespace Jan\Component\Database\Contracts;
 interface EntityRepositoryInterface
 {
 
-
-    /** @return string */
-    public function getTable();
-
-
     /**
      * Register entity class
      *

@@ -4,6 +4,7 @@ namespace Jan\Component\Database\ORM;
 
 use Illuminate\Support\Manager;
 use Jan\Component\Database\Contracts\EntityInterface;
+use Jan\Component\Database\Contracts\EntityManagerInterface;
 use Jan\Component\Database\Contracts\EntityRepositoryInterface;
 use Jan\Component\Database\Contracts\ManagerInterface;
 
@@ -11,12 +12,8 @@ use Jan\Component\Database\Contracts\ManagerInterface;
  * Class Model
  * @package Jan\Component\Database\ORM
 */
-class Model implements \ArrayAccess
+class Model extends AbstractEntity implements \ArrayAccess
 {
-
-     /** @var string */
-     protected $table;
-
 
      /** @var array  */
      protected $attributes = [];
@@ -34,34 +31,31 @@ class Model implements \ArrayAccess
      protected $hidden = [];
 
 
-     /** @var ManagerInterface  */
-     protected static $manager;
+     /** @var EntityManagerInterface */
+     private $entityManager;
 
 
-     /** @var EntityRepositoryInterface */
      private static $repository;
 
 
      /**
       * Model constructor.
+      * @param EntityManagerInterface $entityManager
      */
-     public function __construct() {}
+     public function __construct(EntityManagerInterface $entityManager)
+     {
+          $this->entityManager = $entityManager;
+          self::$repository = $this->entityManager->getRepository();
+     }
 
 
-    /**
-      * @param EntityRepositoryInterface $repository
-      *
-      * $config = [....];
-      * $connection = Connection::make($config);
-      * $manager = new QueryManager($connection);
-      * $repository = new EntityRepository($manager);
-      *
-      * $model = new Model();
-      * $model->addRepository($repository);
+     /**
+      * @param EntityManagerInterface $entityManager
       * @return Model
      */
-     public function addRepository(EntityRepositoryInterface $repository)
+     public function addEntityManager(EntityManagerInterface $entityManager)
      {
+         $repository = $entityManager->getRepository();
          $repository->registerClassMap(static::class);
          $repository->registerTable($this->table);
          self::$repository = $repository;
@@ -108,7 +102,7 @@ class Model implements \ArrayAccess
      */
      public static function getRepository()
      {
-        return self::$repository;
+          return self::$repository;
      }
 
 

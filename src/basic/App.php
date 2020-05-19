@@ -15,6 +15,10 @@ use Jan\Routing\Router;
 class App extends Container
 {
 
+    /** @var array  */
+    private $middlewares = [];
+
+
     /**
      * App constructor.
      * @param $method
@@ -23,12 +27,14 @@ class App extends Container
     public function __call($method, $arguments)
     {
         $router = new Router();
+        /* $request, $response */
+        // parse params (Request, Response, arguments)
         call_user_func_array([$router, $method], $arguments);
     }
 
 
     /**
-     *
+     * Run application
     */
     public function run()
     {

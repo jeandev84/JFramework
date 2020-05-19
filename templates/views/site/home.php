@@ -4,4 +4,15 @@
     </h1>
 </div>
 
+<div>
+    <?php foreach ($users as $user): ?>
+      <ul style="border: 1px solid #ccc;list-style: none;">
+          <li><?= ucfirst($user->getName()) ?></li>
+          <li><?= $user->getEmail() ?></li>
+          <li><?= $user->getAddress() ?></li>
+          <li><?= $user->getRole() ?></li>
+      </ul>
+    <?php endforeach; ?>
+</div>
+
 

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Services\EncoderPassword;
 use Exception;
 use Jan\Component\Http\Message\ResponseInterface;
 use Jan\Component\Http\Request;
@@ -29,8 +30,9 @@ class SiteController extends BaseController
      */
     public function index(Request $request, UserRepository $userRepository): Response
     {
-        $users = $userRepository->findAll();
+        /* $users = $userRepository->findAll(); */
 
+        $users = [];
         if($request->isAjax())
         {
             print_r($users);
@@ -45,10 +47,26 @@ class SiteController extends BaseController
     /**
      * Action about
      *
-     * @throws Exception
-    */
-    public function about(): Response
+     * @param EncoderPassword $encoder
+     * @return Response
+     * @throws ViewException
+     */
+    public function about(EncoderPassword $encoder): Response
     {
+        for ($i = 1; $i <= 5; $i++)
+        {
+            $user = new User();
+            $name = 'user'. $i;
+            $user->setName($name)
+                ->setEmail($name.'@gmail.com')
+                ->setAddress('Kurgan, ulitsa volodarskovo dom '. $i)
+                ->setPassword($encoder->encode($name));
+
+            $this->entityManager->persist($user);
+        }
+
+        $this->entityManager->flush();
+
         return $this->render('site/about.php');
     }
 
@@ -63,9 +81,12 @@ class SiteController extends BaseController
         return $this->render('site/contact.php');
     }
 
+
+
     /**
      * @param UserRepository $userRepository
      * @return Response
+     * @throws \ReflectionException
     */
     public function send(UserRepository $userRepository): Response
     {
@@ -77,4 +98,19 @@ class SiteController extends BaseController
         }
     }
 
+
+    /*
+    public function saveOneUser(EncoderPassword $encoder): Response
+    {
+        $user = new User();
+        $user->setName('Jean-Claude')
+            ->setEmail('jeanyao@ymail.com')
+            ->setPassword($encoder->encode('secret123'));
+
+        // dump($user);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+        return;
+    }
+    */
 }
