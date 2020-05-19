@@ -9,6 +9,7 @@ use Jan\Component\Database\Contracts\EntityManagerInterface;
 use Jan\Component\Database\Contracts\EntityRepositoryInterface;
 use Jan\Component\Database\Contracts\ManagerInterface;
 use Jan\Component\Database\Exceptions\ConnectionException;
+use ReflectionException;
 
 
 /**
@@ -35,22 +36,32 @@ class Model extends AbstractEntity implements \ArrayAccess
 
 
      /**
+      * @return mixed
+      * @throws ConnectionException
+     */
+     public static function connection()
+     {
+         return Connection::instance();
+     }
+     
+     
+     /**
       * @return EntityManager
       * @throws ConnectionException
      */
-     public function getManager()
+     public function manager()
      {
-         return new EntityManager(Connection::instance());
+         return new EntityManager(self::connection());
      }
 
 
      /**
       * @return EntityRepository
-      * @throws ConnectionException|\ReflectionException
+      * @throws ConnectionException|ReflectionException
       */
-     public static function getRepository()
+     public static function repository()
      {
-         return new EntityRepository(self::getQuery(), static::class);
+         return new EntityRepository(self::query(), static::class);
      }
 
 
@@ -58,9 +69,9 @@ class Model extends AbstractEntity implements \ArrayAccess
       * @return Query
       * @throws ConnectionException
      */
-     public static function getQuery()
+     public static function query()
      {
-         return new Query(Connection::instance());
+         return new Query(self::connection());
      }
 
 
@@ -68,24 +79,23 @@ class Model extends AbstractEntity implements \ArrayAccess
       * @param string $condition
       * @param $value
       * @return string
-      * @throws ConnectionException|\ReflectionException
-      */
+      * @throws ConnectionException|ReflectionException
+     */
      public static function where($condition, $value)
      {
-         return self::getRepository()->where($condition, $value);
+         return self::repository()->where($condition, $value);
      }
-
 
 
      /**
       * Get all record
       * @return mixed
-      * @throws \ReflectionException
       * @throws ConnectionException
+      * @throws ReflectionException
      */
-     public static function get()
+     public static function all()
      {
-
+         return self::repository()->findAll();
      }
 
 
@@ -106,10 +116,10 @@ class Model extends AbstractEntity implements \ArrayAccess
     /**
      * @param $field
      * @param $value
-     */
+    */
     public function setAttribute($field, $value)
     {
-        $this->attributes[$field] = $value;
+         $this->attributes[$field] = $value;
     }
 
 
@@ -136,8 +146,9 @@ class Model extends AbstractEntity implements \ArrayAccess
 
 
     /**
+     * @param $field
      * @return array
-     */
+    */
     public function getAttribute($field)
     {
         if(! $this->hasAttribute($field))

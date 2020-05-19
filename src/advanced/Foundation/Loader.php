@@ -18,7 +18,7 @@ class Loader
     */
     private $aliases = [
         'Route' => 'Jan\\Component\\Routing\\Route',
-        'DB'    => 'Jan\\Foundation\\Database'
+        #'DB'    => 'Jan\\Foundation\\Database'
     ];
 
 

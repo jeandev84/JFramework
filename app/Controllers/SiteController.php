@@ -12,7 +12,8 @@ use Jan\Component\Http\Message\ResponseInterface;
 use Jan\Component\Http\Request;
 use Jan\Component\Http\Response;
 use Jan\Component\Templating\Exceptions\ViewException;
-
+use Jan\Foundation\Database;
+use JanKlod\Database\DB;
 
 
 /**
@@ -55,6 +56,7 @@ class SiteController extends BaseController
     */
     public function about(EncoderPassword $encoder): Response
     {
+        dump(Database::instance());
         dd(Book::where('id = ?', 2)->get());
         return $this->render('site/about.php');
     }
