@@ -59,16 +59,19 @@ class SiteController extends BaseController
         // dump(Database::instance());
         // dd(Book::where('id = :id', ['id' => 2])->get());
         // dd(Book::where('id = ?', 2)->get());
-
-        //dd(new Book());
-
+        // dd(new Book());
+        /*
         $book = new Book();
-        $book->id = 7;
-        $book->name = 'NewBook';
-        $book->cost = '57';
-        $book->description = 'some description book jc, with new price';
+        //$book->id = 7;
+        $book->name = 'AwesomeBook';
+        $book->cost = '124';
+        $book->description = 'some description book jc';
 
         $book->save();
+
+        echo $book->id; Last inserted ID
+        */
+
         return $this->render('site/about.php');
     }
 
