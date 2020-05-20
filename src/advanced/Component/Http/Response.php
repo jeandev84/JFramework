@@ -89,7 +89,7 @@ class Response implements ResponseInterface
     /**
      * @param int $status
     */
-    public function setStatus(int $status)
+    public function setStatus($status)
     {
         $this->status = $status;;
     }
@@ -125,7 +125,7 @@ class Response implements ResponseInterface
      * @param int $status
      * @return Response
     */
-    public function withStatus(int $status): Response
+    public function withStatus($status): Response
     {
         $this->setStatus($status);
         return $this;

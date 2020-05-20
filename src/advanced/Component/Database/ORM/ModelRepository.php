@@ -23,6 +23,10 @@ abstract class ModelRepository implements \ArrayAccess
     protected $attributes = [];
 
 
+    /** @var string[]  */
+    protected $guarded = ['id'];
+
+
     /** @var string */
     protected $table;
 
@@ -59,7 +63,7 @@ abstract class ModelRepository implements \ArrayAccess
     */
     protected function manager()
     {
-        return new EntityManager(self::connection());
+        return new EntityManager(self::query());
     }
 
 

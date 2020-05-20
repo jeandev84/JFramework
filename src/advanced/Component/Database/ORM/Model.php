@@ -14,11 +14,7 @@ abstract class Model extends ModelRepository
 {
 
      /** @var array  */
-     //protected $fillable = ['name', 'cost', 'description'];
-
-
-     /** @var string[]  */
-     protected $guarded = ['id'];
+     // protected $fillable = ['name', 'cost', 'description'];
 
 
      /** @var array  */
@@ -85,16 +81,20 @@ abstract class Model extends ModelRepository
             }
         }
 
+        //dump($attributes);
+        //dd($this);
 
-        dd($attributes);
+        # Process
+        $id = (int) $this->getAttribute('id');
 
-        // $manager = self::manager()->persist($this);
+        $manager = self::manager()->setTable($this->getTable());
 
-        dump($attributes);
-        // implements some methods for fillable
-        // guarded
-
-        // $this->entityManager->persist($this);
-        // $this->entityManager->flush();
+        if($id)
+        {
+            $manager->update($attributes, $id);
+        } else{
+            $manager->insert($attributes);
+            $this->setAttribute('id', self::query()->lastId());
+        }
     }
 }

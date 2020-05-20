@@ -62,6 +62,16 @@ class EntityManager
      }
 
 
+    /**
+     * @param $table
+     * @return EntityManager
+    */
+    public function setTable($table)
+    {
+        $this->table = $table;
+
+        return $this;
+    }
 
 
     /**
@@ -205,7 +215,7 @@ class EntityManager
             $this->formatInsertBinds($attributes)
         );
 
-        $this->manager->execute($sql, array_values($attributes));
+        return $this->manager->execute($sql, array_values($attributes));
     }
 
 
@@ -223,8 +233,8 @@ class EntityManager
             $this->assignColumn($attributes)
         );
 
-        $values = array_merge(array_values($attributes), compact('id'));
-        $this->manager->execute($sql, $values);
+        $values = array_merge(array_values($attributes), [$id]);
+        return $this->manager->execute($sql, $values);
     }
     
 
