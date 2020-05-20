@@ -5,7 +5,7 @@ namespace Jan\Component\Database\ORM;
 use Jan\Component\Database\Contracts\EntityInterface;
 use Jan\Component\Database\Contracts\EntityManagerInterface;
 use Jan\Component\Database\Contracts\EntityRepositoryInterface;
-use Jan\Component\Database\Contracts\ManagerInterface;
+use Jan\Component\Database\Contracts\QueryInterface;
 use Jan\Component\Database\Exceptions\ConnectionException;
 use Jan\Component\Database\ORM\Traits\SoftDeletes;
 use ReflectionClass;
@@ -22,8 +22,8 @@ class EntityRepository implements EntityRepositoryInterface
       use Generator, SoftDeletes;
 
 
-      /** @var ManagerInterface */
-      protected $manager;
+      /** @var QueryInterface */
+      protected $query;
 
 
       /** @var  string */
@@ -40,14 +40,14 @@ class EntityRepository implements EntityRepositoryInterface
 
      /**
       * EntityRepository constructor.
-      * @param ManagerInterface $manager
+      * @param QueryInterface $query
       * @param string|null $entityClass
       * @throws ReflectionException
      */
-      public function __construct(ManagerInterface $manager, $entityClass = null)
+      public function __construct(QueryInterface $query, $entityClass = null)
       {
-          $this->manager = $manager;
-          $this->manager->classMap($entityClass);
+          $this->query = $query;
+          $this->query->classMap($entityClass);
           $this->table = $this->generateTableNameOfEntity($entityClass);
       }
 
@@ -71,32 +71,33 @@ class EntityRepository implements EntityRepositoryInterface
       */
       public function getConnection()
       {
-         return $this->manager->getConnection();
+          return $this->query->getConnection();
       }
 
 
-    /**
-     * @param string $condition
-     * @param $value
-     * @return string
-     * @throws ReflectionException
-    */
-    public function where(string $condition, $value)
-    {
+
+     /**
+      * @param string $condition
+      * @param $value
+      * @return string
+      * @throws ReflectionException
+     */
+     public function where(string $condition, $value)
+     {
         $sql = 'SELECT * FROM '. $this->getTable() .' WHERE '. $condition;
-        return $this->manager->execute($sql, [$value]);
-    }
+        return $this->query->execute($sql, $value);
+     }
 
 
-    /**
+     /**
       * Find all
       * @throws ReflectionException
-    */
-    public function findAll()
-    {
+     */
+     public function findAll()
+     {
          $sql = $this->resolveSql('SELECT * FROM '. $this->getTable());
-         return $this->manager->execute($sql)->get();
-    }
+         return $this->query->execute($sql)->get();
+     }
 
 
 
@@ -120,7 +121,7 @@ class EntityRepository implements EntityRepositoryInterface
         }
 
         $sql = $this->resolveSql($sql, false);
-        return $this->manager->execute($sql, $criteria)->get();
+        return $this->query->execute($sql, $criteria)->get();
     }
 
 

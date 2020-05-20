@@ -30,6 +30,24 @@ class Connection
      protected static $status = false;
 
 
+     /**
+      * prevent instance from being cloned
+      *
+      * @return void
+     */
+     private function __clone(){}
+
+
+
+     /**
+      * prevent instance from being unserialized
+      *
+      * @return void
+     */
+     private function __wakeup(){}
+
+
+
 
      /**
       * @param array $config

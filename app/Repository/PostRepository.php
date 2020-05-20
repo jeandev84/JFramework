@@ -3,7 +3,7 @@ namespace App\Repository;
 
 
 use App\Entity\Post;
-use Jan\Component\Database\Contracts\QueryManagerInterface;
+use Jan\Component\Database\Contracts\QueryInterface;
 use Jan\Component\Database\ORM\EntityRepository;
 
 
@@ -17,10 +17,11 @@ class PostRepository extends EntityRepository
 {
 
     /**
-     * UserRepository constructor.
-     * @param QueryManagerInterface $manager
+     * PostRepository constructor.
+     * @param QueryInterface $manager
+     * @throws \ReflectionException
     */
-    public function __construct(QueryManagerInterface $manager)
+    public function __construct(QueryInterface $manager)
     {
         parent::__construct($manager, Post::class);
     }

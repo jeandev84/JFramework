@@ -3,7 +3,7 @@ namespace Jan\Component\Database\Connectors\PDO;
 
 
 use Exception;
-use Jan\Component\Database\Contracts\ManagerInterface;
+use Jan\Component\Database\Contracts\QueryInterface;
 use Jan\Component\Database\Exceptions\StatementException;
 use PDO;
 use PDOException;
@@ -17,7 +17,7 @@ use PDOStatement;
  *
  * Execute query
 */
-class Query implements ManagerInterface
+class Query implements QueryInterface
 {
 
     /** @var PDO  */
@@ -73,17 +73,17 @@ class Query implements ManagerInterface
 
     /**
      * @param string $sql
-     * @param array $params
+     * @param mixed $params
      * @param bool $statement
      * @return Query|PDOStatement
      */
-     public function execute(string $sql, array $params = [], $statement = false)
+     public function execute(string $sql, $params = null, $statement = false)
      {
          try {
 
              $this->statement = $this->connection->prepare($sql);
 
-             if($this->statement->execute($params))
+             if($this->statement->execute((array)$params))
              {
                  $this->records['execute'][] = compact('sql', 'params');
              }

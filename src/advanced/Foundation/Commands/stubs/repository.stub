@@ -3,7 +3,7 @@ namespace EntityRepositoryNamespace;
 
 
 use App\Entity\EntityClass;
-use Jan\Component\Database\Contracts\QueryManagerInterface;
+use Jan\Component\Database\Contracts\QueryInterface;
 use Jan\Component\Database\ORM\EntityRepository;
 
 
@@ -17,10 +17,10 @@ class EntityRepositoryClass extends EntityRepository
 {
 
     /**
-     * UserRepository constructor.
-     * @param QueryManagerInterface $manager
+     * EntityRepositoryClass constructor.
+     * @param QueryInterface $manager
     */
-    public function __construct(QueryManagerInterface $manager)
+    public function __construct(QueryInterface $manager)
     {
         parent::__construct($manager, EntityClass::class);
     }

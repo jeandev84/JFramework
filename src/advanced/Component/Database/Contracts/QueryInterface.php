@@ -3,10 +3,10 @@ namespace Jan\Component\Database\Contracts;
 
 
 /**
- * Interface ManagerInterface
+ * Interface QueryInterface
  * @package Jan\Component\Database\Contracts
 */
-interface ManagerInterface
+interface QueryInterface
 {
 
      /**

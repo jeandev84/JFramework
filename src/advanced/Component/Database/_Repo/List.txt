@@ -1,0 +1,42 @@
+^ array:5 [▼
+  0 => {#52 ▼
+    +"Field": "id"
+    +"Type": "int(11)"
+    +"Null": "NO"
+    +"Key": "PRI"
+    +"Default": null
+    +"Extra": "auto_increment"
+  }
+  1 => {#55 ▼
+    +"Field": "name"
+    +"Type": "varchar(255)"
+    +"Null": "NO"
+    +"Key": ""
+    +"Default": null
+    +"Extra": ""
+  }
+  2 => {#56 ▼
+    +"Field": "cost"
+    +"Type": "int(11)"
+    +"Null": "NO"
+    +"Key": ""
+    +"Default": null
+    +"Extra": ""
+  }
+  3 => {#57 ▼
+    +"Field": "description"
+    +"Type": "text"
+    +"Null": "YES"
+    +"Key": ""
+    +"Default": null
+    +"Extra": ""
+  }
+  4 => {#58 ▼
+    +"Field": "deleted_at"
+    +"Type": "int(11)"
+    +"Null": "YES"
+    +"Key": ""
+    +"Default": null
+    +"Extra": ""
+  }
+]

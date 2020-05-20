@@ -6,7 +6,7 @@ use Jan\Component\Database\Connection;
 use Jan\Component\Database\Connectors\PDO\Query;
 use Jan\Component\Database\Contracts\EntityManagerInterface;
 use Jan\Component\Database\Contracts\EntityRepositoryInterface;
-use Jan\Component\Database\Contracts\ManagerInterface;
+use Jan\Component\Database\Contracts\QueryInterface;
 use Jan\Component\Database\ORM\EntityManager;
 use Jan\Component\Database\ORM\EntityRepository;
 use Jan\Component\DI\Contracts\BootableServiceProvider;
@@ -42,20 +42,20 @@ class DatabaseServiceProvider extends AbstractServiceProvider implements Bootabl
             return Connection::instance();
         });
 
-        $this->container->singleton(ManagerInterface::class, function () {
+        $this->container->singleton(QueryInterface::class, function () {
             return new Query($this->container[Connection::class]);
         });
 
-
+        /*
         $this->container->singleton(EntityRepositoryInterface::class, function () {
-            $manager = $this->container->get(ManagerInterface::class);
+            $manager = $this->container->get(QueryInterface::class);
             return new EntityRepository($manager);
         });
-
+        */
 
         $this->container->singleton(EntityManagerInterface::class, function () {
-            $manager = $this->container->get(ManagerInterface::class);
-            return new EntityManager($manager);
+            $query = $this->container->get(QueryInterface::class);
+            return new EntityManager($query);
         });
     }
 

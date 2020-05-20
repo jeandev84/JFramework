@@ -6,7 +6,7 @@ use Exception;
 use Jan\Component\Database\Contracts\EntityInterface;
 use Jan\Component\Database\Contracts\EntityManagerInterface;
 use Jan\Component\Database\Contracts\EntityRepositoryInterface;
-use Jan\Component\Database\Contracts\ManagerInterface;
+use Jan\Component\Database\Contracts\QueryInterface;
 use Jan\Component\Database\ORM\Traits\SoftDeletes;
 use ReflectionObject;
 
@@ -27,7 +27,7 @@ class EntityManager
      const TYPE_DELETE  = 'DELETE';
 
 
-     /** @var ManagerInterface  */
+     /** @var QueryInterface  */
      protected $manager;
 
 
@@ -54,9 +54,9 @@ class EntityManager
 
      /**
       * EntityManager constructor.
-      * @param ManagerInterface $manager
+      * @param QueryInterface $manager
      */
-     public function __construct(ManagerInterface $manager)
+     public function __construct(QueryInterface $manager)
      {
           $this->manager = $manager;
      }
@@ -65,7 +65,7 @@ class EntityManager
 
 
     /**
-     * @return ManagerInterface
+     * @return QueryInterface
      *
      * $lastId = $this->getQuery()->lastId();
     */
@@ -269,7 +269,8 @@ class EntityManager
     /**
      * @param int $id
      * @return mixed
-     * @throws \ReflectionException
+     *
+     * TODO replace argument (int id) by (object) and $id = $object->getId();
     */
     public function restore(int $id)
     {
@@ -339,7 +340,7 @@ class EntityManager
     {
         $this->table = $this->generateTableNameOfEntity($classMapInstance);
 
-        if($classMapInstance instanceof AbstractEntity)
+        if($classMapInstance instanceof ModelRepository)
         {
             $this->table = $classMapInstance->getTable();
         }

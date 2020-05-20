@@ -2,7 +2,7 @@
 namespace Jan\Component\Database\ORM;
 
 
-use Jan\Component\Database\Contracts\ManagerInterface;
+use Jan\Component\Database\Contracts\QueryInterface;
 use Jan\Component\Database\Contracts\QueryBuilderInterface;
 use Jan\Component\Database\ORM\Builder\Contract\SqlBuilder;
 use Jan\Component\Database\ORM\Builder\From;
@@ -20,7 +20,7 @@ class QueryBuilder implements QueryBuilderInterface
 
 
 
-    /** @var ManagerInterface */
+    /** @var QueryInterface */
     private $manager;
 
 
@@ -119,7 +119,7 @@ class QueryBuilder implements QueryBuilderInterface
 
 
     /**
-     * @param ManagerInterface $manager
+     * @param QueryInterface $manager
     */
 //    public function addQuery(ManagerInterface $manager)
 //    {

@@ -56,8 +56,19 @@ class SiteController extends BaseController
     */
     public function about(EncoderPassword $encoder): Response
     {
-        dump(Database::instance());
-        dd(Book::where('id = ?', 2)->get());
+        // dump(Database::instance());
+        // dd(Book::where('id = :id', ['id' => 2])->get());
+        // dd(Book::where('id = ?', 2)->get());
+
+        //dd(new Book());
+
+        $book = new Book();
+        $book->id = 8;
+        $book->name = 'BookJFramework';
+        $book->cost = '28';
+        $book->description = 'some description book jc';
+
+        $book->save();
         return $this->render('site/about.php');
     }
 
