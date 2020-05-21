@@ -15,7 +15,10 @@ use Jan\Component\Routing\Exception\RouteException;
 class Router
 {
 
-    const MASK_PARAM = ['#{([\w]+)}#', '#:([\w]+)#'];
+    const MASK_PARAM = [
+        '#{([\w]+)}#',
+        '#:([\w]+)#'
+    ];
 
 
     /** @var string */
@@ -46,7 +49,7 @@ class Router
     */
     public function __construct(array $routes = [])
     {
-         $this->routes = $routes;
+        $this->routes = $routes;
     }
 
 
@@ -100,7 +103,6 @@ class Router
         return $this;
     }
 
-
     /**
      * @return array
     */
@@ -145,14 +147,24 @@ class Router
 
 
     /**
+     * @param $path
+     * @return mixed|null
+    */
+    public function getRouteName($path)
+    {
+          //
+    }
+
+
+    /**
      * Return the current matched route if founded
      * otherwise return false
      *
      * @param string $requestMethod
      * @param string $requestUri
-     * @return void
+     * @return array
      * @throws RouteException
-     */
+    */
     public function match(string $requestMethod, string $requestUri)
     {
           if(! empty($this->routes))
@@ -192,8 +204,7 @@ class Router
         {
             $matches = $this->filteredParams($matches);
             $middlewares = $this->getMiddleware($path);
-            $name = array_search($path, $this->namedRoutes);
-            return compact('matches', 'pattern', 'middlewares', 'name');
+            return compact('matches', 'pattern', 'middlewares');
         }
 
         return false;
