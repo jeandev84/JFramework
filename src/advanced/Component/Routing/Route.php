@@ -4,6 +4,7 @@ namespace Jan\Component\Routing;
 
 use Jan\Component\Routing\Exception\RouteException;
 
+
 /**
  * Class Route
  * @package Jan\Component\Routing
@@ -191,10 +192,7 @@ class Route
     */
     public function middleware(array $middlewares)
     {
-        self::addMiddleware(
-            self::$currentRoute['path'],
-            $middlewares
-        );
+        self::addMiddleware(self::$currentRoute['path'], $middlewares);
         return $this;
     }
 
@@ -225,10 +223,7 @@ class Route
     */
     public function name($name)
     {
-        self::addName($name,
-            self::$currentRoute['path']
-        );
-
+        self::addName($name, self::$currentRoute['path']);
         return $this;
     }
 

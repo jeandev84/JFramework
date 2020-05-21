@@ -96,6 +96,7 @@ class Router
         return $this;
     }
 
+
     /**
      * @param array $namedRoutes
      * @return Router
@@ -134,7 +135,7 @@ class Router
      *
      * @return array
     */
-    public function getMiddlewares()
+    public function middlewares()
     {
         return $this->middlewares;
     }
@@ -154,9 +155,9 @@ class Router
      * @param $path
      * @return mixed|null
     */
-    public function getNameOfRoute($path)
+    public function getRouteName($path)
     {
-        return $this->namedRoutes[$path] ?? null;
+
     }
 
 
@@ -175,20 +176,13 @@ class Router
           {
               foreach ($this->routes as $route)
               {
-                  list($methods, $path, $target) = array_values($route);
+                  list($methods, $path) = array_values($route);
 
                   if(\in_array($requestMethod, (array) $methods))
                   {
-                      if(preg_match($pattern = $this->compile($path), $this->resolveUrl($requestUri), $matches))
+                      if($parses = $this->isMatch($path, $requestUri))
                       {
-                          $matches = $this->filteredParams($matches);
-                          $middlewares = $this->getMiddleware($path);
-                          $name = '';
-                          return $this->currentRoute = array_merge(
-                              $route,
-                              compact('matches', 'pattern', 'middlewares')
-                          );
-
+                          return $this->currentRoute = array_merge($route, $parses);
                       }
                   }
               }
@@ -197,6 +191,28 @@ class Router
 
           }
     }
+
+
+    /**
+     * @param $path
+     * @param $requestUri
+     * @return mixed
+   */
+   private function isMatch($path, $requestUri)
+   {
+        $pattern = $this->compile($path);
+        $uri = $this->resolveUrl($requestUri);
+
+        if(preg_match($pattern, $uri, $matches))
+        {
+            $matches = $this->filteredParams($matches);
+            $middlewares = $this->getMiddleware($path);
+            return compact('matches', 'pattern', 'middlewares');
+        }
+
+        return false;
+    }
+
 
 
     /**

@@ -41,26 +41,36 @@ class Router
      * @param $handler
      * @param string|null $name
      * @return Router
+     * @throws RouterException
     */
     public function map($methods, string $path, $handler, string $name = null)
     {
           $route = compact('methods', 'path', 'handler');
-          $this->routes[] = $route;
-          $this->route = $route;
-
-         $this->routeName($name, $path);
+          $this->routes[] = $this->route = $route;
+          $this->routeName($name, $path);
           return $this;
     }
+
 
     /**
      * @param array $middlewares
      * @return Router
-     */
+    */
     public function middleware(array $middlewares)
     {
          $this->middlewares[$this->route['path']] = $middlewares;
 
          return $this;
+    }
+
+
+    /**
+     * @param string $path
+     * @return array|mixed
+    */
+    public function getMiddleware(string $path)
+    {
+        return $this->middlewares[$path] ?? [];
     }
 
 
@@ -80,19 +90,18 @@ class Router
      * @param string $requestMethod
      * @param string $requestUri
      * @return bool|mixed
-     */
+    */
     public function match(string $requestMethod, string $requestUri)
     {
         foreach ($this->routes as $route)
         {
-            list($methods, $path, $handler, $name) =  array_values($route);
+            list($methods, $path) =  array_values($route);
 
             if(\in_array($requestMethod, $this->resolvedMethods($methods)))
             {
-                   // TODO prepare part path and URI
-                  if($parsed = $this->isMatch($path, $requestUri))
+                  if($parses = $this->isMatch($path, $requestUri))
                   {
-                       return array_merge($route, (array) $parsed);
+                       return array_merge($route, $parses);
                   }
             }
         }
@@ -106,13 +115,15 @@ class Router
      * @param $requestUri
      * @return mixed
     */
-    public function isMatch($path, $requestUri)
+    private function isMatch($path, $requestUri)
     {
         $pattern = $this->compile($path);
         $uri = $this->resolvedPath($requestUri);
+        $middlewares = $this->getMiddleware($path);
+
         if(preg_match($pattern, $uri, $matches))
         {
-            return compact('matches', 'pattern');
+            return compact('matches', 'pattern', 'middlewares');
         }
 
         return false;
